@@ -16,13 +16,13 @@ public class Karen {
     // constructor with map
     public Karen(HardwareMap map) {
         // Drivetrain Motors
-        leftFrontMotor = map.get(DcMotorEx.class, "left_omni");
-        rightFrontMotor = map.get(DcMotorEx.class, "right_omni");
-        leftBackMotor = map.get(DcMotorEx.class, "left_drive");
-        rightBackMotor = map.get(DcMotorEx.class, "right_drive");
+        leftFrontMotor = map.get(DcMotorEx.class, "left_front");
+        rightFrontMotor = map.get(DcMotorEx.class, "right_front");
+        leftBackMotor = map.get(DcMotorEx.class, "left_back");
+        rightBackMotor = map.get(DcMotorEx.class, "right_back");
 
-//        leftBackMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-//        leftFrontMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        //        leftBackMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        //        leftFrontMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         leftFrontMotor.setDirection(DcMotorEx.Direction.REVERSE);
         leftBackMotor.setDirection(DcMotorEx.Direction.REVERSE);
@@ -50,6 +50,35 @@ public class Karen {
         }
 
 //        telemetry.addData("power", wheelSpeeds);
+
+
+
+        // setting motor power and scaling down to preference
+        leftFrontMotor.setPower(wheelSpeeds[0] * scaleFactor);
+        rightFrontMotor.setPower(wheelSpeeds[1] * scaleFactor);
+        leftBackMotor.setPower(wheelSpeeds[2] * scaleFactor);
+        rightBackMotor.setPower(wheelSpeeds[3] * scaleFactor);
+    }
+
+    public void moveBotMecanum(double drive, double rotate, double strafe, double scaleFactor) {
+        double[] wheelSpeeds = new double[4];
+        wheelSpeeds[0] = drive + strafe + rotate;  // left front
+        wheelSpeeds[1] = drive - strafe - rotate;  // right front
+        wheelSpeeds[2] = drive - strafe + rotate;  // left rear
+        wheelSpeeds[3] = drive + strafe - rotate;  // right rear
+
+        // finding the greatest power value
+        double maxMagnitude = Math.max(Math.max(Math.max(wheelSpeeds[0], wheelSpeeds[1]), wheelSpeeds[2]), wheelSpeeds[3]);
+
+
+        // dividing everyone by the max power value so that ratios are same (check if sdk automatically clips to see if go build documentation works
+        if (maxMagnitude > 1.0)
+        {
+            for (int i = 0; i < wheelSpeeds.length; i++)
+            {
+                wheelSpeeds[i] /= maxMagnitude;
+            }
+        }
 
 
 

@@ -34,13 +34,14 @@ import static java.lang.Thread.sleep;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name="Basic: Omniwheel TeleOp", group="Iterative Opmode")
-public class OmniwheelOpMode extends OpMode
+@TeleOp(name="Basic: Mecanum TeleOp", group="Iterative Opmode")
+public class MecanumOpMode extends OpMode
 {
     // Declare OpMode members.
 
     double drive = 0.0;
     double turn = 0.0;
+    double strafe = 0.0;
 
     Karen bot;
 
@@ -66,9 +67,10 @@ public class OmniwheelOpMode extends OpMode
     @Override
     public void loop() {
         drive = -gamepad1.left_stick_y;
+        strafe = gamepad1.left_stick_x;
         turn = gamepad1.right_stick_x;
 
-        bot.moveBot(drive, turn, 1);
+        bot.moveBotMecanum(drive, turn, strafe, 1);
 
         try {
             sleep(20);
