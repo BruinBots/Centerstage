@@ -11,13 +11,21 @@ public class Karen  {
     public DcMotorEx leftBackMotor;
     public DcMotorEx rightBackMotor;
 
+    public DcMotorEx leftOdo;
+    public DcMotorEx rightOdo;
+    public DcMotorEx backOdo;
+
     // constructor with map
     public Karen (HardwareMap map) {
         // Drivetrain Motors
-        leftFrontMotor = map.get(DcMotorEx.class, "leftFrontMotor");
-        rightFrontMotor = map.get(DcMotorEx.class, "rightFrontMotor");
-        leftBackMotor = map.get(DcMotorEx.class, "leftBackMotor");
-        rightBackMotor = map.get(DcMotorEx.class, "rightBackMotor");
+        leftFrontMotor = map.get(DcMotorEx.class, "left_front");
+        rightFrontMotor = map.get(DcMotorEx.class, "right_front");
+        leftBackMotor = map.get(DcMotorEx.class, "left_back");
+        rightBackMotor = map.get(DcMotorEx.class, "right_back");
+
+        leftOdo = map.get(DcMotorEx.class, "left_odo");
+        rightOdo = map.get(DcMotorEx.class, "right_odo");
+        backOdo = map.get(DcMotorEx.class, "back_odo");
 
         leftBackMotor.setDirection(DcMotorEx.Direction.REVERSE);
         leftFrontMotor.setDirection(DcMotorEx.Direction.REVERSE);
