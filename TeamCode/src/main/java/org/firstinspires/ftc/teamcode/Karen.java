@@ -15,6 +15,9 @@ public class Karen  {
     public DcMotorEx rightOdo;
     public DcMotorEx backOdo;
 
+    public final int TICKS_PER_REVOLUTION = 200;
+    public final int DEADWHEEL_RADIUS = 2; // cm ??
+
     // constructor with map
     public Karen (HardwareMap map) {
         // Drivetrain Motors
@@ -26,6 +29,10 @@ public class Karen  {
         leftOdo = map.get(DcMotorEx.class, "left_odo");
         rightOdo = map.get(DcMotorEx.class, "right_odo");
         backOdo = map.get(DcMotorEx.class, "back_odo");
+
+        leftOdo.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        rightOdo.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        backOdo.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
         leftBackMotor.setDirection(DcMotorEx.Direction.REVERSE);
         leftFrontMotor.setDirection(DcMotorEx.Direction.REVERSE);
@@ -61,6 +68,13 @@ public class Karen  {
     // movebot command that runs for a certain amount of time
     public void moveBotTimer(double drive, double rotate, double strafe, int time, ElapsedTime runTime){
         while(((int)(runTime.time() * 1000)) < time){
+            this.moveBot(drive, rotate, strafe, 1);
+        }
+    }
+
+    public void moveBotDistance(double drive, double rotate, double strafe, double distance) {
+        double targetTicks = TICKS_PER_REVOLUTION * DEADWHEEL_RADIUS * Math.PI;
+        while ((leftOdo.getCurrentPosition() + rightOdo.getCurrentPosition()) / 2 < targetTicks) {
             this.moveBot(drive, rotate, strafe, 1);
         }
     }
