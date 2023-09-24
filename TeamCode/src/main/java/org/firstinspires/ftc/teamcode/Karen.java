@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class Karen {
@@ -16,6 +17,8 @@ public class Karen {
 
     public DcMotorEx intakeMotor;
     public TouchSensor intakeTouchSensor;
+
+    public Servo clawServo1;
 
     // constructor with map
     public Karen(HardwareMap map) {
@@ -33,6 +36,8 @@ public class Karen {
 
         intakeMotor = map.get(DcMotorEx.class, "intake_motor");
         intakeTouchSensor = map.get(TouchSensor.class, "intake_sensor");
+
+        clawServo1 = map.get(Servo.class, "claw_servo1");
 
     }
 
