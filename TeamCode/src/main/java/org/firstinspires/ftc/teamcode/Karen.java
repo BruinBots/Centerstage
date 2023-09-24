@@ -105,7 +105,7 @@ public class Karen  {
     public void moveBotDistance(double drive, double rotate, double strafe, double distance) {
         double targetTicks = TICKS_PER_REVOLUTION * DEADWHEEL_RADIUS * Math.PI;
         while ((leftOdo.getCurrentPosition() + rightOdo.getCurrentPosition()) / 2 < targetTicks) {
-            this.moveBot(drive, rotate, strafe, 1);
+            this.moveBotMecanum(drive, rotate, strafe, 1);
         }
     }
 
