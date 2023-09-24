@@ -9,8 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 @TeleOp(name="Basic: MotorTest TeleOp", group="Iterative Opmode")
 public class MotorTest extends OpMode
 {
-    boolean dpadDownPrev; // Previous state of dpad_down button
-    boolean dpadUpPrev;   // Previous state of dpad_up button
+
     boolean dpadUp;
     boolean dpadDown;
     boolean aButtonPressed;
@@ -33,19 +32,21 @@ public class MotorTest extends OpMode
 
     @Override
     public void loop() {
+
+
         dpadDown = gamepad1.dpad_down;
         dpadUp = gamepad1.dpad_up;
         aButtonPressed = gamepad1.a; // Check if the "A" button is pressed
 
         // Check if dpad_down was pressed and was not pressed in the previous iteration
-        if (dpadDown && !dpadDownPrev) {
+        if (dpadDown.) {
             if (bot.Motor0.getPower() < 1.0) {
                 bot.Motor0.setPower(bot.Motor0.getPower() - 0.1);
             }
         }
 
         // Check if dpad_up was pressed and was not pressed in the previous iteration
-        if (dpadUp && !dpadUpPrev) {
+        if (dpadUp.) {
             if (bot.Motor0.getPower() < 1.0) {
                 bot.Motor0.setPower(bot.Motor0.getPower() + 0.1);
             }
@@ -61,8 +62,6 @@ public class MotorTest extends OpMode
         }
 
         // Update the previous state variables
-        dpadDownPrev = dpadDown;
-        dpadUpPrev = dpadUp;
 
         try {
             sleep(20);
