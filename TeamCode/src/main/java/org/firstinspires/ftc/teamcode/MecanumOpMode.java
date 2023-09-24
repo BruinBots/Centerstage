@@ -72,6 +72,10 @@ public class MecanumOpMode extends OpMode
 
         bot.moveBotMecanum(drive, turn, strafe, 1);
 
+        telemetry.addData("Left Wheel", ""+bot.leftOdo.getCurrentPosition());
+        telemetry.addData("Right Wheel", ""+bot.rightOdo.getCurrentPosition());
+        telemetry.addData("Back Wheel", ""+bot.backOdo.getCurrentPosition());
+
         try {
             sleep(20);
         } catch (InterruptedException e) {

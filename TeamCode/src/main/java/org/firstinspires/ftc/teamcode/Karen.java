@@ -29,14 +29,10 @@ public class Karen  {
         leftBackMotor = map.get(DcMotorEx.class, "left_back");
         rightBackMotor = map.get(DcMotorEx.class, "right_back");
 
-        leftOdo = map.get(DcMotorEx.class, "left_odo");
-        rightOdo = map.get(DcMotorEx.class, "right_odo");
-        backOdo = map.get(DcMotorEx.class, "back_odo");
-
-        leftOdo.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        rightOdo.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        backOdo.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-
+        leftOdo = map.get(DcMotorEx.class, "right_front");
+        rightOdo = map.get(DcMotorEx.class, "left_back");
+        backOdo = map.get(DcMotorEx.class, "left_front");
+        
         leftBackMotor.setDirection(DcMotorEx.Direction.REVERSE);
         leftFrontMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -82,7 +78,6 @@ public class Karen  {
 
         // finding the greatest power value
         double maxMagnitude = Math.max(Math.max(Math.max(wheelSpeeds[0], wheelSpeeds[1]), wheelSpeeds[2]), wheelSpeeds[3]);
-
 
         // dividing everyone by the max power value so that ratios are same (check if sdk automatically clips to see if go build documentation works
         if (maxMagnitude > 1.0)
