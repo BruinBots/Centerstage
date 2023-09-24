@@ -71,6 +71,7 @@ public class MotorTest extends OpMode
         }
         telemetry.addData("Motor0 Power: ", bot.Motor0.getPower());
         telemetry.addData("Motor0 Direction: ", bot.Motor0.getDirection());
+        telemetry.update();
     }
 
 
