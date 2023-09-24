@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import static java.lang.Thread.sleep;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -31,6 +33,15 @@ public class Claw extends OpMode {
     //
     @Override
     public void loop() {
+        double pos = gamepad1.left_stick_y;
+
+        clawMove(pos);
+
+        try {
+            sleep(20);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void clawMove(double position) {
