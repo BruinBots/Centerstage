@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
+
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
@@ -14,8 +17,17 @@ public class Karen {
     public DcMotorEx leftBackMotor;
     public DcMotorEx rightBackMotor;
 
-    public DcMotorEx intakeMotor;
-    public TouchSensor intakeTouchSensor;
+
+
+
+
+    public DcMotorEx slideMotor;
+    public DcMotorEx armMotor;
+    public static int MAX_SLIDE_POSITION = 160;
+    public static int MIN_SLIDE_POSITION = 0;
+    public static int MAX_ARM_POSITION = 180;
+    public static int MIN_ARM_POSITION = 0;
+    public static double ARM_POWER = 0.8;
 
 
     // constructor with map
@@ -26,14 +38,18 @@ public class Karen {
         leftBackMotor = map.get(DcMotorEx.class, "left_back");
         rightBackMotor = map.get(DcMotorEx.class, "right_back");
 
-        //        leftBackMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        //        leftFrontMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-
         leftFrontMotor.setDirection(DcMotorEx.Direction.REVERSE);
         leftBackMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
-        intakeMotor = map.get(DcMotorEx.class, "intake_motor");
-        intakeTouchSensor = map.get(TouchSensor.class, "intake_sensor");
+        armMotor = map.get(DcMotorEx.class, "armMotor");
+        armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        armMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+        slideMotor = map.get(DcMotorEx.class, "slideMotor");
+        slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+
 
 
     }
@@ -97,11 +113,31 @@ public class Karen {
         leftBackMotor.setPower(wheelSpeeds[2] * scaleFactor);
         rightBackMotor.setPower(wheelSpeeds[3] * scaleFactor);
     }
+    public void moveSlide(int targetPos){
+        slideMotor.setTargetPosition(targetPos);
+        slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slideMotor.setPower(ARM_POWER);
+    }
+    public void moveArm(int targetPos) {
+        armMotor.setTargetPosition(targetPos);
+        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armMotor.setPower(ARM_POWER);
+    }
+    public int getCurrentArmPos(){
+        return armMotor.getCurrentPosition();
+    }
+    public int getCurrentslidePos(){
+        return slideMotor.getCurrentPosition();
+    }
+
 
     public void stop(){
         leftFrontMotor.setPower(0);
         leftBackMotor.setPower(0);
         rightFrontMotor.setPower(0);
         rightBackMotor.setPower(0);
+
+        slideMotor.setPower(0);
+        armMotor.setPower(0);
     }
 }
