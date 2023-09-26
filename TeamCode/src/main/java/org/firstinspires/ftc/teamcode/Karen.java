@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class Karen {
 
@@ -15,27 +14,21 @@ public class Karen {
     public DcMotorEx leftBackMotor;
     public DcMotorEx rightBackMotor;
 
-    public DcMotorEx intakeMotor;
-    public TouchSensor intakeTouchSensor;
-
     public Servo clawServo1;
 
     // constructor with map
     public Karen(HardwareMap map) {
         // Drivetrain Motors
-        leftFrontMotor = map.get(DcMotorEx.class, "left_front");
-        rightFrontMotor = map.get(DcMotorEx.class, "right_front");
-        leftBackMotor = map.get(DcMotorEx.class, "left_back");
-        rightBackMotor = map.get(DcMotorEx.class, "right_back");
+//        leftFrontMotor = map.get(DcMotorEx.class, "left_front");
+//        rightFrontMotor = map.get(DcMotorEx.class, "right_front");
+//        leftBackMotor = map.get(DcMotorEx.class, "left_back");
+//        rightBackMotor = map.get(DcMotorEx.class, "right_back");
 
         //        leftBackMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         //        leftFrontMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        leftFrontMotor.setDirection(DcMotorEx.Direction.REVERSE);
-        leftBackMotor.setDirection(DcMotorEx.Direction.REVERSE);
-
-        intakeMotor = map.get(DcMotorEx.class, "intake_motor");
-        intakeTouchSensor = map.get(TouchSensor.class, "intake_sensor");
+//        leftFrontMotor.setDirection(DcMotorEx.Direction.REVERSE);
+//        leftBackMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
         clawServo1 = map.get(Servo.class, "claw_servo1");
     }
