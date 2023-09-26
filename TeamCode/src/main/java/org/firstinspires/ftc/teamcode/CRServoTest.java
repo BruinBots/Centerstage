@@ -5,8 +5,8 @@ import static java.lang.Thread.sleep;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name="Basic: MotorTest TeleOp", group="Iterative Opmode")
-public class MotorTest extends OpMode
+@TeleOp(name="Basic: CRServoTest TeleOp", group="Iterative Opmode")
+public class CRServoTest extends OpMode
 {
     boolean dpadDownPrev; // Previous state of dpad_down button
     boolean dpadUpPrev;   // Previous state of dpad_up button
@@ -41,13 +41,13 @@ public class MotorTest extends OpMode
         // Check if dpad_down was pressed and was not pressed in the previous iteration
         if (dpadDown && !dpadDownPrev) {
             if (direction.equals("Forward")) {
-                if (bot.Motor0.getPower() <= 1 && bot.Motor0.getPower() > 0) {
-                    bot.Motor0.setPower(Math.round((bot.Motor0.getPower() - 0.1) * 10.0) / 10.0);
+                if (bot.CRServo1.getPower() <= 1 && bot.CRServo1.getPower() > 0) {
+                    bot.CRServo1.setPower(Math.round((bot.CRServo1.getPower() - 0.1) * 10.0) / 10.0);
                 }
             }
             if (direction.equals("Backward")) {
-                if (bot.Motor0.getPower() >= -1 && bot.Motor0.getPower() < 0) {
-                    bot.Motor0.setPower(Math.round((bot.Motor0.getPower() + 0.1) * 10.0) / 10.0);
+                if (bot.CRServo1.getPower() >= -1 && bot.CRServo1.getPower() < 0) {
+                    bot.CRServo1.setPower(Math.round((bot.CRServo1.getPower() + 0.1) * 10.0) / 10.0);
                 }
             }
         }
@@ -55,13 +55,13 @@ public class MotorTest extends OpMode
         // Check if dpad_up was pressed and was not pressed in the previous iteration
         if (dpadUp && !dpadUpPrev) {
             if (direction.equals("Forward")) {
-                if (bot.Motor0.getPower() < 1 && bot.Motor0.getPower() >= 0.0) {
-                    bot.Motor0.setPower(Math.round((bot.Motor0.getPower() + 0.1) * 10.0) / 10.0);
+                if (bot.CRServo1.getPower() < 1 && bot.CRServo1.getPower() >= 0.0) {
+                    bot.CRServo1.setPower(Math.round((bot.CRServo1.getPower() + 0.1) * 10.0) / 10.0);
                 }
             }
             if (direction.equals("Backward")) {
-                if (bot.Motor0.getPower() > -1 && bot.Motor0.getPower() <= 0.0) {
-                    bot.Motor0.setPower(Math.round((bot.Motor0.getPower() - 0.1) * 10.0) / 10.0);
+                if (bot.CRServo1.getPower() > -1 && bot.CRServo1.getPower() <= 0.0) {
+                    bot.CRServo1.setPower(Math.round((bot.CRServo1.getPower() - 0.1) * 10.0) / 10.0);
                 }
             }
         }
@@ -70,10 +70,10 @@ public class MotorTest extends OpMode
         if (aButtonPressed && !aButtonPrev) {
             if (direction.equals("Forward")) {
                 direction = "Backward";
-                bot.Motor0.setPower(-bot.Motor0.getPower());
+                bot.CRServo1.setPower(-bot.CRServo1.getPower());
             } else if (direction.equals("Backward")) {
                 direction = "Forward";
-                bot.Motor0.setPower(-bot.Motor0.getPower());
+                bot.CRServo1.setPower(-bot.CRServo1.getPower());
             }
         }
 
@@ -82,7 +82,7 @@ public class MotorTest extends OpMode
         dpadUpPrev = dpadUp;
         aButtonPrev = aButtonPressed;
 
-        bot.Motor0.setPower(Math.round(bot.Motor0.getPower() * 10.0) / 10.0);
+        bot.CRServo1.setPower(Math.round(bot.CRServo1.getPower() * 10.0) / 10.0);
 
 
         try {
@@ -90,8 +90,8 @@ public class MotorTest extends OpMode
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        telemetry.addData("Motor0 Power: ", bot.Motor0.getPower());
-        telemetry.addData("Motor0 Direction: ", direction);
+        telemetry.addData("CRServo1 Power: ", bot.CRServo1.getPower());
+        telemetry.addData("CRServo1 Direction: ", direction);
         telemetry.update();
     }
 
