@@ -59,8 +59,8 @@ public class MecanumOpMode extends OpMode
     //
     @Override
     public void init_loop() {
-        slidePos = bot.slideMotor.getCurrentPosition();
-        armPos = bot.armMotor.getCurrentPosition();
+        slidePos = bot.arm.slideMotor.getCurrentPosition();
+        armPos = bot.arm.armMotor.getCurrentPosition();
     }
 
     //
@@ -79,25 +79,25 @@ public class MecanumOpMode extends OpMode
 
         if (gamepad1.dpad_down) { // arm down
             slidePos -= 10;
-            if (slidePos< Karen.MIN_SLIDE_POSITION  ){ //
-                slidePos = Karen.MIN_SLIDE_POSITION;
+            if (slidePos< Karen.arm.MIN_SLIDE_POSITION  ){ //
+                slidePos = Karen.arm.MIN_SLIDE_POSITION;
             }
 
-            bot.moveSlide(slidePos);
-            slidePos= bot.getCurrentslidePos();
+            bot.arm.moveSlide(slidePos);
+            slidePos= bot.arm.getCurrentslidePos();
             telemetry.addData("arm down", "");
         } else if (gamepad1.dpad_up) {
             slidePos += 10;
 
-            if(slidePos> Karen.MAX_SLIDE_POSITION){ //
-                slidePos = Karen.MAX_SLIDE_POSITION;
+            if(slidePos> Karen.arm.MAX_SLIDE_POSITION){ //
+                slidePos = Karen.arm.MAX_SLIDE_POSITION;
             }
 
-            bot.moveSlide(slidePos);
-            slidePos = bot.getCurrentslidePos();
+            bot.arm.moveSlide(slidePos);
+            slidePos = bot.arm.getCurrentslidePos();
             telemetry.addData("slide up", "");
         } else {
-            bot.moveSlide(slidePos);
+            bot.arm.moveSlide(slidePos);
             telemetry.addData("slide still", "");
         }
         //arm -----------------
@@ -107,25 +107,26 @@ public class MecanumOpMode extends OpMode
 
         if (gamepad1.dpad_left) { //
             armPos -= 10;
-            if (armPos < Karen.MIN_ARM_POSITION){ //
-                armPos = Karen.MIN_ARM_POSITION;
+            if (armPos < Karen.arm.MIN_ARM_POSITION){ //
+                armPos = Karen.arm.MIN_ARM_POSITION;
             }
 
-            bot.moveArm(armPos);
-            armPos = bot.getCurrentArmPos();
+            bot.arm.moveArm(armPos);
+            armPos = bot.arm.getCurrentArmPos();
             telemetry.addData("arm down", "");
         } else if (gamepad1.dpad_right) {
             armPos += 10;
 
-            if(armPos > Karen.MAX_ARM_POSITION){ //
-                armPos = Karen.MAX_ARM_POSITION;
+            if(armPos > Karen.arm.MAX_ARM_POSITION){ //
+                armPos = Karen.arm.MAX_ARM_POSITION;
+
             }
 
-            bot.moveArm(armPos);
-            armPos = bot.getCurrentArmPos();
+            bot.arm.moveArm(armPos);
+            armPos = bot.arm.getCurrentArmPos();
             telemetry.addData("arm up", "");
         } else {
-            bot.moveArm(armPos);
+            bot.arm.moveArm(armPos);
             telemetry.addData("arm still", "");
         }
 
@@ -136,8 +137,8 @@ public class MecanumOpMode extends OpMode
             e.printStackTrace();
         }
 
-        telemetry.addData("armPos:", bot.getCurrentArmPos());
-        telemetry.addData("slidePos:", bot.getCurrentslidePos());
+        telemetry.addData("armPos:", bot.arm.getCurrentArmPos());
+        telemetry.addData("slidePos:", bot.arm.getCurrentslidePos());
     }
 
 
