@@ -12,6 +12,9 @@ public class Claw extends OpMode {
 
     Karen bot;
 
+    public static final double OPEN_POS = 0;
+    public static final double CLOSED_POS = 1;
+
     @Override
     public void init() {
         bot = new Karen(hardwareMap);
@@ -45,7 +48,16 @@ public class Claw extends OpMode {
     }
 
     public void clawMove(double position) {
+        position = Math.abs(position);
         servo1.setPosition(position);
+    }
+
+    public void open() {
+        clawMove(OPEN_POS);
+    }
+
+    public void close() {
+        clawMove(CLOSED_POS);
     }
 
     @Override
