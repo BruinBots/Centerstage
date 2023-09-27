@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -13,6 +14,10 @@ public class Karen  {
     public DcMotorEx rightFrontMotor;
     public DcMotorEx leftBackMotor;
     public DcMotorEx rightBackMotor;
+
+    public DcMotorEx intakeMotor;
+    public DigitalChannel intakeTouchSensor;
+
 
     public DcMotorEx leftOdo;
     public DcMotorEx rightOdo;
@@ -29,12 +34,19 @@ public class Karen  {
         leftBackMotor = map.get(DcMotorEx.class, "left_back");
         rightBackMotor = map.get(DcMotorEx.class, "right_back");
 
+//                leftBackMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+//                leftFrontMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        leftFrontMotor.setDirection(DcMotorEx.Direction.REVERSE);
         leftOdo = map.get(DcMotorEx.class, "right_front");
         rightOdo = map.get(DcMotorEx.class, "left_back");
         backOdo = map.get(DcMotorEx.class, "left_front");
-        
+
         leftBackMotor.setDirection(DcMotorEx.Direction.REVERSE);
-        leftFrontMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        intakeMotor = map.get(DcMotorEx.class, "intake_motor");
+        intakeTouchSensor = map.get(DigitalChannel.class, "intake_sensor");
+
 
     }
 
