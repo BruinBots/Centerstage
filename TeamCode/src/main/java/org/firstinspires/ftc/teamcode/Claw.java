@@ -8,7 +8,7 @@ public class Claw {
     public static final double OPEN_POS = 0;
     public static final double CLOSED_POS = 1;
 
-    public void init(Servo servo1) {
+    Claw (Servo servo1) {
         this.servo1 = servo1;
     }
     public void clawMove(double position) {

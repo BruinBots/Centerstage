@@ -28,6 +28,10 @@ public class Karen  {
     public final int TICKS_PER_REVOLUTION = 200;
     public final int DEADWHEEL_RADIUS = 2; // cm ??
 
+    // subclasses
+    InOutTake inOutTake;
+    Claw claw;
+
     // constructor with map
     public Karen(HardwareMap map) {
         // Drivetrain Motors
@@ -36,17 +40,23 @@ public class Karen  {
         leftBackMotor = map.get(DcMotorEx.class, "left_back");
         rightBackMotor = map.get(DcMotorEx.class, "right_back");
 
+        // Reverse left motors
         leftFrontMotor.setDirection(DcMotorEx.Direction.REVERSE);
         leftBackMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
+        // odometry deadwheels
         leftOdo = map.get(DcMotorEx.class, "right_front");
         rightOdo = map.get(DcMotorEx.class, "left_back");
         backOdo = map.get(DcMotorEx.class, "left_front");
 
+        // pixel intake
         intakeMotor = map.get(DcMotorEx.class, "intake_motor");
         intakeTouchSensor = map.get(DigitalChannel.class, "intake_sensor");
+        inOutTake = new InOutTake(intakeMotor, intakeTouchSensor);
 
+        // claw
         clawServo1 = map.get(Servo.class, "claw_servo1");
+        claw = new Claw(clawServo1);
     }
 
     public void moveBot(double drive, double rotate, double scaleFactor) {

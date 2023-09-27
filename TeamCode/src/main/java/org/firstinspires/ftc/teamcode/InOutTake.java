@@ -9,7 +9,7 @@ public class InOutTake {
     DcMotorEx motor;
     DigitalChannel sensor;
 
-    public void init(DcMotorEx motor, DigitalChannel sensor) {
+    InOutTake (DcMotorEx motor, DigitalChannel sensor) {
         this.motor = motor;
         this.sensor = sensor;
     }
