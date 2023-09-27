@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public class Karen  {
 
@@ -23,19 +24,21 @@ public class Karen  {
     public DcMotorEx rightOdo;
     public DcMotorEx backOdo;
 
+    public Servo clawServo1;
+
     public final int TICKS_PER_REVOLUTION = 200;
     public final int DEADWHEEL_RADIUS = 2; // cm ??
 
     // constructor with map
-    public Karen (HardwareMap map) {
+    public Karen(HardwareMap map) {
         // Drivetrain Motors
         leftFrontMotor = map.get(DcMotorEx.class, "left_front");
         rightFrontMotor = map.get(DcMotorEx.class, "right_front");
         leftBackMotor = map.get(DcMotorEx.class, "left_back");
         rightBackMotor = map.get(DcMotorEx.class, "right_back");
 
-//                leftBackMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-//                leftFrontMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        //        leftBackMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        //        leftFrontMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         leftFrontMotor.setDirection(DcMotorEx.Direction.REVERSE);
         leftOdo = map.get(DcMotorEx.class, "right_front");
@@ -47,7 +50,7 @@ public class Karen  {
         intakeMotor = map.get(DcMotorEx.class, "intake_motor");
         intakeTouchSensor = map.get(DigitalChannel.class, "intake_sensor");
 
-
+        clawServo1 = map.get(Servo.class, "claw_servo1");
     }
 
     public void moveBot(double drive, double rotate, double scaleFactor) {
