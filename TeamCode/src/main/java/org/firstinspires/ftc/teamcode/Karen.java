@@ -13,20 +13,21 @@ public class Karen {
     DcMotorEx Motor0;
     Servo Servo0;
     CRServo CRServo1;
+    CRServo CRServo2;
 
     // constructor with map
     public Karen(HardwareMap map) {
         // Drivetrain Motors
-        Motor0 = map.get(DcMotorEx.class, "Motor0");
 
-        Servo0 = map.get(Servo.class, "Servo0");
 
         CRServo1 = map.get(CRServo.class, "CRServo1");
+        CRServo2 = map.get(CRServo.class, "CRServo2");
     }
 
     public void stop(){
         Motor0.setPower(0);
         Servo0.setPosition(0);
         CRServo1.setPower(0);
+        CRServo2.setPower(0);
     }
 }
