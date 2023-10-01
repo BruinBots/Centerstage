@@ -8,6 +8,9 @@ public class DroneLaunch {
 
     public DcMotorEx droneMotor;
 
+    public static final double LAUNCH_POWER = 0.75;
+    public static final int LAUNCH_TIME = 1000;
+
     DroneLaunch (DcMotorEx droneMotor) {
         this.droneMotor = droneMotor;
     }

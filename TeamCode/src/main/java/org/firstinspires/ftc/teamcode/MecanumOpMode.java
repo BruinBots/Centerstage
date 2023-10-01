@@ -33,6 +33,7 @@ import static java.lang.Thread.sleep;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp(name="Basic: Mecanum TeleOp", group="Iterative Opmode")
 public class MecanumOpMode extends OpMode
@@ -71,6 +72,29 @@ public class MecanumOpMode extends OpMode
         turn = gamepad1.right_stick_x;
 
         bot.moveBotMecanum(drive, turn, strafe, 1);
+
+        // claw
+        if (gamepad1.left_bumper) {
+            bot.claw.clawMove(Claw.OPEN_POS);
+        }
+        else if (gamepad1.right_bumper) {
+            bot.claw.clawMove(Claw.CLOSED_POS);
+        }
+
+        // drone launch
+
+        if (gamepad1.a) {
+            bot.droneLaunch.launchDrone(DroneLaunch.LAUNCH_POWER, DroneLaunch.LAUNCH_TIME);
+        }
+
+        // intake
+
+        if (gamepad1.x) {
+            bot.inOutTake.spin(InOutTake.SPIN_SPEED, DcMotorSimple.Direction.FORWARD);
+        }
+        else if (gamepad1.b) {
+            bot.inOutTake.spin(InOutTake.SPIN_SPEED, DcMotorSimple.Direction.REVERSE);
+        }
 
         telemetry.addData("Left Wheel", ""+bot.leftOdo.getCurrentPosition());
         telemetry.addData("Right Wheel", ""+bot.rightOdo.getCurrentPosition());

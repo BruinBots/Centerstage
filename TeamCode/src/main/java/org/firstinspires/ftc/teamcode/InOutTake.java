@@ -9,6 +9,8 @@ public class InOutTake {
     DcMotorEx motor;
     DigitalChannel sensor;
 
+    public static final double SPIN_SPEED = 0.5;
+
     InOutTake (DcMotorEx motor, DigitalChannel sensor) {
         this.motor = motor;
         this.sensor = sensor;

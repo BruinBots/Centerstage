@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class Claw {
+
     Servo servo1;
 
     public static final double OPEN_POS = 0;
