@@ -2,58 +2,23 @@ package org.firstinspires.ftc.teamcode;
 
 import static java.lang.Thread.sleep;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-@TeleOp(name="Drone Launch TeleOp", group="Iterative Opmode")
-public class DroneLaunch extends OpMode
-{
-    boolean aButtonPrev;
-    Karen bot;
+public class DroneLaunch {
+
+    public DcMotorEx droneMotor;
+
+    public void init(DcMotorEx droneMotor) {
+        this.droneMotor = droneMotor;
+    }
 
     public void launchDrone(double motorPower, long waitTime) {
-        bot.DroneMotor.setPower(motorPower);
+        droneMotor.setPower(motorPower);
         try {
             sleep(waitTime);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        bot.DroneMotor.setPower(0.0);
-    }
-
-    @Override
-    public void init() {
-        bot = new Karen(hardwareMap);
-        telemetry.addData("Status", "Initialized");
-    }
-
-    @Override
-    public void init_loop() {
-    }
-
-    @Override
-    public void start() {
-    }
-
-    @Override
-    public void loop() {
-
-        // code here
-        if (gamepad1.a && !aButtonPrev) {
-            launchDrone(1, 500);
-        }
-
-        try {
-            sleep(20);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        aButtonPrev = gamepad1.a;
-    }
-
-
-    @Override
-    public void stop() {
-        bot.stop();
+        droneMotor.setPower(0.0);
     }
 }
