@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -18,6 +20,8 @@ public class Karen  {
     public DcMotorEx intakeMotor;
     public DigitalChannel intakeTouchSensor;
 
+    public DcMotorEx slideMotor;
+    public DcMotorEx armMotor;
 
     public DcMotorEx leftOdo;
     public DcMotorEx rightOdo;
@@ -34,6 +38,7 @@ public class Karen  {
     InOutTake inOutTake;
     Claw claw;
     DroneLaunch droneLaunch;
+    Arm arm;
 
     // constructor with map
     public Karen(HardwareMap map) {
@@ -46,6 +51,17 @@ public class Karen  {
         // Reverse left motors
         leftFrontMotor.setDirection(DcMotorEx.Direction.REVERSE);
         leftBackMotor.setDirection(DcMotorEx.Direction.REVERSE);
+
+        // arm and linear slide
+        armMotor = map.get(DcMotorEx.class, "arm_motor");
+        armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        armMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+        slideMotor = map.get(DcMotorEx.class, "slide_motor");
+        slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+        arm = new Arm(armMotor, slideMotor);
 
         // odometry deadwheels
         leftOdo = map.get(DcMotorEx.class, "right_front");
@@ -137,5 +153,8 @@ public class Karen  {
         leftBackMotor.setPower(0);
         rightFrontMotor.setPower(0);
         rightBackMotor.setPower(0);
+
+        slideMotor.setPower(0);
+        armMotor.setPower(0);
     }
 }

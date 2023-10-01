@@ -44,6 +44,9 @@ public class MecanumOpMode extends OpMode
     double turn = 0.0;
     double strafe = 0.0;
 
+    double armPower = 0.0;
+    int slidePos;
+    int armPos;
     Karen bot;
 
     //
@@ -57,6 +60,8 @@ public class MecanumOpMode extends OpMode
     //
     @Override
     public void init_loop() {
+        slidePos = bot.slideMotor.getCurrentPosition();
+        armPos = bot.armMotor.getCurrentPosition();
     }
 
     //
