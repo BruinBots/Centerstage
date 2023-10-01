@@ -15,17 +15,8 @@ public class Karen {
     public DcMotorEx leftBackMotor;
     public DcMotorEx rightBackMotor;
 
-
-
-
-
     public DcMotorEx slideMotor;
     public DcMotorEx armMotor;
-    public static int MAX_SLIDE_POSITION = 160;
-    public static int MIN_SLIDE_POSITION = 0;
-    public static int MAX_ARM_POSITION = 180;
-    public static int MIN_ARM_POSITION = 0;
-    public static double ARM_POWER = 0.8;
 
 
     // constructor with map
@@ -111,23 +102,6 @@ public class Karen {
         leftBackMotor.setPower(wheelSpeeds[2] * scaleFactor);
         rightBackMotor.setPower(wheelSpeeds[3] * scaleFactor);
     }
-    public void moveSlide(int targetPos){
-        slideMotor.setTargetPosition(targetPos);
-        slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slideMotor.setPower(ARM_POWER);
-    }
-    public void moveArm(int targetPos) {
-        armMotor.setTargetPosition(targetPos);
-        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armMotor.setPower(ARM_POWER);
-    }
-    public int getCurrentArmPos(){
-        return armMotor.getCurrentPosition();
-    }
-    public int getCurrentslidePos(){
-        return slideMotor.getCurrentPosition();
-    }
-
 
     public void stop(){
         leftFrontMotor.setPower(0);

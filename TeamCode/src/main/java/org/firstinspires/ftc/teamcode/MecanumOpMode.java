@@ -59,8 +59,8 @@ public class MecanumOpMode extends OpMode
     //
     @Override
     public void init_loop() {
-        slidePos = bot.arm.slideMotor.getCurrentPosition();
-        armPos = bot.arm.armMotor.getCurrentPosition();
+        slidePos = bot.slideMotor.getCurrentPosition();
+        armPos = bot.armMotor.getCurrentPosition();
     }
 
     //
@@ -77,68 +77,11 @@ public class MecanumOpMode extends OpMode
 
         bot.moveBotMecanum(drive, turn, strafe, 1);
 
-        if (gamepad1.dpad_down) { // arm down
-            slidePos -= 10;
-            if (slidePos< Karen.arm.MIN_SLIDE_POSITION  ){ //
-                slidePos = Karen.arm.MIN_SLIDE_POSITION;
-            }
-
-            bot.arm.moveSlide(slidePos);
-            slidePos= bot.arm.getCurrentslidePos();
-            telemetry.addData("arm down", "");
-        } else if (gamepad1.dpad_up) {
-            slidePos += 10;
-
-            if(slidePos> Karen.arm.MAX_SLIDE_POSITION){ //
-                slidePos = Karen.arm.MAX_SLIDE_POSITION;
-            }
-
-            bot.arm.moveSlide(slidePos);
-            slidePos = bot.arm.getCurrentslidePos();
-            telemetry.addData("slide up", "");
-        } else {
-            bot.arm.moveSlide(slidePos);
-            telemetry.addData("slide still", "");
-        }
-        //arm -----------------
-
-
-
-
-        if (gamepad1.dpad_left) { //
-            armPos -= 10;
-            if (armPos < Karen.arm.MIN_ARM_POSITION){ //
-                armPos = Karen.arm.MIN_ARM_POSITION;
-            }
-
-            bot.arm.moveArm(armPos);
-            armPos = bot.arm.getCurrentArmPos();
-            telemetry.addData("arm down", "");
-        } else if (gamepad1.dpad_right) {
-            armPos += 10;
-
-            if(armPos > Karen.arm.MAX_ARM_POSITION){ //
-                armPos = Karen.arm.MAX_ARM_POSITION;
-
-            }
-
-            bot.arm.moveArm(armPos);
-            armPos = bot.arm.getCurrentArmPos();
-            telemetry.addData("arm up", "");
-        } else {
-            bot.arm.moveArm(armPos);
-            telemetry.addData("arm still", "");
-        }
-
-
         try {
             sleep(20);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        telemetry.addData("armPos:", bot.arm.getCurrentArmPos());
-        telemetry.addData("slidePos:", bot.arm.getCurrentslidePos());
     }
 
 
