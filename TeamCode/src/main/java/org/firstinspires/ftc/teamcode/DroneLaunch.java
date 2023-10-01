@@ -11,10 +11,10 @@ public class DroneLaunch extends OpMode
     boolean aButtonPrev;
     Karen bot;
 
-    public void launchDrone(double motorPower, int waitTimeInSeconds) {
+    public void launchDrone(double motorPower, long waitTime) {
         bot.DroneMotor.setPower(motorPower);
         try {
-            sleep(waitTimeInSeconds * 1000);
+            sleep(waitTime);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -40,7 +40,7 @@ public class DroneLaunch extends OpMode
 
         // code here
         if (gamepad1.a && !aButtonPrev) {
-            launchDrone(100, 5);
+            launchDrone(1, 500);
         }
 
         try {
