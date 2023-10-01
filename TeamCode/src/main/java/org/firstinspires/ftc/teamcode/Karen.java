@@ -3,9 +3,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class Karen {
 
@@ -33,19 +31,19 @@ public class Karen {
     // constructor with map
     public Karen(HardwareMap map) {
         // Drivetrain Motors
-        leftFrontMotor = map.get(DcMotorEx.class, "left_front");
-        rightFrontMotor = map.get(DcMotorEx.class, "right_front");
-        leftBackMotor = map.get(DcMotorEx.class, "left_back");
-        rightBackMotor = map.get(DcMotorEx.class, "right_back");
+//        leftFrontMotor = map.get(DcMotorEx.class, "left_front");
+//        rightFrontMotor = map.get(DcMotorEx.class, "right_front");
+//        leftBackMotor = map.get(DcMotorEx.class, "left_back");
+//        rightBackMotor = map.get(DcMotorEx.class, "right_back");
+//
+//        leftFrontMotor.setDirection(DcMotorEx.Direction.REVERSE);
+//        leftBackMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
-        leftFrontMotor.setDirection(DcMotorEx.Direction.REVERSE);
-        leftBackMotor.setDirection(DcMotorEx.Direction.REVERSE);
-
-        armMotor = map.get(DcMotorEx.class, "armMotor");
+        armMotor = map.get(DcMotorEx.class, "arm_motor");
         armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         armMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
-        slideMotor = map.get(DcMotorEx.class, "slideMotor");
+        slideMotor = map.get(DcMotorEx.class, "slide_motor");
         slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         slideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
