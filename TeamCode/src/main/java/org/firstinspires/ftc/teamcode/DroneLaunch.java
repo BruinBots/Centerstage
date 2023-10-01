@@ -19,6 +19,10 @@ public class DroneLaunch {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        droneMotor.setPower(0.0);
+        droneMotor.setPower(0);
+    }
+
+    public void stop() {
+        droneMotor.setPower(0);
     }
 }
