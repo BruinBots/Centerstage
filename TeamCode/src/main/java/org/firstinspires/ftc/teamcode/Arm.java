@@ -16,10 +16,10 @@ public class Arm extends OpMode {
     Karen bot;
 
     public static int MAX_SLIDE_POSITION = 160;
-    public static int MIN_SLIDE_POSITION = 0;
+    public static int MIN_SLIDE_POSITION = -50;
     public static int MAX_ARM_POSITION = 180;
-    public static int MIN_ARM_POSITION = 0;
-    public static double ARM_POWER = 0.8;
+    public static int MIN_ARM_POSITION = -50;
+    public static double ARM_POWER = 0.4;
 
     @Override
     public void init() {
@@ -67,7 +67,7 @@ public class Arm extends OpMode {
     }
 
     public void moveArm(int targetPos) {
-        if (targetPos <= MIN_ARM_POSITION || targetPos >= MAX_ARM_POSITION) {
+        if (targetPos < MIN_ARM_POSITION || targetPos > MAX_ARM_POSITION) {
             return;
         }
         armMotor.setTargetPosition(targetPos);
@@ -76,7 +76,7 @@ public class Arm extends OpMode {
     }
 
     public void moveSlide(int targetPos) {
-        if (targetPos <= MIN_SLIDE_POSITION || targetPos >= MAX_SLIDE_POSITION) {
+        if (targetPos < MIN_SLIDE_POSITION || targetPos > MAX_SLIDE_POSITION) {
             return;
         }
         slideMotor.setTargetPosition(targetPos);
