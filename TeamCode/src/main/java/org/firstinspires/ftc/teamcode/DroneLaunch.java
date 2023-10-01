@@ -8,7 +8,7 @@ public class DroneLaunch {
 
     public DcMotorEx droneMotor;
 
-    public void init(DcMotorEx droneMotor) {
+    DroneLaunch (DcMotorEx droneMotor) {
         this.droneMotor = droneMotor;
     }
 
