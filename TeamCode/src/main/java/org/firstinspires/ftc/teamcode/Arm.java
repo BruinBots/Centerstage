@@ -1,19 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
-import static java.lang.Thread.sleep;
-
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-@TeleOp(name="Testing: Arm TeleOp", group="Iterative Opmode")
-public class Arm extends OpMode {
+public class Arm {
 
     DcMotorEx armMotor;
     DcMotorEx slideMotor;
 
-    Karen bot;
 
     public static int MAX_SLIDE_POSITION = 160;
     public static int MIN_SLIDE_POSITION = -50;
@@ -21,49 +15,9 @@ public class Arm extends OpMode {
     public static int MIN_ARM_POSITION = -50;
     public static double ARM_POWER = 0.4;
 
-    @Override
-    public void init() {
-        bot = new Karen(hardwareMap);
-
-        armMotor = bot.armMotor;
-        slideMotor = bot.slideMotor;
-
-        telemetry.addData("Status", "Initialized");
-    }
-
-    @Override
-    public void init_loop() {
-    }
-
-    //
-    @Override
-    public void start() {
-    }
-
-    //
-    @Override
-    public void loop() {
-        if (gamepad1.dpad_up) {
-            moveSlide(50);
-        }
-        else if (gamepad1.dpad_down) {
-            moveSlide(-50);
-        }
-        else if (gamepad1.dpad_left) {
-            moveArm(-50);
-        }
-        else if (gamepad1.dpad_right) {
-            moveArm(50);
-        }
-
-        telemetry.addData("Arm Position", getCurrentArmPos());
-        telemetry.addData("Slide Position", getCurrentSlidePos());
-
-        try {
-            sleep(20);
-        }  catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    Arm (DcMotorEx armMotor, DcMotorEx slideMotor) {
+        this.armMotor = armMotor;
+        this.slideMotor = slideMotor;
     }
 
     public void moveArm(int targetPos) {
@@ -86,8 +40,4 @@ public class Arm extends OpMode {
 
     public int getCurrentArmPos() { return armMotor.getCurrentPosition(); }
     public int getCurrentSlidePos() { return slideMotor.getCurrentPosition(); }
-
-    @Override
-    public void stop() {
-    }
 }
