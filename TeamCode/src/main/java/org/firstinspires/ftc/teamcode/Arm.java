@@ -67,12 +67,18 @@ public class Arm extends OpMode {
     }
 
     public void moveArm(int targetPos) {
+        if (targetPos <= MIN_ARM_POSITION || targetPos >= MAX_ARM_POSITION) {
+            return;
+        }
         armMotor.setTargetPosition(targetPos);
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armMotor.setPower(ARM_POWER);
     }
 
     public void moveSlide(int targetPos) {
+        if (targetPos <= MIN_SLIDE_POSITION || targetPos >= MAX_SLIDE_POSITION) {
+            return;
+        }
         slideMotor.setTargetPosition(targetPos);
         slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slideMotor.setPower(ARM_POWER);
