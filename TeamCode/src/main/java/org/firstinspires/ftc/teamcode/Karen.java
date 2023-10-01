@@ -25,12 +25,15 @@ public class Karen  {
 
     public Servo clawServo1;
 
+    public DcMotorEx droneMotor;
+
     public final int TICKS_PER_REVOLUTION = 200;
     public final int DEADWHEEL_RADIUS = 2; // cm ??
 
     // subclasses
     InOutTake inOutTake;
     Claw claw;
+    DroneLaunch droneLaunch;
 
     // constructor with map
     public Karen(HardwareMap map) {
@@ -57,6 +60,10 @@ public class Karen  {
         // claw
         clawServo1 = map.get(Servo.class, "claw_servo1");
         claw = new Claw(clawServo1);
+
+        // drone launch
+        droneMotor = map.get(DcMotorEx.class, "drone_motor");
+        droneLaunch = new DroneLaunch(droneMotor);
     }
 
     public void moveBot(double drive, double rotate, double scaleFactor) {
