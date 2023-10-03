@@ -82,7 +82,12 @@ public class Karen  {
         droneLaunch = new DroneLaunch(droneMotor);
     }
 
+    private double rampUp(double x) {
+        return 1 / (1 + Math.pow(Math.E, -10 * (1.5 * x - 0.8)));
+    }
+
     public void moveBot(double drive, double rotate, double scaleFactor) {
+        drive = rampUp(drive); // S-curve ramp up
         double[] wheelSpeeds = new double[4];
         wheelSpeeds[0] = drive + rotate;  // left front
         wheelSpeeds[1] = drive - rotate;  // right front
@@ -143,7 +148,7 @@ public class Karen  {
 
     public void moveBotDistance(double drive, double rotate, double strafe, double distance) {
         double targetTicks = TICKS_PER_REVOLUTION * DEADWHEEL_RADIUS * Math.PI;
-        while ((leftOdo.getCurrentPosition() + rightOdo.getCurrentPosition()) / 2 < targetTicks) {
+        while ((leftOdo.getCurrentPosition() + rightOdo.getCurrentPosition()) / 2.0 < targetTicks) {
             this.moveBotMecanum(drive, rotate, strafe, 1);
         }
     }
