@@ -60,8 +60,6 @@ public class MecanumOpMode extends OpMode
     //
     @Override
     public void init_loop() {
-        slidePos = bot.slideMotor.getCurrentPosition();
-        armPos = bot.armMotor.getCurrentPosition();
     }
 
     //
@@ -72,6 +70,7 @@ public class MecanumOpMode extends OpMode
     //
     @Override
     public void loop() {
+        // get drive, strafe, and turn values
         drive = -gamepad1.left_stick_y;
         strafe = gamepad1.left_stick_x;
         turn = gamepad1.right_stick_x;
@@ -101,10 +100,6 @@ public class MecanumOpMode extends OpMode
             bot.inOutTake.spin(InOutTake.SPIN_SPEED, DcMotorSimple.Direction.REVERSE);
         }
 
-        telemetry.addData("Left Wheel", ""+bot.leftOdo.getCurrentPosition());
-        telemetry.addData("Right Wheel", ""+bot.rightOdo.getCurrentPosition());
-        telemetry.addData("Back Wheel", ""+bot.backOdo.getCurrentPosition());
-
         try {
             sleep(20);
         } catch (InterruptedException e) {
@@ -115,6 +110,7 @@ public class MecanumOpMode extends OpMode
 
     @Override
     public void stop() {
+        bot.stop(); // stop all motors
     }
 
 

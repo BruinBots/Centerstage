@@ -147,19 +147,27 @@ public class Karen  {
     }
 
     public void moveBotDistance(double drive, double rotate, double strafe, double distance) {
-        double targetTicks = TICKS_PER_REVOLUTION * DEADWHEEL_RADIUS * Math.PI;
+        double targetTicks = TICKS_PER_REVOLUTION * DEADWHEEL_RADIUS * Math.PI * 2.0; // calculate total ticks required from distance (cm) and DEADWHEEL_RADIUS (cm)
         while ((leftOdo.getCurrentPosition() + rightOdo.getCurrentPosition()) / 2.0 < targetTicks) {
             this.moveBotMecanum(drive, rotate, strafe, 1);
         }
     }
 
-    public void stop(){
+    public void stop() {
+        // stop drivetrain motors
         leftFrontMotor.setPower(0);
         leftBackMotor.setPower(0);
         rightFrontMotor.setPower(0);
         rightBackMotor.setPower(0);
 
+        // stop slide and arm motors
         slideMotor.setPower(0);
         armMotor.setPower(0);
+
+        // stop drone motor
+        droneMotor.setPower(0);
+
+        // stop intake motor
+        intakeMotor.setPower(0);
     }
 }
