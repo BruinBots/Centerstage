@@ -77,6 +77,20 @@ public class MecanumOpMode extends OpMode
 
         bot.moveBotMecanum(drive, turn, strafe, 1);
 
+        // arm
+        if (gamepad1.dpad_up) {
+            bot.arm.moveSlide(bot.arm.getCurrentSlidePos() + 5);
+        }
+        else if (gamepad1.dpad_down) {
+            bot.arm.moveSlide(bot.arm.getCurrentSlidePos() - 5);
+        }
+        else if (gamepad1.dpad_right) {
+            bot.arm.moveArm(bot.arm.getCurrentArmPos() + 5);
+        }
+        else if (gamepad1.dpad_left) {
+            bot.arm.moveArm(bot.arm.getCurrentArmPos() - 5);
+        }
+
         // claw
         if (gamepad1.left_bumper) {
             bot.claw.clawMove(Claw.OPEN_POS);
