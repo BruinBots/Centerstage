@@ -31,57 +31,54 @@ package org.firstinspires.ftc.teamcode;
 
 import static java.lang.Thread.sleep;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name="Basic: Omniwheel TeleOp", group="Iterative Opmode")
-public class OmniwheelOpMode extends OpMode
+
+@TeleOp(name="Basic: Mecanum TeleOp", group="Iterative Opmode")
+public class HumanOperatedMode extends com.qualcomm.robotcore.eventloop.opmode.OpMode
 {
-    // Declare OpMode members.
-
-    double drive = 0.0;
-    double turn = 0.0;
-
     Karen bot;
+    boolean lastAButton;
 
-    //
     @Override
     public void init() {
-
         bot = new Karen(hardwareMap);
         telemetry.addData("Status", "Initialized");
     }
 
-    //
     @Override
     public void init_loop() {
+
     }
 
-    //
     @Override
     public void start() {
+
     }
 
-    //
     @Override
     public void loop() {
-        drive = -gamepad1.left_stick_y;
-        turn = gamepad1.right_stick_x;
-
-        bot.moveBot(drive, turn, 1);
+        if (gamepad1.a && !lastAButton) {
+            if (bot.Pen.currentPos.equals("up")) {
+                bot.Pen.Move("down");
+            } else if (bot.Pen.currentPos.equals("down")) {
+                bot.Pen.Move("up");
+            }
+        }
 
         try {
             sleep(20);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
 
+        lastAButton = gamepad1.a;
+
+
+    }
 
     @Override
     public void stop() {
+        bot.Pen.Move("up");
     }
-
-
-
 }
