@@ -9,7 +9,7 @@ public class Karen {
     // constructor with map
     public Karen(HardwareMap map) {
         penServo = map.get(Servo.class, "penServo");
-
+        Pen = new MovePen(penServo);
     }
 
     public void stop(){

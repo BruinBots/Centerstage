@@ -34,7 +34,7 @@ import static java.lang.Thread.sleep;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 
-@TeleOp(name="Basic: Mecanum TeleOp", group="Iterative Opmode")
+@TeleOp(name="StemFest TeleOp", group="Iterative Opmode")
 public class HumanOperatedMode extends com.qualcomm.robotcore.eventloop.opmode.OpMode
 {
     Karen bot;
@@ -44,6 +44,7 @@ public class HumanOperatedMode extends com.qualcomm.robotcore.eventloop.opmode.O
     public void init() {
         bot = new Karen(hardwareMap);
         telemetry.addData("Status", "Initialized");
+        bot.Pen.servo1.setPosition(bot.Pen.upPos);
     }
 
     @Override
@@ -60,9 +61,9 @@ public class HumanOperatedMode extends com.qualcomm.robotcore.eventloop.opmode.O
     public void loop() {
         if (gamepad1.a && !lastAButton) {
             if (bot.Pen.currentPos.equals("up")) {
-                bot.Pen.Move("down");
+                bot.Pen.Move(bot.Pen.downPos);
             } else if (bot.Pen.currentPos.equals("down")) {
-                bot.Pen.Move("up");
+                bot.Pen.Move(bot.Pen.upPos);
             }
         }
 
@@ -74,11 +75,14 @@ public class HumanOperatedMode extends com.qualcomm.robotcore.eventloop.opmode.O
 
         lastAButton = gamepad1.a;
 
+        telemetry.addData("Pen Position: ", bot.Pen.currentPos);
+        telemetry.addData("Pen Value: ", bot.Pen.servo1.getPosition());
+        telemetry.update();
 
     }
 
     @Override
     public void stop() {
-        bot.Pen.Move("up");
+        bot.Pen.Move(bot.Pen.upPos);
     }
 }
