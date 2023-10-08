@@ -31,87 +31,40 @@ package org.firstinspires.ftc.teamcode;
 
 import static java.lang.Thread.sleep;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-@TeleOp(name="Basic: Mecanum TeleOp", group="Iterative Opmode")
-public class MecanumOpMode extends OpMode
+
+@TeleOp(name="StemFest TeleOp", group="Iterative Opmode")
+public class HumanOperatedMode extends com.qualcomm.robotcore.eventloop.opmode.OpMode
 {
-    // Declare OpMode members.
-
-    double drive = 0.0;
-    double turn = 0.0;
-    double strafe = 0.0;
-
-    double armPower = 0.0;
-    int slidePos;
-    int armPos;
     Karen bot;
+    boolean lastAButton;
 
-    //
     @Override
     public void init() {
-
         bot = new Karen(hardwareMap);
         telemetry.addData("Status", "Initialized");
+        bot.Pen.servo1.setPosition(bot.Pen.upPos);
     }
 
-    //
     @Override
     public void init_loop() {
+
     }
 
-    //
     @Override
     public void start() {
+
     }
 
-    //
     @Override
     public void loop() {
-        // get drive, strafe, and turn values
-        drive = -gamepad1.left_stick_y;
-        strafe = gamepad1.left_stick_x;
-        turn = gamepad1.right_stick_x;
-
-        bot.moveBotMecanum(drive, turn, strafe, 1);
-
-        // arm
-        if (gamepad1.dpad_up) {
-            bot.arm.moveSlide(bot.arm.getCurrentSlidePos() + 5);
-        }
-        else if (gamepad1.dpad_down) {
-            bot.arm.moveSlide(bot.arm.getCurrentSlidePos() - 5);
-        }
-        else if (gamepad1.dpad_right) {
-            bot.arm.moveArm(bot.arm.getCurrentArmPos() + 5);
-        }
-        else if (gamepad1.dpad_left) {
-            bot.arm.moveArm(bot.arm.getCurrentArmPos() - 5);
-        }
-
-        // claw
-        if (gamepad1.left_bumper) {
-            bot.claw.clawMove(Claw.OPEN_POS);
-        }
-        else if (gamepad1.right_bumper) {
-            bot.claw.clawMove(Claw.CLOSED_POS);
-        }
-
-        // drone launch
-
-        if (gamepad1.a) {
-            bot.droneLaunch.launchDrone(DroneLaunch.LAUNCH_POWER, DroneLaunch.LAUNCH_TIME);
-        }
-
-        // intake
-
-        if (gamepad1.x) {
-            bot.inOutTake.spin(InOutTake.SPIN_SPEED, DcMotorSimple.Direction.FORWARD);
-        }
-        else if (gamepad1.b) {
-            bot.inOutTake.spin(InOutTake.SPIN_SPEED, DcMotorSimple.Direction.REVERSE);
+        if (gamepad1.a && !lastAButton) {
+            if (bot.Pen.currentPos.equals("up")) {
+                bot.Pen.Move(bot.Pen.downPos);
+            } else if (bot.Pen.currentPos.equals("down")) {
+                bot.Pen.Move(bot.Pen.upPos);
+            }
         }
 
         try {
@@ -119,14 +72,17 @@ public class MecanumOpMode extends OpMode
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
 
+        lastAButton = gamepad1.a;
+
+        telemetry.addData("Pen Position: ", bot.Pen.currentPos);
+        telemetry.addData("Pen Value: ", bot.Pen.servo1.getPosition());
+        telemetry.update();
+
+    }
 
     @Override
     public void stop() {
-        bot.stop(); // stop all motors
+        bot.Pen.Move(bot.Pen.upPos);
     }
-
-
-
 }
