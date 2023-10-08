@@ -54,34 +54,34 @@ public class Karen  {
         leftFrontMotor.setDirection(DcMotorEx.Direction.REVERSE);
         leftBackMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
-        // arm and linear slide
-        armMotor = map.get(DcMotorEx.class, "arm_motor");
-        armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        armMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+//        // arm and linear slide
+//        armMotor = map.get(DcMotorEx.class, "arm_motor");
+//        armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        armMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+//
+//        slideMotor = map.get(DcMotorEx.class, "slide_motor");
+//        slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        slideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
-        slideMotor = map.get(DcMotorEx.class, "slide_motor");
-        slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        slideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-
-        arm = new Arm(armMotor, slideMotor);
+//        arm = new Arm(armMotor, slideMotor);
 
         // odometry deadwheels
         leftOdo = map.get(DcMotorEx.class, "right_front");
         rightOdo = map.get(DcMotorEx.class, "left_back");
         backOdo = map.get(DcMotorEx.class, "left_front");
 
-        // pixel intake
-        intakeMotor = map.get(DcMotorEx.class, "intake_motor");
-        intakeTouchSensor = map.get(DigitalChannel.class, "intake_sensor");
-        inOutTake = new InOutTake(intakeMotor, intakeTouchSensor);
-
-        // claw
-        clawServo1 = map.get(Servo.class, "claw_servo1");
-        claw = new Claw(clawServo1);
-
-        // drone launch
-        droneMotor = map.get(DcMotorEx.class, "drone_motor");
-        droneLaunch = new DroneLaunch(droneMotor);
+//        // pixel intake
+//        intakeMotor = map.get(DcMotorEx.class, "intake_motor");
+//        intakeTouchSensor = map.get(DigitalChannel.class, "intake_sensor");
+//        inOutTake = new InOutTake(intakeMotor, intakeTouchSensor);
+//
+//        // claw
+//        clawServo1 = map.get(Servo.class, "claw_servo1");
+//        claw = new Claw(clawServo1);
+//
+//        // drone launch
+//        droneMotor = map.get(DcMotorEx.class, "drone_motor");
+//        droneLaunch = new DroneLaunch(droneMotor);
 
         penServo = map.get(Servo.class, "penServo");
         Pen = new MovePen(penServo);
@@ -166,14 +166,14 @@ public class Karen  {
         rightBackMotor.setPower(0);
 
         // stop slide and arm motors
-        slideMotor.setPower(0);
-        armMotor.setPower(0);
-
-        // stop drone motor
-        droneMotor.setPower(0);
-
-        // stop intake motor
-        intakeMotor.setPower(0);
+//        slideMotor.setPower(0);
+//        armMotor.setPower(0);
+//
+//        // stop drone motor
+//        droneMotor.setPower(0);
+//
+//        // stop intake motor
+//        intakeMotor.setPower(0);
 
         // move the pen to up position
         Pen.Move(Pen.upPos);

@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class MovePen {
     double downPos = 1.0;
-    double upPos = 0.6;
+    double upPos = 0.5;
     String currentPos = "up";
 
     Servo servo1;

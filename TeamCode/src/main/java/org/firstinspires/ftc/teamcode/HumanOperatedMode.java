@@ -40,6 +40,10 @@ public class HumanOperatedMode extends com.qualcomm.robotcore.eventloop.opmode.O
     Karen bot;
     boolean lastAButton;
 
+    double drive = 0.0;
+    double turn = 0.0;
+    double strafe = 0.0;
+
     @Override
     public void init() {
         bot = new Karen(hardwareMap);
@@ -59,6 +63,13 @@ public class HumanOperatedMode extends com.qualcomm.robotcore.eventloop.opmode.O
 
     @Override
     public void loop() {
+
+        drive = -gamepad1.left_stick_y;
+        strafe = gamepad1.left_stick_x;
+        turn = gamepad1.right_stick_x;
+
+        bot.moveBotMecanum(drive, turn, strafe, 1);
+
         if (gamepad1.a && !lastAButton) {
             if (bot.Pen.currentPos.equals("up")) {
                 bot.Pen.Move(bot.Pen.downPos);
@@ -71,6 +82,12 @@ public class HumanOperatedMode extends com.qualcomm.robotcore.eventloop.opmode.O
             sleep(20);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+
+        if (bot.Pen.currentPos.equals("down")) {
+            bot.Pen.Move(bot.Pen.downPos);
+        } else if (bot.Pen.currentPos.equals("up")) {
+            bot.Pen.Move(bot.Pen.upPos);
         }
 
         lastAButton = gamepad1.a;
