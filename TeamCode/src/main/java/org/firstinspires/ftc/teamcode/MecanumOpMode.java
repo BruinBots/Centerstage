@@ -29,11 +29,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import static java.lang.Thread.sleep;
-
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp(name="Basic: Mecanum TeleOp", group="Iterative Opmode")
 public class MecanumOpMode extends OpMode
@@ -48,6 +45,8 @@ public class MecanumOpMode extends OpMode
     int slidePos;
     int armPos;
     Karen bot;
+
+    public static final int SIZE = 30;
 
     //
     @Override
@@ -77,48 +76,37 @@ public class MecanumOpMode extends OpMode
 
         bot.moveBotMecanum(drive, turn, strafe, 1);
 
-        // arm
-        if (gamepad1.dpad_up) {
-            bot.arm.moveSlide(bot.arm.getCurrentSlidePos() + 5);
-        }
-        else if (gamepad1.dpad_down) {
-            bot.arm.moveSlide(bot.arm.getCurrentSlidePos() - 5);
+        // x & o
+        if (gamepad1.dpad_left) {
+            bot.drawX(SIZE);
         }
         else if (gamepad1.dpad_right) {
-            bot.arm.moveArm(bot.arm.getCurrentArmPos() + 5);
-        }
-        else if (gamepad1.dpad_left) {
-            bot.arm.moveArm(bot.arm.getCurrentArmPos() - 5);
+//             bot.drawO(SIZE);
         }
 
-        // claw
-        if (gamepad1.left_bumper) {
-            bot.claw.clawMove(Claw.OPEN_POS);
+        /*
+        red b
+        blue x
+        black a
+        up y
+         */
+
+        if (gamepad1.b) {
+            // all pen up
+            // pen 1 down
         }
-        else if (gamepad1.right_bumper) {
-            bot.claw.clawMove(Claw.CLOSED_POS);
+        else if (gamepad1.x) {
+            // all pen up
+            // pen 2 down
+        }
+        else if (gamepad1.a) {
+            // all pen up
+            // pen 3 down
+        }
+        else if (gamepad1.y) {
+            // all pen up
         }
 
-        // drone launch
-
-        if (gamepad1.a) {
-            bot.droneLaunch.launchDrone(DroneLaunch.LAUNCH_POWER, DroneLaunch.LAUNCH_TIME);
-        }
-
-        // intake
-
-        if (gamepad1.x) {
-            bot.inOutTake.spin(InOutTake.SPIN_SPEED, DcMotorSimple.Direction.FORWARD);
-        }
-        else if (gamepad1.b) {
-            bot.inOutTake.spin(InOutTake.SPIN_SPEED, DcMotorSimple.Direction.REVERSE);
-        }
-
-        try {
-            sleep(20);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
 
