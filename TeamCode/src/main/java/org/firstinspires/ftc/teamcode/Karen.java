@@ -148,16 +148,20 @@ public class Karen  {
 
     public void driveBotDistance(double drive, double rotate, double strafe, double distance) {
         double targetTicks = TICKS_PER_REVOLUTION * distance / (DEADWHEEL_RADIUS * Math.PI * 2.0); // calculate total ticks required from distance (cm) and DEADWHEEL_RADIUS (cm)
+        moveBotMecanum(drive, rotate, strafe, 1);
         while ((leftOdo.getCurrentPosition() + rightOdo.getCurrentPosition()) / 2.0 < targetTicks) {
-            this.moveBotMecanum(drive, rotate, strafe, 1);
+
         }
+        moveBotMecanum(0, 0, 0, 0);
     }
 
     public void strafeBotDistance(double drive, double rotate, double strafe, double distance) {
         double targetTicks = TICKS_PER_REVOLUTION * distance / (DEADWHEEL_RADIUS * Math.PI * 2.0); // calculate total ticks required from distance (cm) and DEADWHEEL_RADIUS (cm)
+        moveBotMecanum(drive, rotate, strafe, 1);
         while (backOdo.getCurrentPosition() < targetTicks) {
-            this.moveBotMecanum(drive, rotate, strafe, 1);
+
         }
+        moveBotMecanum(0, 0, 0, 0);
     }
 
     public void drawX(double size) {
