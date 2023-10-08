@@ -31,7 +31,9 @@ package org.firstinspires.ftc.teamcode;
 
 import static java.lang.Thread.sleep;
 
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 
 @TeleOp(name="StemFest TeleOp", group="Iterative Opmode")
@@ -46,30 +48,54 @@ public class HumanOperatedMode extends com.qualcomm.robotcore.eventloop.opmode.O
     double turn = 0.0;
     double strafe = 0.0;
 
+    double armPower = 0.0;
+    int slidePos;
+    int armPos;
+    Karen bot;
+
+    //
     @Override
     public void init() {
+
         bot = new Karen(hardwareMap);
         telemetry.addData("Status", "Initialized");
         bot.pen.servo1.setPosition(bot.pen.upPos);
     }
 
+    //
     @Override
     public void init_loop() {
-
     }
 
+    //
     @Override
     public void start() {
-
     }
 
+    //
     @Override
     public void loop() {
+        // get drive, strafe, and turn values
         drive = -gamepad1.left_stick_y;
         strafe = gamepad1.left_stick_x;
         turn = gamepad1.right_stick_x;
 
         bot.moveBotMecanum(drive, turn, strafe, 1);
+
+        // x & o
+        if (gamepad1.dpad_left) {
+            bot.drawX(SIZE);
+        }
+        else if (gamepad1.dpad_right) {
+//             bot.drawO(SIZE);
+        }
+
+        /*
+        red b
+        blue x
+        black a
+        up y
+         */
 
         if (gamepad1.a && !lastAButton) {
             if (bot.pen.currentServo.getPosition() < 0.9) { // if servo is up
@@ -79,8 +105,10 @@ public class HumanOperatedMode extends com.qualcomm.robotcore.eventloop.opmode.O
             }
         }
 
-        if (gamepad1.right_bumper && !lastRBumper) {
-            bot.pen.switchPen("up");
+        // drone launch
+
+        if (gamepad1.a) {
+            bot.droneLaunch.launchDrone(DroneLaunch.LAUNCH_POWER, DroneLaunch.LAUNCH_TIME);
         }
 
         if (gamepad1.left_bumper && !lastLBumper) {
@@ -109,6 +137,9 @@ public class HumanOperatedMode extends com.qualcomm.robotcore.eventloop.opmode.O
 
     @Override
     public void stop() {
-        bot.stop();
+        bot.stop(); // stop all motors
     }
+
+
+
 }
