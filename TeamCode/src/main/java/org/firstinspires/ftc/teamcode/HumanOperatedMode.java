@@ -83,6 +83,6 @@ public class HumanOperatedMode extends com.qualcomm.robotcore.eventloop.opmode.O
 
     @Override
     public void stop() {
-        bot.Pen.Move(bot.Pen.upPos);
+        bot.stop();
     }
 }
