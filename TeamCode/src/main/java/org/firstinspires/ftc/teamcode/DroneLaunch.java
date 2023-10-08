@@ -40,7 +40,7 @@ public class DroneLaunch extends OpMode
 
         // code here
         if (gamepad1.a && !aButtonPrev) {
-            launchDrone(1, 500);
+            launchDrone(1, 1500);
         }
 
         try {
