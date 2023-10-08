@@ -151,8 +151,15 @@ public class Karen  {
     public void driveBotDistance(double drive, double rotate, double strafe, double distance) {
         double targetTicks = TICKS_PER_REVOLUTION * distance / (DEADWHEEL_RADIUS * Math.PI * 2.0); // calculate total ticks required from distance (cm) and DEADWHEEL_RADIUS (cm)
         moveBotMecanum(drive, rotate, strafe, 1);
-        while ((leftOdo.getCurrentPosition() + rightOdo.getCurrentPosition()) / 2.0 < targetTicks) {
+        if (distance > 0) {
+            while ((leftOdo.getCurrentPosition() + rightOdo.getCurrentPosition()) / 2.0 < targetTicks) {
 
+            }
+        }
+        else {
+            while ((leftOdo.getCurrentPosition() + rightOdo.getCurrentPosition()) / 2.0 > targetTicks) {
+
+            }
         }
         moveBotMecanum(0, 0, 0, 0);
     }
@@ -160,8 +167,15 @@ public class Karen  {
     public void strafeBotDistance(double drive, double rotate, double strafe, double distance) {
         double targetTicks = TICKS_PER_REVOLUTION * distance / (DEADWHEEL_RADIUS * Math.PI * 2.0); // calculate total ticks required from distance (cm) and DEADWHEEL_RADIUS (cm)
         moveBotMecanum(drive, rotate, strafe, 1);
-        while (backOdo.getCurrentPosition() < targetTicks) {
+        if (distance > 0) {
+            while (backOdo.getCurrentPosition() < targetTicks) {
 
+            }
+        }
+        else {
+            while (backOdo.getCurrentPosition() > targetTicks) {
+
+            }
         }
         moveBotMecanum(0, 0, 0, 0);
     }
