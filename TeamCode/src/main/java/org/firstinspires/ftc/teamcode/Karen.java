@@ -20,14 +20,15 @@ public class Karen {
         // Drivetrain Motors
 
 
-        CRServo1 = map.get(CRServo.class, "CRServo1");
-        CRServo2 = map.get(CRServo.class, "CRServo2");
+//        CRServo1 = map.get(CRServo.class, "CRServo1");
+//        CRServo2 = map.get(CRServo.class, "CRServo2");
+        Servo0 = map.get(Servo.class, "Servo0");
     }
 
     public void stop(){
-        Motor0.setPower(0);
+//        Motor0.setPower(0);
         Servo0.setPosition(0);
-        CRServo1.setPower(0);
-        CRServo2.setPower(0);
+//        CRServo1.setPower(0);
+//        CRServo2.setPower(0);
     }
 }
