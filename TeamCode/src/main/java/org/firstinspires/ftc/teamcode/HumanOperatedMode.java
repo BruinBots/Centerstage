@@ -50,7 +50,7 @@ public class HumanOperatedMode extends com.qualcomm.robotcore.eventloop.opmode.O
     public void init() {
         bot = new Karen(hardwareMap);
         telemetry.addData("Status", "Initialized");
-        bot.Pen.servo1.setPosition(bot.Pen.upPos);
+        bot.pen.servo1.setPosition(bot.pen.upPos);
     }
 
     @Override
@@ -65,7 +65,6 @@ public class HumanOperatedMode extends com.qualcomm.robotcore.eventloop.opmode.O
 
     @Override
     public void loop() {
-
         drive = -gamepad1.left_stick_y;
         strafe = gamepad1.left_stick_x;
         turn = gamepad1.right_stick_x;
@@ -73,19 +72,19 @@ public class HumanOperatedMode extends com.qualcomm.robotcore.eventloop.opmode.O
         bot.moveBotMecanum(drive, turn, strafe, 1);
 
         if (gamepad1.a && !lastAButton) {
-            if (bot.Pen.currentServo.getPosition() < 0.9) { // if servo is up
-                bot.Pen.Move(bot.Pen.downPos);
-            } else if (bot.Pen.currentServo.getPosition() > 0.9) { // if servo is down
-                bot.Pen.Move(bot.Pen.upPos);
+            if (bot.pen.currentServo.getPosition() < 0.9) { // if servo is up
+                bot.pen.move(bot.pen.downPos);
+            } else if (bot.pen.currentServo.getPosition() > 0.9) { // if servo is down
+                bot.pen.move(bot.pen.upPos);
             }
         }
 
         if (gamepad1.right_bumper && !lastRBumper) {
-            bot.Pen.switchPen("up");
+            bot.pen.switchPen("up");
         }
 
         if (gamepad1.left_bumper && !lastLBumper) {
-            bot.Pen.switchPen("down");
+            bot.pen.switchPen("down");
         }
 
         try {
@@ -94,20 +93,18 @@ public class HumanOperatedMode extends com.qualcomm.robotcore.eventloop.opmode.O
             e.printStackTrace();
         }
 
-        if (bot.Pen.currentServo.getPosition() > 0.9) { // if servo is down
-            bot.Pen.Move(bot.Pen.downPos);
-        } else if (bot.Pen.currentServo.getPosition() < 0.9) { // if servo is up
-            bot.Pen.Move(bot.Pen.upPos);
+        if (bot.pen.currentServo.getPosition() > 0.9) { // if servo is down
+            bot.pen.move(bot.pen.downPos);
+        } else if (bot.pen.currentServo.getPosition() < 0.9) { // if servo is up
+            bot.pen.move(bot.pen.upPos);
         }
-
 
         lastAButton = gamepad1.a;
         lastRBumper = gamepad1.right_bumper;
         lastLBumper = gamepad1.left_bumper;
 
-        telemetry.addData(bot.Pen.currentServo.getDeviceName()+" Value: ", bot.Pen.currentServo.getPosition());
+        telemetry.addData(bot.pen.currentServo.getDeviceName()+" Value: ", bot.pen.currentServo.getPosition());
         telemetry.update();
-
     }
 
     @Override

@@ -2,22 +2,21 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class MovePen {
+public class Pen {
     double downPos = 1.0;
     double upPos = 0.5;
     Servo servo1;
     Servo servo2;
     Servo servo3;
 
-    MovePen(Servo servo1, Servo servo2, Servo servo3) {
+    Pen(Servo servo1, Servo servo2, Servo servo3) {
         this.servo1 = servo1;
         this.servo2 = servo2;
         this.servo3 = servo3;
     }
     Servo currentServo = this.servo1;
 
-
-    public void Move(double pos) {
+    public void move(double pos) {
         currentServo.setPosition(pos);
     }
 

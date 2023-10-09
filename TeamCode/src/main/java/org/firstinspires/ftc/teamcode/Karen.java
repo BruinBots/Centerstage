@@ -1,17 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
 
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class Karen  {
-
-
-    // Class variables
-
     public DcMotorEx leftFrontMotor;
     public DcMotorEx rightFrontMotor;
     public DcMotorEx leftBackMotor;
@@ -42,7 +37,7 @@ public class Karen  {
     Claw claw;
     DroneLaunch droneLaunch;
     Arm arm;
-    MovePen Pen;
+    Pen pen;
 
     // constructor with map
     public Karen(HardwareMap map) {
@@ -68,9 +63,9 @@ public class Karen  {
 //        arm = new Arm(armMotor, slideMotor);
 
         // odometry deadwheels
-        leftOdo = map.get(DcMotorEx.class, "right_front");
-        rightOdo = map.get(DcMotorEx.class, "left_back");
-        backOdo = map.get(DcMotorEx.class, "left_front");
+        leftOdo = map.get(DcMotorEx.class, "left_front");
+        rightOdo = map.get(DcMotorEx.class, "right_front");
+        backOdo = map.get(DcMotorEx.class, "left_back");
 
 //        // pixel intake
 //        intakeMotor = map.get(DcMotorEx.class, "intake_motor");
@@ -88,7 +83,7 @@ public class Karen  {
         penServo1 = map.get(Servo.class, "penServo1");
         penServo2 = map.get(Servo.class, "penServo2");
         penServo3 = map.get(Servo.class, "penServo3");
-        Pen = new MovePen(penServo1, penServo2, penServo3);
+        pen = new Pen(penServo1, penServo2, penServo3);
     }
 
     private double rampUp(double x) {
@@ -146,8 +141,6 @@ public class Karen  {
             }
         }
 
-
-
         // setting motor power and scaling down to preference
         leftFrontMotor.setPower(wheelSpeeds[0] * scaleFactor);
         rightFrontMotor.setPower(wheelSpeeds[1] * scaleFactor);
@@ -180,6 +173,6 @@ public class Karen  {
 //        intakeMotor.setPower(0);
 
         // move the pen to up position
-        Pen.Move(Pen.upPos);
+        pen.move(pen.upPos);
     }
 }
