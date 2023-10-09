@@ -28,7 +28,9 @@ public class Karen  {
     public DcMotorEx backOdo;
 
     public Servo clawServo1;
-    public Servo penServo;
+    public Servo penServo1;
+    public Servo penServo2;
+    public Servo penServo3;
 
     public DcMotorEx droneMotor;
 
@@ -83,8 +85,10 @@ public class Karen  {
 //        droneMotor = map.get(DcMotorEx.class, "drone_motor");
 //        droneLaunch = new DroneLaunch(droneMotor);
 
-        penServo = map.get(Servo.class, "penServo");
-        Pen = new MovePen(penServo);
+        penServo1 = map.get(Servo.class, "penServo1");
+        penServo2 = map.get(Servo.class, "penServo2");
+        penServo3 = map.get(Servo.class, "penServo3");
+        Pen = new MovePen(penServo1, penServo2, penServo3);
     }
 
     private double rampUp(double x) {

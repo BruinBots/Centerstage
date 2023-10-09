@@ -5,20 +5,36 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class MovePen {
     double downPos = 1.0;
     double upPos = 0.5;
-    String currentPos = "up";
-
     Servo servo1;
+    Servo servo2;
+    Servo servo3;
 
-    MovePen(Servo servo1) {
+    MovePen(Servo servo1, Servo servo2, Servo servo3) {
         this.servo1 = servo1;
+        this.servo2 = servo2;
+        this.servo3 = servo3;
     }
+    Servo currentServo = this.servo1;
+
 
     public void Move(double pos) {
-        this.servo1.setPosition(pos);
-        if (currentPos.equals("down")) {
-            currentPos = "up";
-        } else if (currentPos.equals("up")) {
-            currentPos = "down";
+        currentServo.setPosition(pos);
+    }
+
+    public void switchPen(String direction) {
+        if (direction.equals("up")) {
+            if (currentServo.equals(this.servo1)) {
+                currentServo = this.servo2;
+            } else if (currentServo.equals(this.servo2)) {
+                currentServo = this.servo3;
+            }
+        } else if (direction.equals("down")) {
+            if (currentServo.equals(this.servo3)) {
+                currentServo = this.servo2;
+            } else if (currentServo.equals(this.servo2)) {
+                currentServo = this.servo1;
+            }
         }
     }
+
 }
