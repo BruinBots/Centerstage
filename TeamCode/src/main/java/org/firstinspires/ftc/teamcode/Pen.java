@@ -14,7 +14,7 @@ public class Pen {
         this.servo2 = servo2;
         this.servo3 = servo3;
     }
-    Servo currentServo = this.servo1;
+    Servo currentServo = servo1;
 
     public void move(double pos) {
         currentServo.setPosition(pos);
@@ -22,16 +22,16 @@ public class Pen {
 
     public void switchPen(String direction) {
         if (direction.equals("up")) {
-            if (currentServo.equals(this.servo1)) {
-                currentServo = this.servo2;
-            } else if (currentServo.equals(this.servo2)) {
-                currentServo = this.servo3;
+            if (currentServo.equals(servo1)) {
+                currentServo = servo2;
+            } else if (currentServo.equals(servo2)) {
+                currentServo = servo3;
             }
         } else if (direction.equals("down")) {
-            if (currentServo.equals(this.servo3)) {
-                currentServo = this.servo2;
-            } else if (currentServo.equals(this.servo2)) {
-                currentServo = this.servo1;
+            if (currentServo.equals(servo3)) {
+                currentServo = servo2;
+            } else if (currentServo.equals(servo2)) {
+                currentServo = servo1;
             }
         }
     }
