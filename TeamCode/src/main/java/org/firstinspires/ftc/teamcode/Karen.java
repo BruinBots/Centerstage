@@ -65,7 +65,7 @@ public class Karen  {
 
         // odometry deadwheels
         leftOdo = map.get(DcMotorEx.class, "right_front");
-        rightOdo = map.get(DcMotorEx.class, "left_back");
+        rightOdo = map.get(DcMotorEx.class, "right_odo");
         backOdo = map.get(DcMotorEx.class, "left_front");
 
         // pixel intake
