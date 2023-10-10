@@ -22,18 +22,17 @@ public class Pen {
 
     public void switchPen(String direction) {
         if (direction.equals("up")) {
-            if (currentServo.equals(servo1)) {
+            if (currentServo.getPortNumber() == servo1.getPortNumber()) {
                 currentServo = servo2;
-            } else if (currentServo.equals(servo2)) {
+            } else if (currentServo.getPortNumber() == servo2.getPortNumber()) {
                 currentServo = servo3;
             }
         } else if (direction.equals("down")) {
-            if (currentServo.equals(servo3)) {
+            if (currentServo.getPortNumber() == servo3.getPortNumber()) {
                 currentServo = servo2;
-            } else if (currentServo.equals(servo2)) {
+            } else if (currentServo.getPortNumber() == servo2.getPortNumber()) {
                 currentServo = servo1;
             }
         }
     }
-
 }
