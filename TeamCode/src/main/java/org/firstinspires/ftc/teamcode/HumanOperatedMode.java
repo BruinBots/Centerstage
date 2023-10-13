@@ -53,6 +53,8 @@ public class HumanOperatedMode extends com.qualcomm.robotcore.eventloop.opmode.O
     int armPos;
     Karen bot;
 
+    public static final int SIZE = 30;
+
     //
     @Override
     public void init() {

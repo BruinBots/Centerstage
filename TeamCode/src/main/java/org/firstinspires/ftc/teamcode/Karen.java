@@ -2,9 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 
 public class Karen  {
     public DcMotorEx leftFrontMotor;
@@ -22,24 +20,13 @@ public class Karen  {
     public DcMotorEx rightOdo;
     public DcMotorEx backOdo;
 
-    public Servo clawServo1;
-    public Servo penServo1;
-    public Servo penServo2;
-    public Servo penServo3;
-
     public DcMotorEx droneMotor;
 
     public final int TICKS_PER_REVOLUTION = 200;
     public final int DEADWHEEL_RADIUS = 2; // cm ??
 
-    // subclasses
-    InOutTake inOutTake;
-    Claw claw;
-    DroneLaunch droneLaunch;
-    Arm arm;
-    Pen pen;
-
-    // constructor with map
+    private double[] wheelSpeeds;
+    Drone drone;
     public Karen(HardwareMap map) {
         // Drivetrain Motors
         leftFrontMotor = map.get(DcMotorEx.class, "left_front");
@@ -51,39 +38,16 @@ public class Karen  {
         leftFrontMotor.setDirection(DcMotorEx.Direction.REVERSE);
         leftBackMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
-//        // arm and linear slide
-//        armMotor = map.get(DcMotorEx.class, "arm_motor");
-//        armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        armMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-//
-//        slideMotor = map.get(DcMotorEx.class, "slide_motor");
-//        slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        slideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-
-//        arm = new Arm(armMotor, slideMotor);
-
         // odometry deadwheels
-        leftOdo = map.get(DcMotorEx.class, "left_front");
-        rightOdo = map.get(DcMotorEx.class, "right_front");
-        backOdo = map.get(DcMotorEx.class, "left_back");
+        leftOdo = map.get(DcMotorEx.class, "right_front");
+        rightOdo = map.get(DcMotorEx.class, "left_back");
+        backOdo = map.get(DcMotorEx.class, "left_front");
 
-//        // pixel intake
-//        intakeMotor = map.get(DcMotorEx.class, "intake_motor");
-//        intakeTouchSensor = map.get(DigitalChannel.class, "intake_sensor");
-//        inOutTake = new InOutTake(intakeMotor, intakeTouchSensor);
-//
-//        // claw
-//        clawServo1 = map.get(Servo.class, "claw_servo1");
-//        claw = new Claw(clawServo1);
-//
-//        // drone launch
-//        droneMotor = map.get(DcMotorEx.class, "drone_motor");
-//        droneLaunch = new DroneLaunch(droneMotor);
+        // drone launch
+        droneMotor = map.get(DcMotorEx.class, "drone_motor");
+        drone = new Drone(droneMotor);
 
-        penServo1 = map.get(Servo.class, "penServo1");
-        penServo2 = map.get(Servo.class, "penServo2");
-        penServo3 = map.get(Servo.class, "penServo3");
-        pen = new Pen(penServo1, penServo2, penServo3);
+        wheelSpeeds = new double[4];
     }
 
     private double rampUp(double x) {
@@ -92,7 +56,6 @@ public class Karen  {
 
     public void moveBot(double drive, double rotate, double scaleFactor) {
         drive = rampUp(drive); // S-curve ramp up
-        double[] wheelSpeeds = new double[4];
         wheelSpeeds[0] = drive + rotate;  // left front
         wheelSpeeds[1] = drive - rotate;  // right front
         wheelSpeeds[2] = drive + rotate;  // left rear
@@ -100,7 +63,6 @@ public class Karen  {
 
         // finding the greatest power value
         double maxMagnitude = Math.max(Math.max(Math.max(wheelSpeeds[0], wheelSpeeds[1]), wheelSpeeds[2]), wheelSpeeds[3]);
-
 
         // dividing everyone by the max power value so that ratios are same (check if sdk automatically clips to see if go build documentation works
         if (maxMagnitude > 1.0)
@@ -110,10 +72,6 @@ public class Karen  {
                 wheelSpeeds[i] /= maxMagnitude;
             }
         }
-
-//        telemetry.addData("power", wheelSpeeds);
-
-
 
         // setting motor power and scaling down to preference
         leftFrontMotor.setPower(wheelSpeeds[0] * scaleFactor);
@@ -199,17 +157,18 @@ public class Karen  {
         rightFrontMotor.setPower(0);
         rightBackMotor.setPower(0);
 
-        // stop slide and arm motors
-//        slideMotor.setPower(0);
-//        armMotor.setPower(0);
-//
-//        // stop drone motor
-//        droneMotor.setPower(0);
-//
-//        // stop intake motor
-//        intakeMotor.setPower(0);
-
         // move the pen to up position
         pen.move(pen.upPos);
+        // stop drone motor
+        droneMotor.setPower(0);
     }
+
+    public double[] getWheelSpeeds() {
+        return wheelSpeeds;
+    }
+
+    public void setWheelSpeeds(double[] wheelSpeeds) {
+        this.wheelSpeeds = wheelSpeeds;
+    }
+
 }
