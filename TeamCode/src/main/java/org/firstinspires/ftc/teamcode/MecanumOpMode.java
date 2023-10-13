@@ -35,38 +35,24 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp(name="Basic: Mecanum TeleOp", group="Iterative Opmode")
 public class MecanumOpMode extends OpMode
 {
-    // Declare OpMode members.
-
     double drive = 0.0;
     double turn = 0.0;
     double strafe = 0.0;
-
-    double armPower = 0.0;
-    int slidePos;
-    int armPos;
     Karen bot;
 
-    public static final int SIZE = 30;
-
-    //
+    public static final int DRAW_SIZE = 5;
+    private static final double DRIVE_SPEED = 0.3;
     @Override
     public void init() {
-
         bot = new Karen(hardwareMap);
         telemetry.addData("Status", "Initialized");
     }
-
-    //
     @Override
     public void init_loop() {
     }
-
-    //
     @Override
     public void start() {
     }
-
-    //
     @Override
     public void loop() {
         // get drive, strafe, and turn values
@@ -74,36 +60,15 @@ public class MecanumOpMode extends OpMode
         strafe = gamepad1.left_stick_x;
         turn = gamepad1.right_stick_x;
 
-        bot.moveBotMecanum(drive, turn, strafe, 1);
+        bot.moveBotMecanum(drive, turn, strafe, DRIVE_SPEED);
+        telemetry.addData("WHEEL SPEED:", bot.getWheelSpeeds());
 
-        // x & o
+        // Draw x or o
         if (gamepad1.dpad_left) {
-            bot.drawX(SIZE);
+            bot.drawX(DRAW_SIZE);
         }
         else if (gamepad1.dpad_right) {
-//             bot.drawO(SIZE);
-        }
-
-        /*
-        red b
-        blue x
-        black a
-        up y
-         */
-        if (gamepad1.b) {
-            // all pen up
-            // pen 1 down
-        }
-        else if (gamepad1.x) {
-            // all pen up
-            // pen 2 down
-        }
-        else if (gamepad1.a) {
-            // all pen up
-            // pen 3 down
-        }
-        else if (gamepad1.y) {
-            // all pen up
+//             bot.drawO(DRAW_SIZE);
         }
     }
 
