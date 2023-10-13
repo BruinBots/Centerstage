@@ -90,7 +90,6 @@ public class MecanumOpMode extends OpMode
         black a
         up y
          */
-
         if (gamepad1.b) {
             // all pen up
             // pen 1 down
@@ -106,15 +105,10 @@ public class MecanumOpMode extends OpMode
         else if (gamepad1.y) {
             // all pen up
         }
-
     }
-
 
     @Override
     public void stop() {
         bot.stop(); // stop all motors
     }
-
-
-
 }
