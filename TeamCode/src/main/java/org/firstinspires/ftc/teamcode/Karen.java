@@ -20,7 +20,7 @@ public class Karen  {
 
     public final int TICKS_PER_REVOLUTION = 200;
     public final int DEADWHEEL_RADIUS = 2; // cm ??
-
+    double targetTicks;
     private double[] wheelSpeeds;
     Drone drone;
     public Karen(HardwareMap map) {
@@ -129,7 +129,7 @@ public class Karen  {
     }
 
     public void driveBotDistance(double drive, double rotate, double strafe, double distance, double speed) {
-        double targetTicks = TICKS_PER_REVOLUTION * distance / (DEADWHEEL_RADIUS * Math.PI * 2.0); // calculate total ticks required from distance (cm) and DEADWHEEL_RADIUS (cm)
+        targetTicks = TICKS_PER_REVOLUTION * distance / (DEADWHEEL_RADIUS * Math.PI * 2.0); // calculate total ticks required from distance (cm) and DEADWHEEL_RADIUS (cm)
         telemetry.addData("targetTicks", targetTicks);
         moveBotMecanum(drive, rotate, strafe,speed);
         if (distance > 0) {
@@ -191,6 +191,14 @@ public class Karen  {
 
     public void setWheelSpeeds(double[] wheelSpeeds) {
         this.wheelSpeeds = wheelSpeeds;
+    }
+
+    public double getTargetTicks() {
+        return targetTicks;
+    }
+
+    public void setTargetTicks(double targetTicks) {
+        this.targetTicks = targetTicks;
     }
 
 }

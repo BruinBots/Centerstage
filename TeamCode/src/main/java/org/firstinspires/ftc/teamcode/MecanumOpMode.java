@@ -39,8 +39,6 @@ public class MecanumOpMode extends OpMode
     double turn = 0.0;
     double strafe = 0.0;
     Karen bot;
-    int i=0;
-
     public static final int DRAW_SIZE = 1;
     private static final double DRIVE_SPEED = 0.1;
     @Override
@@ -60,10 +58,8 @@ public class MecanumOpMode extends OpMode
         drive = -gamepad1.left_stick_y;
         strafe = gamepad1.left_stick_x;
         turn = gamepad1.right_stick_x;
-
-        telemetry.addData("WHEEL SPEED:", bot.getWheelSpeeds()[i]);
+        telemetry.addData("Dead wheel: ", bot.getTargetTicks());
         telemetry.update();
-        i++;
 
         // Draw x or o
         if (gamepad1.dpad_left) {
