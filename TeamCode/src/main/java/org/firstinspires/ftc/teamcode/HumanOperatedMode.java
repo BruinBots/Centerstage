@@ -36,17 +36,22 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp(name="Basic: Mecanum TeleOp", group="Iterative Opmode")
-public class MecanumOpMode extends OpMode
+public class HumanOperatedMode extends OpMode
 {
     double drive = 0.0;
     double turn = 0.0;
     double strafe = 0.0;
     Karen bot;
+    boolean lastAButton;
+    boolean lastBButton;
+    boolean lastRBumper;
+    boolean lastLBumper;
+
     public static final int DRAW_SIZE = 1;
     private static final double DRIVE_SPEED = 0.1;
     @Override
     public void init() {
-        bot = new Karen(hardwareMap, telemetry);
+        bot = new Karen(hardwareMap);
         telemetry.addData("Status", "Initialized");
         bot.pen.servo1.setPosition(bot.pen.upPos);
     }
@@ -64,7 +69,7 @@ public class MecanumOpMode extends OpMode
         turn = gamepad1.right_stick_x;
         telemetry.addData("Dead wheel: ", bot.getTargetTicks());
         telemetry.update();
-
+        bot.moveBotMecanum(drive, turn, strafe, DRIVE_SPEED);
         // Draw x or o
         if (gamepad1.dpad_left) {
             bot.drawX(DRAW_SIZE, DRIVE_SPEED);
@@ -80,26 +85,26 @@ public class MecanumOpMode extends OpMode
         black a
         up y
          */
-
         if (gamepad1.a && !lastAButton) {
-            if (bot.pen.currentServo.getPosition() < 0.9) { // if servo is up
+
+            if (bot.pen.currentServo.getPosition() < 0.4) { // if servo is up
                 bot.pen.move(bot.pen.downPos);
-            } else if (bot.pen.currentServo.getPosition() > 0.9) { // if servo is down
+            } else if (bot.pen.currentServo.getPosition() > 0.4) { // if servo is down
                 bot.pen.move(bot.pen.upPos);
             }
         }
-    }
 
-        // drone launch
+        if (gamepad1.b && !lastBButton) {
+            bot.drone.launchDrone(1,1500);
+        }
 
-        if (gamepad1.a) {
-            bot.droneLaunch.launchDrone(DroneLaunch.LAUNCH_POWER, DroneLaunch.LAUNCH_TIME);
+        if (gamepad1.right_bumper && !lastRBumper) {
+            bot.pen.switchPen(Pen.PenDirection.up);
         }
 
         if (gamepad1.left_bumper && !lastLBumper) {
-            bot.pen.switchPen("down");
+            bot.pen.switchPen(Pen.PenDirection.down);
         }
-
         try {
             sleep(20);
         } catch (InterruptedException e) {
@@ -114,6 +119,7 @@ public class MecanumOpMode extends OpMode
         }
 
         lastAButton = gamepad1.a;
+        lastBButton = gamepad1.b;
         lastRBumper = gamepad1.right_bumper;
         lastLBumper = gamepad1.left_bumper;
 
@@ -125,7 +131,5 @@ public class MecanumOpMode extends OpMode
     public void stop() {
         bot.stop(); // stop all motors
     }
-
-
 
 }

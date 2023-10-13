@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -13,6 +14,9 @@ public class Karen  {
     public DcMotorEx leftBackMotor;
     public DcMotorEx rightBackMotor;
     public Pen pen;
+    public Servo penServo1;
+    public Servo penServo2;
+    public Servo penServo3;
     public DcMotorEx leftOdo;
     public DcMotorEx rightOdo;
     public DcMotorEx backOdo;
@@ -43,32 +47,11 @@ public class Karen  {
         // drone launch
         droneMotor = map.get(DcMotorEx.class, "drone_motor");
         drone = new Drone(droneMotor);
-
+        penServo1 = map.get(Servo.class, "penServo1");
+        penServo2 = map.get(Servo.class, "penServo2");
+        penServo3 = map.get(Servo.class, "penServo3");
+        pen = new Pen(penServo1, penServo2, penServo3);
         wheelSpeeds = new double[4];
-    }
-
-    public Karen(HardwareMap map, Telemetry telemetry) {
-        // Drivetrain Motors
-        leftFrontMotor = map.get(DcMotorEx.class, "left_front");
-        rightFrontMotor = map.get(DcMotorEx.class, "right_front");
-        leftBackMotor = map.get(DcMotorEx.class, "left_back");
-        rightBackMotor = map.get(DcMotorEx.class, "right_back");
-
-        // Reverse left motors
-        leftFrontMotor.setDirection(DcMotorEx.Direction.REVERSE);
-        leftBackMotor.setDirection(DcMotorEx.Direction.REVERSE);
-
-        // Odometry deadwheels
-        leftOdo = map.get(DcMotorEx.class, "right_front"); //port 1
-        rightOdo = map.get(DcMotorEx.class, "right_back"); //port 0
-        backOdo = map.get(DcMotorEx.class, "left_front");  //
-
-        // drone launch
-        droneMotor = map.get(DcMotorEx.class, "drone_motor");
-        drone = new Drone(droneMotor);
-
-        wheelSpeeds = new double[4];
-        this.telemetry = telemetry;
     }
 
     private double rampUp(double x) {
