@@ -16,6 +16,7 @@ public class Karen  {
     public DcMotorEx leftOdo;
     public DcMotorEx rightOdo;
     public DcMotorEx backOdo;
+
     public DcMotorEx droneMotor;
 
     public final int TICKS_PER_REVOLUTION = 200;
@@ -200,5 +201,4 @@ public class Karen  {
     public void setTargetTicks(double targetTicks) {
         this.targetTicks = targetTicks;
     }
-
 }

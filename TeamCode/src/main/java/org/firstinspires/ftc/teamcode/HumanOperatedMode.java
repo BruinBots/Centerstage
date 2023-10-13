@@ -70,6 +70,7 @@ public class MecanumOpMode extends OpMode
             bot.drawX(DRAW_SIZE, DRIVE_SPEED);
         }
         else if (gamepad1.dpad_right) {
+//             bot.drawO(DRAW_SIZE);
 //             bot.drawO(SIZE);
         }
 
@@ -87,6 +88,7 @@ public class MecanumOpMode extends OpMode
                 bot.pen.move(bot.pen.upPos);
             }
         }
+    }
 
         // drone launch
 
