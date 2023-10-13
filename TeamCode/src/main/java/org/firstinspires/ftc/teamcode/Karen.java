@@ -4,7 +4,10 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 public class Karen  {
+    private Telemetry telemetry;
     public DcMotorEx leftFrontMotor;
     public DcMotorEx rightFrontMotor;
     public DcMotorEx leftBackMotor;
@@ -31,16 +34,40 @@ public class Karen  {
         leftFrontMotor.setDirection(DcMotorEx.Direction.REVERSE);
         leftBackMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
-        // odometry deadwheels
-        leftOdo = map.get(DcMotorEx.class, "right_front");
-        rightOdo = map.get(DcMotorEx.class, "right_odo");
-        backOdo = map.get(DcMotorEx.class, "left_front");
+        // Odometry deadwheels
+        leftOdo = map.get(DcMotorEx.class, "right_front"); //port 1
+        rightOdo = map.get(DcMotorEx.class, "right_back"); //port 0
+        backOdo = map.get(DcMotorEx.class, "left_front");  //
 
         // drone launch
         droneMotor = map.get(DcMotorEx.class, "drone_motor");
         drone = new Drone(droneMotor);
 
         wheelSpeeds = new double[4];
+    }
+
+    public Karen(HardwareMap map, Telemetry telemetry) {
+        // Drivetrain Motors
+        leftFrontMotor = map.get(DcMotorEx.class, "left_front");
+        rightFrontMotor = map.get(DcMotorEx.class, "right_front");
+        leftBackMotor = map.get(DcMotorEx.class, "left_back");
+        rightBackMotor = map.get(DcMotorEx.class, "right_back");
+
+        // Reverse left motors
+        leftFrontMotor.setDirection(DcMotorEx.Direction.REVERSE);
+        leftBackMotor.setDirection(DcMotorEx.Direction.REVERSE);
+
+        // Odometry deadwheels
+        leftOdo = map.get(DcMotorEx.class, "right_front"); //port 1
+        rightOdo = map.get(DcMotorEx.class, "right_back"); //port 0
+        backOdo = map.get(DcMotorEx.class, "left_front");  //
+
+        // drone launch
+        droneMotor = map.get(DcMotorEx.class, "drone_motor");
+        drone = new Drone(droneMotor);
+
+        wheelSpeeds = new double[4];
+        this.telemetry = telemetry;
     }
 
     private double rampUp(double x) {
@@ -101,9 +128,10 @@ public class Karen  {
         rightBackMotor.setPower(wheelSpeeds[3] * scaleFactor);
     }
 
-    public void driveBotDistance(double drive, double rotate, double strafe, double distance) {
+    public void driveBotDistance(double drive, double rotate, double strafe, double distance, double speed) {
         double targetTicks = TICKS_PER_REVOLUTION * distance / (DEADWHEEL_RADIUS * Math.PI * 2.0); // calculate total ticks required from distance (cm) and DEADWHEEL_RADIUS (cm)
-        moveBotMecanum(drive, rotate, strafe, 1);
+        telemetry.addData("targetTicks", targetTicks);
+        moveBotMecanum(drive, rotate, strafe,speed);
         if (distance > 0) {
             while ((leftOdo.getCurrentPosition() + rightOdo.getCurrentPosition()) / 2.0 < targetTicks) {
 
@@ -133,16 +161,17 @@ public class Karen  {
         moveBotMecanum(0, 0, 0, 0);
     }
 
-    public void drawX(double size) {
-        driveBotDistance(-1, 0, -1, size / 2);
+    public void drawX(double size, double speed) {
+        telemetry.addData("draw size: ", size);
+        driveBotDistance(-1, 0, -1, size / 2, speed);
         // pen down
-        driveBotDistance(1, 0, 1, size);
-        // pen up
-        driveBotDistance(0, 0, -1, size);
-        // pen down
-        driveBotDistance(1, 0, -1, size);
-        // pen up
-        driveBotDistance(-1, 0, 1, size / 2);
+//        driveBotDistance(1, 0, 1, size);
+//        // pen up
+//        driveBotDistance(0, 0, -1, size);
+//        // pen down
+//        driveBotDistance(1, 0, -1, size);
+//        // pen up
+//        driveBotDistance(-1, 0, 1, size / 2);
     }
 
     public void stop() {
