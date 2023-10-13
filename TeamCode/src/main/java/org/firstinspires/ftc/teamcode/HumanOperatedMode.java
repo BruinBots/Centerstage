@@ -33,7 +33,6 @@ import static java.lang.Thread.sleep;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp(name="Basic: Mecanum TeleOp", group="Iterative Opmode")
 public class HumanOperatedMode extends OpMode
@@ -48,7 +47,7 @@ public class HumanOperatedMode extends OpMode
     boolean lastLBumper;
 
     public static final int DRAW_SIZE = 1;
-    private static final double DRIVE_SPEED = 0.1;
+    private static final double DRIVE_SPEED = 0.3;
     @Override
     public void init() {
         bot = new Karen(hardwareMap);
@@ -76,7 +75,6 @@ public class HumanOperatedMode extends OpMode
         }
         else if (gamepad1.dpad_right) {
 //             bot.drawO(DRAW_SIZE);
-//             bot.drawO(SIZE);
         }
 
         /*
