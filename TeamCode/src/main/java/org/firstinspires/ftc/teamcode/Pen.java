@@ -44,21 +44,21 @@ public class Pen {
         servo.setPosition(pos);
     }
 
-    public void switchPen(PenDirection direction) {
-        if (direction == PenDirection.up) {
-            if (currentServo.getPortNumber() == servo1.getPortNumber()) {
-                currentServo = servo2;
-            } else if (currentServo.getPortNumber() == servo2.getPortNumber()) {
-                currentServo = servo3;
-            }
-        } else if (direction == PenDirection.down) {
-            if (currentServo.getPortNumber() == servo3.getPortNumber()) {
-                currentServo = servo2;
-            } else if (currentServo.getPortNumber() == servo2.getPortNumber()) {
-                currentServo = servo1;
-            }
-        }
-    }
+//    public void switchPen(PenDirection direction) {
+//        if (direction == PenDirection.up) {
+//            if (currentServo.getPortNumber() == servo1.getPortNumber()) {
+//                currentServo = servo2;
+//            } else if (currentServo.getPortNumber() == servo2.getPortNumber()) {
+//                currentServo = servo3;
+//            }
+//        } else if (direction == PenDirection.down) {
+//            if (currentServo.getPortNumber() == servo3.getPortNumber()) {
+//                currentServo = servo2;
+//            } else if (currentServo.getPortNumber() == servo2.getPortNumber()) {
+//                currentServo = servo1;
+//            }
+//        }
+//    }
 
     public void lowerPen(PenColor color)
     {

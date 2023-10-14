@@ -164,7 +164,9 @@ public class Karen  {
         rightBackMotor.setPower(0);
 
         // move the pen to up position
-        pen.move(pen.upPos);
+        pen.move(penServo1, pen.upPos);
+        pen.move(penServo2, pen.upPos);
+        pen.move(penServo3, pen.upPos);
         // stop drone motor
         droneMotor.setPower(0);
     }

@@ -45,6 +45,9 @@ public class HumanOperatedMode extends OpMode
     boolean lastBButton;
     boolean lastRBumper;
     boolean lastLBumper;
+    boolean lastXButton;
+    boolean lastYButton;
+    boolean droneLaunching;
 
     public static final int DRAW_SIZE = 1;
     private static final double DRIVE_SPEED = 0.3;
@@ -70,12 +73,12 @@ public class HumanOperatedMode extends OpMode
         telemetry.update();
         bot.moveBotMecanum(drive, turn, strafe, DRIVE_SPEED);
         // Draw x or o
-        if (gamepad1.dpad_left) {
-            bot.drawX(DRAW_SIZE, DRIVE_SPEED);
-        }
-        else if (gamepad1.dpad_right) {
-//             bot.drawO(DRAW_SIZE);
-        }
+//        if (gamepad1.dpad_left) {
+//            bot.drawX(DRAW_SIZE, DRIVE_SPEED);
+//        }
+//        else if (gamepad1.dpad_right) {
+////             bot.drawO(DRAW_SIZE);
+//        }
 
         /*
         red b
@@ -83,26 +86,43 @@ public class HumanOperatedMode extends OpMode
         black a
         up y
          */
-        if (gamepad1.a && !lastAButton) {
 
-            if (bot.pen.currentServo.getPosition() < 0.4) { // if servo is up
-                bot.pen.move(bot.pen.downPos);
-            } else if (bot.pen.currentServo.getPosition() > 0.4) { // if servo is down
-                bot.pen.move(bot.pen.upPos);
+        if (gamepad1.x && !lastXButton) {
+            if (bot.pen.colorServoMap.get(Pen.PenColor.blue).getPosition() == bot.pen.downPos) {
+                bot.pen.raisePen(Pen.PenColor.blue);
+            } else {
+                bot.pen.lowerPen(Pen.PenColor.blue);
+            }
+        }
+
+        if (gamepad1.y && !lastYButton) {
+            if (bot.pen.colorServoMap.get(Pen.PenColor.black).getPosition() == bot.pen.downPos) {
+                bot.pen.raisePen(Pen.PenColor.black);
+            } else {
+                bot.pen.lowerPen(Pen.PenColor.black);
             }
         }
 
         if (gamepad1.b && !lastBButton) {
-            bot.drone.launchDrone(1,1500);
+            if (bot.pen.colorServoMap.get(Pen.PenColor.red).getPosition() == bot.pen.downPos) {
+                bot.pen.raisePen(Pen.PenColor.red);
+            } else {
+                bot.pen.lowerPen(Pen.PenColor.red);
+            }
         }
 
-        if (gamepad1.right_bumper && !lastRBumper) {
-            bot.pen.switchPen(Pen.PenDirection.up);
+        if (gamepad1.a && lastAButton) {
+            bot.pen.raiseAllPens();
         }
 
-        if (gamepad1.left_bumper && !lastLBumper) {
-            bot.pen.switchPen(Pen.PenDirection.down);
+        if (gamepad1.left_stick_button && gamepad1.right_stick_button && !droneLaunching) {
+            droneLaunching = true;
+            bot.drone.launchDrone(1,500);
         }
+        if (!gamepad1.left_stick_button && !gamepad1.right_stick_button) {
+            droneLaunching = false;
+        }
+
         try {
             sleep(20);
         } catch (InterruptedException e) {
@@ -110,16 +130,12 @@ public class HumanOperatedMode extends OpMode
 //             bot.drawO(DRAW_SIZE);
         }
 
-        if (bot.pen.currentServo.getPosition() > 0.9) { // if servo is down
-            bot.pen.move(bot.pen.downPos);
-        } else if (bot.pen.currentServo.getPosition() < 0.9) { // if servo is up
-            bot.pen.move(bot.pen.upPos);
-        }
-
         lastAButton = gamepad1.a;
         lastBButton = gamepad1.b;
+        lastXButton = gamepad1.x;
         lastRBumper = gamepad1.right_bumper;
         lastLBumper = gamepad1.left_bumper;
+        lastYButton = gamepad1.y;
 
         telemetry.addData(bot.pen.currentServo.getDeviceName()+" Value: ", bot.pen.currentServo.getPosition());
         telemetry.update();
