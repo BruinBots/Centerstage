@@ -9,8 +9,10 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 public class HumanOperatedMode extends OpMode
 {
     Karen bot;
+    double drive = 0.0;
+    double turn = 0.0;
+    double strafe = 0.0;
     boolean lastAButton;
-    long currentTime;
 
     //
     @Override
@@ -33,6 +35,13 @@ public class HumanOperatedMode extends OpMode
     //
     @Override
     public void loop() {
+
+        drive = -gamepad1.left_stick_y;
+        strafe = gamepad1.left_stick_x;
+        turn = gamepad1.right_stick_x;
+
+        bot.moveBotMecanum(drive, turn, strafe, 1);
+
         if (gamepad1.a && !lastAButton) {
             bot.drone.launch();
         }
