@@ -15,10 +15,10 @@ public class DroneLaunch {
         this.droneMotor = droneMotor;
     }
 
-    public void launchDrone(double motorPower, long waitTime) {
-        droneMotor.setPower(motorPower);
+    public void launchDrone() {
+        droneMotor.setPower(LAUNCH_POWER);
         try {
-            sleep(waitTime);
+            sleep(LAUNCH_TIME);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -33,20 +33,17 @@ import static java.lang.Thread.sleep;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp(name="Basic: Mecanum TeleOp", group="Iterative Opmode")
 public class MecanumOpMode extends OpMode
 {
-    // Declare OpMode members.
 
+    // drive values
     double drive = 0.0;
     double turn = 0.0;
     double strafe = 0.0;
 
-    double armPower = 0.0;
-    int slidePos;
-    int armPos;
+    // robot
     Karen bot;
 
     //
@@ -75,7 +72,7 @@ public class MecanumOpMode extends OpMode
         strafe = gamepad1.left_stick_x;
         turn = gamepad1.right_stick_x;
 
-        bot.moveBotMecanum(drive, turn, strafe, 1);
+        bot.moveBotMecanum(drive, turn, strafe, 1); // actually move the robot
 
         // arm
         if (gamepad1.dpad_up) {
@@ -102,16 +99,16 @@ public class MecanumOpMode extends OpMode
         // drone launch
 
         if (gamepad1.a) {
-            bot.droneLaunch.launchDrone(DroneLaunch.LAUNCH_POWER, DroneLaunch.LAUNCH_TIME);
+            bot.droneLaunch.launchDrone();
         }
 
         // intake
 
         if (gamepad1.x) {
-            bot.inOutTake.spin(InOutTake.SPIN_SPEED, DcMotorSimple.Direction.FORWARD);
+            bot.inOutTake.intake();
         }
         else if (gamepad1.b) {
-            bot.inOutTake.spin(InOutTake.SPIN_SPEED, DcMotorSimple.Direction.REVERSE);
+            bot.inOutTake.outtake();
         }
 
         try {

@@ -16,9 +16,25 @@ public class InOutTake {
         this.sensor = sensor;
     }
 
-    public void spin(double speed, DcMotorSimple.Direction direction) {
+    public void spin(DcMotorSimple.Direction direction) {
         motor.setDirection(direction);
-        motor.setPower(speed);
+        motor.setPower(SPIN_SPEED);
+    }
+
+    public void intake() {
+        spin(DcMotorSimple.Direction.FORWARD);
+        while (!touch()) {
+
+        }
+        stopSpin();
+    }
+
+    public void outtake() {
+        spin(DcMotorSimple.Direction.REVERSE);
+        while (touch()) {
+
+        }
+        stopSpin();
     }
 
     public void stopSpin() {
