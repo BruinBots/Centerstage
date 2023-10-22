@@ -43,6 +43,8 @@ public class MecanumOpMode extends OpMode
     double turn = 0.0;
     double strafe = 0.0;
 
+    boolean clicked = false;
+
     // robot
     Karen bot;
 
@@ -77,9 +79,11 @@ public class MecanumOpMode extends OpMode
         // arm
         if (gamepad1.dpad_up) {
             bot.arm.moveSlide(bot.arm.getCurrentSlidePos() + 5);
+            telemetry.addData("slide", bot.arm.getCurrentSlidePos());
         }
         else if (gamepad1.dpad_down) {
             bot.arm.moveSlide(bot.arm.getCurrentSlidePos() - 5);
+            telemetry.addData("slide", bot.arm.getCurrentSlidePos());
         }
         else if (gamepad1.dpad_right) {
             bot.arm.moveArm(bot.arm.getCurrentArmPos() + 5);
@@ -87,14 +91,24 @@ public class MecanumOpMode extends OpMode
         else if (gamepad1.dpad_left) {
             bot.arm.moveArm(bot.arm.getCurrentArmPos() - 5);
         }
+        else {
+            bot.arm.armMotor.setPower(0);
+            bot.arm.slideMotor.setPower(0);
+        }
 
         // claw
         if (gamepad1.left_bumper) {
-            bot.claw.clawMove(Claw.OPEN_POS);
+            bot.claw.servo1.setPosition(0);
+            clicked = true;
         }
         else if (gamepad1.right_bumper) {
-            bot.claw.clawMove(Claw.CLOSED_POS);
+            bot.claw.servo1.setPosition(1);
+            clicked = true;
         }
+        else if (clicked) {
+            bot.claw.servo1.setPosition(0.5);
+        }
+        telemetry.addData("clawServo1", bot.clawServo1.getPosition());
 
         // drone launch
 

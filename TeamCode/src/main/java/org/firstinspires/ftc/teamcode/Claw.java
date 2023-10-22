@@ -7,7 +7,7 @@ public class Claw {
     Servo servo1;
 
     public static final double OPEN_POS = 0;
-    public static final double CLOSED_POS = 1;
+    public static final double CLOSED_POS = 0;
 
     Claw (Servo servo1) {
         this.servo1 = servo1;
