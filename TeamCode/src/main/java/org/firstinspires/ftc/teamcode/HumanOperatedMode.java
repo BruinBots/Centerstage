@@ -34,22 +34,22 @@ import static java.lang.Thread.sleep;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name="Basic: Mecanum TeleOp", group="Iterative Opmode")
+@TeleOp(name="STEMFEST TeleOp", group="Iterative Opmode")
 public class HumanOperatedMode extends OpMode
 {
+    Karen bot;
+
     double drive = 0.0;
     double turn = 0.0;
     double strafe = 0.0;
-    Karen bot;
+
     boolean lastAButton;
     boolean lastBButton;
-    boolean lastRBumper;
-    boolean lastLBumper;
     boolean lastXButton;
     boolean lastYButton;
+
     boolean droneLaunching;
 
-    public static final int DRAW_SIZE = 1;
     private static final double DRIVE_SPEED = 0.3;
     @Override
     public void init() {
@@ -69,23 +69,8 @@ public class HumanOperatedMode extends OpMode
         drive = -gamepad1.left_stick_y;
         strafe = gamepad1.left_stick_x;
         turn = gamepad1.right_stick_x;
-        telemetry.addData("Dead wheel: ", bot.getTargetTicks());
-        telemetry.update();
-        bot.moveBotMecanum(drive, turn, strafe, DRIVE_SPEED);
-        // Draw x or o
-//        if (gamepad1.dpad_left) {
-//            bot.drawX(DRAW_SIZE, DRIVE_SPEED);
-//        }
-//        else if (gamepad1.dpad_right) {
-////             bot.drawO(DRAW_SIZE);
-//        }
 
-        /*
-        red b
-        blue x
-        black a
-        up y
-         */
+        bot.moveBotMecanum(drive, turn, strafe, DRIVE_SPEED);
 
         if (gamepad1.x && !lastXButton) {
             if (bot.pen.colorServoMap.get(Pen.PenColor.blue).getPosition() == bot.pen.downPos) {
@@ -117,7 +102,7 @@ public class HumanOperatedMode extends OpMode
 
         if (gamepad1.left_stick_button && gamepad1.right_stick_button && !droneLaunching) {
             droneLaunching = true;
-            bot.drone.launchDrone(1,500);
+            bot.drone.launchDrone();
         }
         if (!gamepad1.left_stick_button && !gamepad1.right_stick_button) {
             droneLaunching = false;
@@ -127,17 +112,13 @@ public class HumanOperatedMode extends OpMode
             sleep(20);
         } catch (InterruptedException e) {
             e.printStackTrace();
-//             bot.drawO(DRAW_SIZE);
         }
 
         lastAButton = gamepad1.a;
         lastBButton = gamepad1.b;
         lastXButton = gamepad1.x;
-        lastRBumper = gamepad1.right_bumper;
-        lastLBumper = gamepad1.left_bumper;
         lastYButton = gamepad1.y;
 
-        telemetry.addData(bot.pen.currentServo.getDeviceName()+" Value: ", bot.pen.currentServo.getPosition());
         telemetry.update();
     }
 

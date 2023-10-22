@@ -5,10 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-
-public class Karen  {
-    private Telemetry telemetry;
+public class Karen {
     public DcMotorEx leftFrontMotor;
     public DcMotorEx rightFrontMotor;
     public DcMotorEx leftBackMotor;
@@ -17,17 +14,9 @@ public class Karen  {
     public Servo penServo1;
     public Servo penServo2;
     public Servo penServo3;
-    public DcMotorEx leftOdo;
-    public DcMotorEx rightOdo;
-    public DcMotorEx backOdo;
-
     public DcMotorEx droneMotor;
-
-    public final int TICKS_PER_REVOLUTION = 200;
-    public final int DEADWHEEL_RADIUS = 2; // cm ??
-    double targetTicks;
-    private double[] wheelSpeeds;
     Drone drone;
+
     public Karen(HardwareMap map) {
         // Drivetrain Motors
         leftFrontMotor = map.get(DcMotorEx.class, "left_front");
@@ -39,11 +28,6 @@ public class Karen  {
         leftFrontMotor.setDirection(DcMotorEx.Direction.REVERSE);
         leftBackMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
-        // Odometry deadwheels
-        leftOdo = map.get(DcMotorEx.class, "right_front"); //port 1
-        rightOdo = map.get(DcMotorEx.class, "right_back"); //port 0
-        backOdo = map.get(DcMotorEx.class, "left_front");  //
-
         // drone launch
         droneMotor = map.get(DcMotorEx.class, "drone_motor");
         drone = new Drone(droneMotor);
@@ -51,38 +35,8 @@ public class Karen  {
         penServo2 = map.get(Servo.class, "penServo2");
         penServo3 = map.get(Servo.class, "penServo3");
         pen = new Pen(penServo1, penServo2, penServo3);
-        wheelSpeeds = new double[4];
     }
 
-    private double rampUp(double x) {
-        return 1 / (1 + Math.pow(Math.E, -10 * (1.5 * x - 0.8)));
-    }
-
-    public void moveBot(double drive, double rotate, double scaleFactor) {
-        drive = rampUp(drive); // S-curve ramp up
-        wheelSpeeds[0] = drive + rotate;  // left front
-        wheelSpeeds[1] = drive - rotate;  // right front
-        wheelSpeeds[2] = drive + rotate;  // left rear
-        wheelSpeeds[3] = drive - rotate;  // right rear
-
-        // finding the greatest power value
-        double maxMagnitude = Math.max(Math.max(Math.max(wheelSpeeds[0], wheelSpeeds[1]), wheelSpeeds[2]), wheelSpeeds[3]);
-
-        // dividing everyone by the max power value so that ratios are same (check if sdk automatically clips to see if go build documentation works
-        if (maxMagnitude > 1.0)
-        {
-            for (int i = 0; i < wheelSpeeds.length; i++)
-            {
-                wheelSpeeds[i] /= maxMagnitude;
-            }
-        }
-
-        // setting motor power and scaling down to preference
-        leftFrontMotor.setPower(wheelSpeeds[0] * scaleFactor);
-        rightFrontMotor.setPower(wheelSpeeds[1] * scaleFactor);
-        leftBackMotor.setPower(wheelSpeeds[2] * scaleFactor);
-        rightBackMotor.setPower(wheelSpeeds[3] * scaleFactor);
-    }
 
     public void moveBotMecanum(double drive, double rotate, double strafe, double scaleFactor) {
         double[] wheelSpeeds = new double[4];
@@ -95,10 +49,8 @@ public class Karen  {
         double maxMagnitude = Math.max(Math.max(Math.max(wheelSpeeds[0], wheelSpeeds[1]), wheelSpeeds[2]), wheelSpeeds[3]);
 
         // dividing everyone by the max power value so that ratios are same (check if sdk automatically clips to see if go build documentation works
-        if (maxMagnitude > 1.0)
-        {
-            for (int i = 0; i < wheelSpeeds.length; i++)
-            {
+        if (maxMagnitude > 1.0) {
+            for (int i = 0; i < wheelSpeeds.length; i++) {
                 wheelSpeeds[i] /= maxMagnitude;
             }
         }
@@ -110,51 +62,6 @@ public class Karen  {
         rightBackMotor.setPower(wheelSpeeds[3] * scaleFactor);
     }
 
-    public void driveBotDistance(double drive, double rotate, double strafe, double distance, double speed) {
-        targetTicks = TICKS_PER_REVOLUTION * distance / (DEADWHEEL_RADIUS * Math.PI * 2.0); // calculate total ticks required from distance (cm) and DEADWHEEL_RADIUS (cm)
-        telemetry.addData("targetTicks", targetTicks);
-        moveBotMecanum(drive, rotate, strafe,speed);
-        if (distance > 0) {
-            while ((leftOdo.getCurrentPosition() + rightOdo.getCurrentPosition()) / 2.0 < targetTicks) {
-
-            }
-        }
-        else {
-            while ((leftOdo.getCurrentPosition() + rightOdo.getCurrentPosition()) / 2.0 > targetTicks) {
-
-            }
-        }
-        moveBotMecanum(0, 0, 0, 0);
-    }
-
-    public void strafeBotDistance(double drive, double rotate, double strafe, double distance) {
-        double targetTicks = TICKS_PER_REVOLUTION * distance / (DEADWHEEL_RADIUS * Math.PI * 2.0); // calculate total ticks required from distance (cm) and DEADWHEEL_RADIUS (cm)
-        moveBotMecanum(drive, rotate, strafe, 1);
-        if (distance > 0) {
-            while (backOdo.getCurrentPosition() < targetTicks) {
-
-            }
-        }
-        else {
-            while (backOdo.getCurrentPosition() > targetTicks) {
-
-            }
-        }
-        moveBotMecanum(0, 0, 0, 0);
-    }
-
-    public void drawX(double size, double speed) {
-        telemetry.addData("draw size: ", size);
-        driveBotDistance(-1, 0, -1, size / 2, speed);
-        // pen down
-//        driveBotDistance(1, 0, 1, size);
-//        // pen up
-//        driveBotDistance(0, 0, -1, size);
-//        // pen down
-//        driveBotDistance(1, 0, -1, size);
-//        // pen up
-//        driveBotDistance(-1, 0, 1, size / 2);
-    }
 
     public void stop() {
         // stop drivetrain motors
@@ -163,27 +70,7 @@ public class Karen  {
         rightFrontMotor.setPower(0);
         rightBackMotor.setPower(0);
 
-        // move the pen to up position
-        pen.move(penServo1, pen.upPos);
-        pen.move(penServo2, pen.upPos);
-        pen.move(penServo3, pen.upPos);
         // stop drone motor
         droneMotor.setPower(0);
-    }
-
-    public double[] getWheelSpeeds() {
-        return wheelSpeeds;
-    }
-
-    public void setWheelSpeeds(double[] wheelSpeeds) {
-        this.wheelSpeeds = wheelSpeeds;
-    }
-
-    public double getTargetTicks() {
-        return targetTicks;
-    }
-
-    public void setTargetTicks(double targetTicks) {
-        this.targetTicks = targetTicks;
     }
 }

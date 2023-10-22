@@ -8,24 +8,22 @@ public class Drone {
 
     public DcMotorEx droneMotor;
 
-    public static final double LAUNCH_POWER = 0.75;
-    public static final int LAUNCH_TIME = 1000;
+    public static final double LAUNCH_POWER = 1;
+    public static final int LAUNCH_TIME = 500;
 
     Drone(DcMotorEx droneMotor) {
         this.droneMotor = droneMotor;
     }
 
-    public void launchDrone(double motorPower, long waitTime) {
-        droneMotor.setPower(motorPower);
+    public void launchDrone() {
+        droneMotor.setPower(LAUNCH_POWER);
         try {
-            sleep(waitTime);
+            sleep(LAUNCH_TIME);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         droneMotor.setPower(0);
     }
 
-    public void stop() {
-        droneMotor.setPower(0);
-    }
 }
+
