@@ -33,6 +33,8 @@ import static java.lang.Thread.sleep;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name="Basic: Mecanum TeleOp", group="Iterative Opmode")
 public class MecanumOpMode extends OpMode
@@ -64,6 +66,9 @@ public class MecanumOpMode extends OpMode
     //
     @Override
     public void start() {
+        bot.arm.armMotor.setTargetPosition(bot.arm.MIN_ARM_POSITION);
+        bot.arm.armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        bot.arm.armMotor.setPower(bot.arm.ARM_POWER);
     }
 
     //
@@ -76,46 +81,51 @@ public class MecanumOpMode extends OpMode
 
         bot.moveBotMecanum(drive, turn, strafe, 1); // actually move the robot
 
-        // arm
+        // TODO: arm & slide
         if (gamepad1.dpad_up) {
-            bot.arm.moveSlide(bot.arm.getCurrentSlidePos() + 5);
-            telemetry.addData("slide", bot.arm.getCurrentSlidePos());
+            bot.arm.moveSlide(bot.arm.getCurrentSlidePos() + 30);
+//            bot.arm.moveSlide(2);
         }
         else if (gamepad1.dpad_down) {
-            bot.arm.moveSlide(bot.arm.getCurrentSlidePos() - 5);
-            telemetry.addData("slide", bot.arm.getCurrentSlidePos());
+            bot.arm.moveSlide(bot.arm.getCurrentSlidePos() - 30);
+//            bot.arm.moveSlide(-2);
         }
         else if (gamepad1.dpad_right) {
-            bot.arm.moveArm(bot.arm.getCurrentArmPos() + 5);
+            bot.arm.moveArm(bot.arm.getCurrentArmPos() + 10);
+//            bot.arm.moveArm(2);
         }
         else if (gamepad1.dpad_left) {
-            bot.arm.moveArm(bot.arm.getCurrentArmPos() - 5);
-        }
-        else {
-            bot.arm.armMotor.setPower(0);
-            bot.arm.slideMotor.setPower(0);
+            bot.arm.moveArm(bot.arm.getCurrentArmPos() - 10);
+//            bot.arm.moveArm(-2);
         }
 
-        // claw
+        telemetry.addData("slide", bot.arm.getCurrentSlidePos());
+        telemetry.addData("arm", bot.arm.getCurrentArmPos());
+        telemetry.addData("claw", bot.claw.servo1.getPosition());
+
+        // TODO: claw
+        bot.claw.servo1.setDirection(Servo.Direction.FORWARD);
         if (gamepad1.left_bumper) {
-            bot.claw.open();
+            bot.claw.servo1.setDirection(Servo.Direction.REVERSE);
+            bot.claw.servo1.setPosition(0.0005);
             clawClicked = true;
         }
         else if (gamepad1.right_bumper) {
-            bot.claw.close();
+            bot.claw.servo1.setDirection(Servo.Direction.FORWARD);
+            bot.claw.servo1.setPosition(0);
             clawClicked = true;
         }
         else if (clawClicked) {
-            bot.claw.stop();
+//            bot.claw.stop();
         }
 
-        // drone launch
+        // TODO: drone launch
 
         if (gamepad1.a) {
             bot.droneLaunch.launchDrone();
         }
 
-        // intake
+        // TODO: intake
 
         if (gamepad1.x) {
             bot.inOutTake.intake();

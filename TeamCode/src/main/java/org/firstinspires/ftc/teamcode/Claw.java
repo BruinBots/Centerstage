@@ -19,8 +19,16 @@ public class Claw {
     }
     public void clawMove(double position) {
         position = Math.abs(position);
+        if (position < 0) {
+            servo1.setDirection(Servo.Direction.REVERSE);
+        }
+        else {
+            servo1.setDirection(Servo.Direction.FORWARD);
+        }
         servo1.setPosition(position);
     }
+
+    // claw servo runs at ~300º/s at max speed
 
     public void open() {
         clawMove(OPEN_POS);
@@ -43,6 +51,6 @@ public class Claw {
     }
 
     public void stop() {
-        clawMove(0.5);
+        clawMove(0);
     }
 }
