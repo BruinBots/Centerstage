@@ -20,17 +20,16 @@ public class Drone {
         launchingDrone = true;
         droneMotor.setPower(MOTOR_POWER);
         timeWhenLaunched = getCurrentTime();
-        telemetry.addData("launching drone", launchingDrone);
-        telemetry.update();
     }
 
     public void checkLaunchState() {
         if (launchingDrone) {
             if (elapsedTime() > MOTOR_RUN_TIME) {
                 stop();
-                telemetry.update();
             }
         }
+        telemetry.addData("launching drone", launchingDrone);
+        telemetry.update();
     }
 
     private long getCurrentTime() {
