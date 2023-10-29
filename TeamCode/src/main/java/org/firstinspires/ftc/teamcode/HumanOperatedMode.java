@@ -40,7 +40,7 @@ public class HumanOperatedMode extends OpMode
         strafe = gamepad1.left_stick_x;
         turn = gamepad1.right_stick_x;
 
-        bot.moveBotMecanum(drive, turn, strafe, 1);
+//        bot.moveBotMecanum(drive, turn, strafe, 1);
 
         if (gamepad1.a && !lastAButton) {
             bot.drone.launch();
