@@ -34,7 +34,6 @@ import static java.lang.Thread.sleep;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name="Basic: Mecanum TeleOp", group="Iterative Opmode")
 public class MecanumOpMode extends OpMode
@@ -80,38 +79,32 @@ public class MecanumOpMode extends OpMode
 
         bot.moveBotMecanum(drive, turn, strafe, 1); // actually move the robot
 
-        // TODO: arm & slide
+        // arm & slide
         if (gamepad1.dpad_up) {
             bot.arm.moveSlide(bot.arm.getCurrentSlidePos() + 30);
-//            bot.arm.moveSlide(2);
         }
         else if (gamepad1.dpad_down) {
             bot.arm.moveSlide(bot.arm.getCurrentSlidePos() - 30);
-//            bot.arm.moveSlide(-2);
         }
-        else if (gamepad1.dpad_right) {
+
+        if (gamepad1.dpad_right) {
             bot.arm.moveArm(bot.arm.getCurrentArmPos() + 10);
-//            bot.arm.moveArm(2);
         }
         else if (gamepad1.dpad_left) {
             bot.arm.moveArm(bot.arm.getCurrentArmPos() - 10);
-//            bot.arm.moveArm(-2);
         }
 
         telemetry.addData("slide", bot.arm.getCurrentSlidePos());
         telemetry.addData("arm", bot.arm.getCurrentArmPos());
-        telemetry.addData("claw", bot.claw.servo1.getPosition());
+        telemetry.addData("claw", bot.claw.clawServo.getPosition());
 
         // TODO: claw
-        bot.claw.servo1.setDirection(Servo.Direction.FORWARD);
         if (gamepad1.left_bumper) {
-//            bot.claw.servo1.setDirection(Servo.Direction.REVERSE);
-            bot.claw.servo1.setPosition(0.1);
+            bot.claw.clawServo.setPosition(0.1);
 
         }
         else if (gamepad1.right_bumper) {
-//            bot.claw.servo1.setDirection(Servo.Direction.FORWARD);
-            bot.claw.servo1.setPosition(0);
+            bot.claw.clawServo.setPosition(0);
         }
 
         // drone launch

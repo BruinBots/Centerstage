@@ -6,48 +6,33 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class Claw {
 
-    Servo servo1;
+    Servo clawServo;
 
     public static final double OPEN_POS = 0;
-    public static final int OPEN_TIME = 500;
-
     public static final double CLOSED_POS = 0;
-    public static final int CLOSED_TIME = 600;
 
-    Claw (Servo servo1) {
-        this.servo1 = servo1;
+    Claw (Servo clawServo) {
+        this.clawServo = clawServo;
     }
-    public void clawMove(double position) {
-        position = Math.abs(position);
+    private void clawMove(double position) {
         if (position < 0) {
-            servo1.setDirection(Servo.Direction.REVERSE);
+            clawServo.setDirection(Servo.Direction.REVERSE);
         }
         else {
-            servo1.setDirection(Servo.Direction.FORWARD);
+            clawServo.setDirection(Servo.Direction.FORWARD);
         }
-        servo1.setPosition(position);
+        position = Math.abs(position);
+        clawServo.setPosition(position);
     }
 
     // claw servo runs at ~300º/s at max speed
 
-    public void open() {
+    public void openClaw() {
         clawMove(OPEN_POS);
-        try {
-            sleep(OPEN_TIME);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        stop();
     }
 
-    public void close() {
+    public void closeClaw() {
         clawMove(CLOSED_POS);
-        try {
-            sleep(CLOSED_TIME);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        stop();
     }
 
     public void stop() {
