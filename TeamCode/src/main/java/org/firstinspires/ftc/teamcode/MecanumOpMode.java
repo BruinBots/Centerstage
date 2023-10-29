@@ -64,9 +64,7 @@ public class MecanumOpMode extends OpMode
     //
     @Override
     public void start() {
-        bot.arm.armMotor.setTargetPosition(bot.arm.MIN_ARM_POSITION);
-        bot.arm.armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        bot.arm.armMotor.setPower(bot.arm.ARM_POWER);
+        bot.arm.moveArm(bot.arm.MIN_ARM_POSITION);
     }
 
     //
@@ -86,12 +84,18 @@ public class MecanumOpMode extends OpMode
         else if (gamepad1.dpad_down) {
             bot.arm.moveSlide(bot.arm.getCurrentSlidePos() - 30);
         }
+        else {
+            bot.arm.holdArmPos();
+        }
 
         if (gamepad1.dpad_right) {
             bot.arm.moveArm(bot.arm.getCurrentArmPos() + 10);
         }
         else if (gamepad1.dpad_left) {
             bot.arm.moveArm(bot.arm.getCurrentArmPos() - 10);
+        }
+        else {
+            bot.arm.holdSlidePos();
         }
 
         // claw

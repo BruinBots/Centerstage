@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 public class Arm {
 
     // declare motors
-    DcMotorEx armMotor;
-    DcMotorEx slideMotor;
+    private DcMotorEx armMotor;
+    private DcMotorEx slideMotor;
 
 
     // declare constants
@@ -48,6 +48,14 @@ public class Arm {
         else {
             armMotor.setPower(ARM_POWER);
         }
+    }
+
+    public void holdArmPos() {
+        armMotor.setPower(1);
+    }
+
+    public void holdSlidePos() {
+        slideMotor.setPower(1);
     }
 
     public void moveSlide(int targetPos) {
