@@ -94,10 +94,6 @@ public class MecanumOpMode extends OpMode
             bot.arm.moveArm(bot.arm.getCurrentArmPos() - 10);
         }
 
-        telemetry.addData("slide", bot.arm.getCurrentSlidePos());
-        telemetry.addData("arm", bot.arm.getCurrentArmPos());
-        telemetry.addData("claw", bot.claw.clawServo.getPosition());
-
         // claw
         if (gamepad1.left_bumper) {
             bot.claw.closeClaw();
