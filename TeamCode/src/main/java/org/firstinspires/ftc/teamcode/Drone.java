@@ -7,25 +7,25 @@ public class Drone {
     private DcMotorEx droneMotor;
     private boolean launchingDrone;
     private long timeWhenLaunched;
-    private static long motorRunTime = 500; // 500 ms
-    private static double motorPower = 1.0;
+    private static long MOTOR_RUN_TIME = 500; // 500 ms
+    private static double MOTOR_POWER = 1.0;
 
     Drone(DcMotorEx droneMotor) {
         this.droneMotor = droneMotor;
     }
 
-    public void loop() {
+    public void launch() {
+        launchingDrone = true;
+        droneMotor.setPower(MOTOR_POWER);
+        timeWhenLaunched = getCurrentTime();
+    }
+
+    public void checkLaunchStatus() {
         if (launchingDrone) {
-            if (elapsedTime() > motorRunTime) {
+            if (elapsedTime() > MOTOR_RUN_TIME) {
                 stop();
             }
         }
-    }
-
-    public void launch() {
-        droneMotor.setPower(motorPower);
-        launchingDrone = true;
-        timeWhenLaunched = getCurrentTime();
     }
 
     private long getCurrentTime() {
