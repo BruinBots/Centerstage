@@ -114,19 +114,20 @@ public class MecanumOpMode extends OpMode
             bot.claw.servo1.setPosition(0);
         }
 
-        // TODO: drone launch
+        // drone launch
 
         if (gamepad1.a) {
-//            bot.droneLaunch.launchDrone();
+            bot.droneLaunch.launch();
         }
+        bot.droneLaunch.loop();
 
         // TODO: intake
 
         if (gamepad1.x) {
-//            bot.inOutTake.intake();
+            bot.inOutTake.intake();
         }
         else if (gamepad1.b) {
-//            bot.inOutTake.outtake();
+            bot.inOutTake.outtake();
         }
 
         try {
