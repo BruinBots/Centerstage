@@ -45,7 +45,6 @@ public class MecanumOpMode extends OpMode
     double turn = 0.0;
     double strafe = 0.0;
 
-    boolean clawClicked = false;
 
     // robot
     Karen bot;
@@ -106,33 +105,28 @@ public class MecanumOpMode extends OpMode
         // TODO: claw
         bot.claw.servo1.setDirection(Servo.Direction.FORWARD);
         if (gamepad1.left_bumper) {
-            bot.claw.servo1.setDirection(Servo.Direction.REVERSE);
-            bot.claw.servo1.setPosition(0.0005);
-            clawClicked = true;
+//            bot.claw.servo1.setDirection(Servo.Direction.REVERSE);
+            bot.claw.servo1.setPosition(0.1);
+
         }
         else if (gamepad1.right_bumper) {
-            bot.claw.servo1.setDirection(Servo.Direction.FORWARD);
+//            bot.claw.servo1.setDirection(Servo.Direction.FORWARD);
             bot.claw.servo1.setPosition(0);
-            clawClicked = true;
-        }
-        else if (clawClicked) {
-//            bot.claw.stop();
         }
 
         // TODO: drone launch
 
         if (gamepad1.a) {
-            bot.drone.launch();
+//            bot.droneLaunch.launchDrone();
         }
-        bot.drone.loop();
 
         // TODO: intake
 
         if (gamepad1.x) {
-            bot.inOutTake.intake();
+//            bot.inOutTake.intake();
         }
         else if (gamepad1.b) {
-            bot.inOutTake.outtake();
+//            bot.inOutTake.outtake();
         }
 
         try {

@@ -13,7 +13,7 @@ public class Arm {
     // declare constants
     public static int MAX_SLIDE_POSITION = 2000;
     public static int MIN_SLIDE_POSITION = 0;
-    public static int MAX_ARM_POSITION = 200;
+    public static int MAX_ARM_POSITION = 220;
     public static int MIN_ARM_POSITION = 10;
     public static double ARM_POWER = 0.2; // the default power supplied to the arm when being used
     public static double SLIDE_POWER = 0.6; // the default power supplied to the slide when being used to lift the claw
@@ -24,7 +24,7 @@ public class Arm {
     public static double HANG_UP = 0;
 
     public static double ARM_DOWN = 20;
-    public static double ARM_UP = 190;
+    public static double ARM_UP = 200;
 
     Arm (DcMotorEx armMotor, DcMotorEx slideMotor) {
         this.armMotor = armMotor;
@@ -32,7 +32,12 @@ public class Arm {
     }
 
     public void moveArm(int targetPos) {
-        if (targetPos < MIN_ARM_POSITION || targetPos > MAX_ARM_POSITION) {
+        if (targetPos < MIN_ARM_POSITION) {
+            moveArm(MIN_ARM_POSITION);
+            return;
+        }
+        else if (targetPos > MAX_ARM_POSITION) {
+            moveArm(MAX_ARM_POSITION);
             return;
         }
         armMotor.setTargetPosition(targetPos);
