@@ -24,6 +24,7 @@ public class Claw {
         clawMove(CLOSED_POS);
     }
     private void clawMove(double position) {
+        // if position is negative, go reverse, as servos don't accept negative values. If position is positive, go forwards, and if 0, it doesn't matter so it defaults to forwards
         if (position < 0) {
             clawServo.setDirection(Servo.Direction.REVERSE);
         }

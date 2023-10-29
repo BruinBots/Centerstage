@@ -118,6 +118,7 @@ public class MecanumOpMode extends OpMode
         else if (gamepad1.b) {
             bot.inOutTake.outtake();
         }
+        bot.inOutTake.checkInOutTakeState();
 
         try {
             sleep(20);

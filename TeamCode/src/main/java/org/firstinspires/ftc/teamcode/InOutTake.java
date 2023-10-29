@@ -11,25 +11,37 @@ public class InOutTake {
 
     public static final double SPIN_SPEED = 0.5;
 
+    private boolean intaking = false;
+    private boolean outtaking = false;
+
     InOutTake (DcMotorEx motor, DigitalChannel sensor) {
         this.motor = motor;
         this.sensor = sensor;
     }
-    
+
+    public void checkInOutTakeState() {
+        if (intaking) {
+            if (touch()) {
+                stopSpin();
+            }
+            intaking = false;
+        }
+        else if (outtaking) {
+            if (!touch()) {
+                stopSpin();
+            }
+            outtaking = false;
+        }
+    }
+
     public void intake() {
         spin(DcMotorSimple.Direction.FORWARD);
-        while (!touch()) {
-
-        }
-        stopSpin();
+        intaking = true;
     }
 
     public void outtake() {
         spin(DcMotorSimple.Direction.REVERSE);
-        while (touch()) {
-
-        }
-        stopSpin();
+        outtaking = true;
     }
 
     public void stopSpin() {
