@@ -98,13 +98,13 @@ public class MecanumOpMode extends OpMode
         telemetry.addData("arm", bot.arm.getCurrentArmPos());
         telemetry.addData("claw", bot.claw.clawServo.getPosition());
 
-        // TODO: claw
+        // claw
         if (gamepad1.left_bumper) {
-            bot.claw.clawServo.setPosition(0.1);
+            bot.claw.closeClaw();
 
         }
         else if (gamepad1.right_bumper) {
-            bot.claw.clawServo.setPosition(0);
+            bot.claw.openClaw();
         }
 
         // drone launch

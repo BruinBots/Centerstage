@@ -8,8 +8,8 @@ public class Claw {
 
     Servo clawServo;
 
-    public static final double OPEN_POS = 0;
-    public static final double CLOSED_POS = 0;
+    public static final double OPEN_POS = 0.1; // 36º
+    public static final double CLOSED_POS = 0; // 0º
 
     Claw (Servo clawServo) {
         this.clawServo = clawServo;
