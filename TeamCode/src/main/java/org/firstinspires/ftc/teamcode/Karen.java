@@ -37,7 +37,7 @@ public class Karen  {
     // subclasses
     InOutTake inOutTake;
     Claw claw;
-    DroneLaunch droneLaunch;
+    Drone drone;
     Arm arm;
 
     // constructor with map
@@ -79,7 +79,7 @@ public class Karen  {
 
         // drone launch
         droneMotor = map.get(DcMotorEx.class, "drone_motor");
-        droneLaunch = new DroneLaunch(droneMotor);
+        drone = new Drone(droneMotor);
     }
 
     private double rampUp(double x) {
