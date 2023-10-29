@@ -110,9 +110,9 @@ public class MecanumOpMode extends OpMode
         // drone launch
 
         if (gamepad1.a) {
-            bot.droneLaunch.launch();
+            bot.drone.launch();
         }
-        bot.droneLaunch.checkLaunchStatus();
+        bot.drone.checkLaunchState();
 
         // TODO: intake
 

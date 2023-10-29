@@ -35,9 +35,9 @@ public class Karen  {
     public final int DEADWHEEL_RADIUS = 2; // cm ??
 
     // subclasses
-//    InOutTake inOutTake;
+    InOutTake inOutTake;
     Claw claw;
-//    Drone droneLaunch;
+    Drone drone;
     Arm arm;
 
     // constructor with map
@@ -69,17 +69,17 @@ public class Karen  {
         backOdo = map.get(DcMotorEx.class, "left_front");
 
         // pixel intake
-//        intakeMotor = map.get(DcMotorEx.class, "intake_motor");
-//        intakeTouchSensor = map.get(DigitalChannel.class, "intake_sensor");
-//        inOutTake = new InOutTake(intakeMotor, intakeTouchSensor);
+        intakeMotor = map.get(DcMotorEx.class, "intake_motor");
+        intakeTouchSensor = map.get(DigitalChannel.class, "intake_sensor");
+        inOutTake = new InOutTake(intakeMotor, intakeTouchSensor);
 
         // claw
         clawServo1 = map.get(Servo.class, "claw_servo1");
         claw = new Claw(clawServo1);
 
         // drone launch
-//        droneMotor = map.get(DcMotorEx.class, "drone_motor");
-//        droneLaunch = new Drone(droneMotor);
+        droneMotor = map.get(DcMotorEx.class, "drone_motor");
+        drone = new Drone(droneMotor);
     }
 
     private double rampUp(double x) {
