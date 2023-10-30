@@ -17,7 +17,7 @@ public class Karen  {
     public DcMotorEx leftBackMotor;
     public DcMotorEx rightBackMotor;
 
-    public DcMotorEx intakeMotor;
+    public Servo intakeServo;
     public DigitalChannel intakeTouchSensor;
 
     public DcMotorEx slideMotor;
@@ -37,7 +37,7 @@ public class Karen  {
     // subclasses
     InOutTake inOutTake;
     Claw claw;
-    Drone drone;
+//    Drone drone;
     Arm arm;
 
     // constructor with map
@@ -69,17 +69,16 @@ public class Karen  {
         backOdo = map.get(DcMotorEx.class, "left_front");
 
         // pixel intake
-        intakeMotor = map.get(DcMotorEx.class, "intake_motor");
-        intakeTouchSensor = map.get(DigitalChannel.class, "intake_sensor");
-        inOutTake = new InOutTake(intakeMotor, intakeTouchSensor);
+        intakeServo = map.get(Servo.class, "intake_motor");
+        inOutTake = new InOutTake(intakeServo);
 
         // claw
         clawServo1 = map.get(Servo.class, "claw_servo1");
         claw = new Claw(clawServo1);
 
         // drone launch
-        droneMotor = map.get(DcMotorEx.class, "drone_motor");
-        drone = new Drone(droneMotor);
+//        droneMotor = map.get(DcMotorEx.class, "drone_motor");
+//        drone = new Drone(droneMotor);
     }
 
     private double rampUp(double x) {
@@ -139,7 +138,7 @@ public class Karen  {
         droneMotor.setPower(0);
 
         // stop intake motor
-        intakeMotor.setPower(0);
+//        intakeServo.setPower(0);
     }
 
     // ----- ALGORITHMS -----
