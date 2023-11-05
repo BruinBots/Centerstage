@@ -77,8 +77,8 @@ public class Karen  {
         // pixel intake
         intakeServoLeft = map.get(Servo.class, "intake_servo_left");
         intakeServoRight = map.get(Servo.class, "intake_servo_right");
-        scoopServo = map.get(Servo.class, "scoop_servo");
-        inOutTake = new InOutTake(intakeServoLeft, intakeServoRight, scoopServo);
+//        scoopServo = map.get(Servo.class, "scoop_servo");
+        inOutTake = new InOutTake(intakeServoLeft, intakeServoRight);
 
         // claw
         clawServo1 = map.get(Servo.class, "claw_servo1");

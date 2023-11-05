@@ -132,10 +132,10 @@ public class MecanumOpMode extends OpMode
         }
 
         if (gamepad1.right_trigger > 0.5) {
-            bot.inOutTake.scoopUp();
+//            bot.inOutTake.scoopUp();
         }
         else {
-            bot.inOutTake.scoopDown();
+//            bot.inOutTake.scoopDown();
         }
 
         try {
