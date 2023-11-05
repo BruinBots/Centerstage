@@ -1,47 +1,54 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class InOutTake {
 
-    private Servo inServo1;
-    private Servo inServo2;
+    private Servo inServoLeft;
+    private Servo inServoRight;
+    // above servos are continous rotation servos, rotate backwards of each other to in/out-take the pixel
     private Servo scoopServo;
+    // scoop servo is standard servo to move pixel between intake and claw
 
-    public static final double IN_POSITION = 1;
-    public static final double OUT_POSITION = 0;
+    public static final double IN_SPEED = 0.5; // untested, should work
+    public static final double OUT_SPEED = 0.3;
 
-    public static final double SCOOP_DOWN_POS = 0;
-    public static final double SCOOP_UP_POS = 0.7;
+    // above constants are between 0-1
+    // 0            0.5         1
+    // backwards    stop        forwards
 
-    InOutTake (Servo inServo1, Servo inServo2, Servo scoopServo) {
-        this.inServo1 = inServo1;
-        this.inServo2 = inServo2;
+    public static final double SCOOP_DOWN_POS = 0; // this should work, untested
+    public static final double SCOOP_UP_POS = 0.7; // no idea if this works
+    // above constants are between 0-1
+    // 0        ?       1
+    // down     up      too far up
+
+    InOutTake (Servo inServoLeft, Servo inServoRight, Servo scoopServo) {
+        this.inServoLeft = inServoLeft;
+        this.inServoRight = inServoRight;
         this.scoopServo = scoopServo;
     }
 
-    public void intake() {
-        inServo1.setPosition(IN_POSITION);
-        inServo2.setPosition(IN_POSITION);
+    public void intake() { // suck pixels in
+        inServoLeft.setPosition(0.5 + IN_SPEED);
+        inServoRight.setPosition(0.5 - IN_SPEED);
     }
 
-    public void outtake() {
-        inServo1.setPosition(OUT_POSITION);
-        inServo2.setPosition(OUT_POSITION);
+    public void outtake() { // eject pixels out
+        inServoLeft.setPosition(0.5 + OUT_SPEED);
+        inServoRight.setPosition(0.5 - OUT_SPEED);
     }
 
-    public void stopTake() {
-
+    public void stopTake() { // stop inServo's
+        inServoLeft.setPosition(0.5);
+        inServoRight.setPosition(0.5);
     }
 
-    public void scoopUp() {
+    public void scoopUp() { // move pixel form intake --> claw
         scoopServo.setPosition(SCOOP_UP_POS);
     }
 
-    public void scoopDown() {
+    public void scoopDown() { // move intake down to collect next pixel
         scoopServo.setPosition(SCOOP_DOWN_POS);
     }
 }
