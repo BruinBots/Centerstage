@@ -9,7 +9,8 @@ public class Claw {
     private Servo clawServo;
 
     public static final double OPEN_POS = 0.1; // 36º
-    public static final double CLOSED_POS = 0; // 0º
+    public static final double CLOSE_BOTH_POS = 0; // 0º
+    public static final double CLOSE_ONE_POS = 0.02;
 
 
     Claw (Servo clawServo) {
@@ -20,9 +21,10 @@ public class Claw {
         clawMove(OPEN_POS);
     }
 
-    public void closeClaw() {
-        clawMove(CLOSED_POS);
+    public void closeBothClaw() {
+        clawMove(CLOSE_BOTH_POS);
     }
+    public void closeOneClaw() { clawMove(CLOSE_ONE_POS); }
     private void clawMove(double position) {
         // if position is negative, go reverse, as servos don't accept negative values. If position is positive, go forwards, and if 0, it doesn't matter so it defaults to forwards
         if (position < 0) {

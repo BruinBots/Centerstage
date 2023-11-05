@@ -10,27 +10,31 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class Karen  {
 
 
-    // Class variables
+    // Drive motors
 
     public DcMotorEx leftFrontMotor;
     public DcMotorEx rightFrontMotor;
     public DcMotorEx leftBackMotor;
     public DcMotorEx rightBackMotor;
 
+    // intake motors
     public Servo intakeServo1;
     public Servo intakeServo2;
     public Servo scoopServo;
-    public DigitalChannel intakeTouchSensor;
 
+    // arm & slide motors
     public DcMotorEx slideMotor;
     public DcMotorEx armMotor;
 
+    // odometry wheels
     public DcMotorEx leftOdo;
     public DcMotorEx rightOdo;
     public DcMotorEx backOdo;
 
+    // claw motor
     public Servo clawServo1;
 
+    // drone launch motor
     public DcMotorEx droneMotor;
 
     public final int TICKS_PER_REVOLUTION = 200;
@@ -39,7 +43,7 @@ public class Karen  {
     // subclasses
     InOutTake inOutTake;
     Claw claw;
-//    Drone drone;
+    Drone drone;
     Arm arm;
 
     // constructor with map
@@ -81,8 +85,8 @@ public class Karen  {
         claw = new Claw(clawServo1);
 
         // drone launch
-//        droneMotor = map.get(DcMotorEx.class, "drone_motor");
-//        drone = new Drone(droneMotor);
+        droneMotor = map.get(DcMotorEx.class, "drone_motor");
+        drone = new Drone(droneMotor);
     }
 
     private double rampUp(double x) {

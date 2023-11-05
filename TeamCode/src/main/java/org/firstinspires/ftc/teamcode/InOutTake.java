@@ -33,6 +33,10 @@ public class InOutTake {
         inServo2.setPosition(OUT_POSITION);
     }
 
+    public void stopTake() {
+
+    }
+
     public void scoopUp() {
         scoopServo.setPosition(SCOOP_UP_POS);
     }
