@@ -106,6 +106,7 @@ public class MecanumOpMode extends OpMode
         else if (gamepad1.right_bumper) {
             bot.claw.openClaw();
         }
+         ;
 
         // drone launch
 
@@ -116,13 +117,21 @@ public class MecanumOpMode extends OpMode
 
         // TODO: intake
 
+
+        ;
         if (gamepad1.x) {
             bot.inOutTake.intake();
         }
         else if (gamepad1.b) {
             bot.inOutTake.outtake();
         }
-        telemetry.addData("inOutTakeServo", bot.intakeServo.getPosition());
+
+        if (gamepad1.right_trigger > 0.5) {
+            bot.inOutTake.scoopUp();
+        }
+        else {
+            bot.inOutTake.scoopDown();
+        }
 
         try {
             sleep(20);

@@ -17,7 +17,9 @@ public class Karen  {
     public DcMotorEx leftBackMotor;
     public DcMotorEx rightBackMotor;
 
-    public Servo intakeServo;
+    public Servo intakeServo1;
+    public Servo intakeServo2;
+    public Servo scoopServo;
     public DigitalChannel intakeTouchSensor;
 
     public DcMotorEx slideMotor;
@@ -69,8 +71,10 @@ public class Karen  {
         backOdo = map.get(DcMotorEx.class, "left_front");
 
         // pixel intake
-        intakeServo = map.get(Servo.class, "intake_motor");
-        inOutTake = new InOutTake(intakeServo);
+        intakeServo1 = map.get(Servo.class, "intake_servo_1");
+        intakeServo2 = map.get(Servo.class, "intake_servo_2");
+        scoopServo = map.get(Servo.class, "scoop_servo");
+        inOutTake = new InOutTake(intakeServo1, intakeServo2, scoopServo);
 
         // claw
         clawServo1 = map.get(Servo.class, "claw_servo1");

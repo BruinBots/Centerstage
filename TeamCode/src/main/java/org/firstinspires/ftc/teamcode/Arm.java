@@ -42,7 +42,7 @@ public class Arm {
         }
         armMotor.setTargetPosition(targetPos);
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        if (targetPos < 0) {
+        if (targetPos < getCurrentArmPos()) {
             armMotor.setPower(ARM_POWER / 2); // move arm backwards slower so it doesn't crash into the slide
         }
         else {
