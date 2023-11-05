@@ -18,11 +18,18 @@ public class InOutTake {
     public static final double IN_SPEED = 0.5;
     public static final double OUT_SPEED = 0.3;
 
+
     // STOP_POS constant is between 0-1
     // 0            0.5         1
     // backwards    stop        forwards
     // 0.5 is (should be) stop
     public static final double STOP_POS = 0.5;
+
+    // left and right spin opposite of each other, at the same speed
+    public static final double LEFT_IN_POS = STOP_POS + IN_SPEED;
+    public static final double RIGHT_IN_POS = STOP_POS - IN_SPEED;
+    public static final double LEFT_OUT_POS = STOP_POS + OUT_SPEED;
+    public static final double RIGHT_OUT_POS = STOP_POS - OUT_SPEED;
 
     // SCOOP_POS constants are between 0-1
     // 0        TBD     1
@@ -38,14 +45,14 @@ public class InOutTake {
 
     // suck pixels in
     public void intake() {
-        inServoLeft.setPosition(0.5 + IN_SPEED);
-        inServoRight.setPosition(0.5 - IN_SPEED);
+        inServoLeft.setPosition(LEFT_IN_POS);
+        inServoRight.setPosition(RIGHT_IN_POS);
     }
 
     // eject pixels out
     public void outtake() {
-        inServoLeft.setPosition(0.5 + OUT_SPEED);
-        inServoRight.setPosition(0.5 - OUT_SPEED);
+        inServoLeft.setPosition(LEFT_OUT_POS);
+        inServoRight.setPosition(RIGHT_OUT_POS);
     }
 
     // stop inServo's
