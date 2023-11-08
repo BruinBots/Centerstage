@@ -22,7 +22,7 @@ public class Karen  {
     public Servo intakeServoRight;
     public Servo scoopServo;
 
-    // arm & slide motors
+    // arm and slide motors
     public DcMotorEx slideMotor;
     public DcMotorEx armMotor;
 
