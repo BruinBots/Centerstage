@@ -19,12 +19,12 @@ public class Arm {
     public static double SLIDE_POWER = 0.6; // the default power supplied to the slide when being used to lift the claw
     public static double HANG_POWER = 0.8; // the default power supplied to the slide when being used to lift the robot
 
-    public static double HANG_MOVE = 0;
-    public static double HANG_DOWN = 0;
-    public static double HANG_UP = 0;
+    public static int HANG_MOVE = 0;
+    public static int HANG_DOWN = 0;
+    public static int HANG_UP = 0;
 
-    public static double ARM_DOWN = 20;
-    public static double ARM_UP = 200;
+    public static int ARM_DOWN = 20;
+    public static int ARM_UP = 200;
 
     Arm (DcMotorEx armMotor, DcMotorEx slideMotor) {
         this.armMotor = armMotor;
