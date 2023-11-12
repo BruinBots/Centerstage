@@ -19,7 +19,7 @@ public class InOutTake {
     public static final double OUT_SPEED = 0.3;
 
 
-    // STOP_POS constant is between 0-1
+    // STOP_POS constant is  between 0-1
     // 0            0.5         1
     // backwards    stop        forwards
     // 0.5 is (should be) stop

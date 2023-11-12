@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class Arm {
 
-    // declare motors
+    // declare  motors
     private final DcMotorEx armMotor;
     private final DcMotorEx slideMotor;
 

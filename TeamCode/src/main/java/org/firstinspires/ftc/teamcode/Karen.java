@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class Karen  {
 
 
-    // Drive motors
+    // Drive  motors
 
     public DcMotorEx leftFrontMotor;
     public DcMotorEx rightFrontMotor;
