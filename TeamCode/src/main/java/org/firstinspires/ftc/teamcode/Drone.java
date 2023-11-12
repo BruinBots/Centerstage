@@ -9,7 +9,7 @@ public class Drone {
     private final DcMotorEx droneMotor;
     private boolean launchingDrone;
     private long timeWhenLaunched;
-    private static final long MOTOR_RUN_TIME = 500; // 500 ms
+    private static final long MOTOR_RUN_TIME = 500; // 500  ms
     private static final double MOTOR_POWER = 1.0;
 
     Drone(DcMotorEx droneMotor) {
