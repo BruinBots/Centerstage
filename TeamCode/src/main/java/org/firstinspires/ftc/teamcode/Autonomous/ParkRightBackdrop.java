@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
-@Autonomous(name = "ParkLeftBackdrop", group = "Autonomous: Testing")
-public class ParkLeftBackdrop extends LinearOpMode {
+@Autonomous(name = "ParkRightBackdrop", group = "Autonomous: Testing")
+public class ParkRightBackdrop extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -27,8 +27,8 @@ public class ParkLeftBackdrop extends LinearOpMode {
                 .forward(3 * 12) // move forward 3 feet
                 .build();
 
-        Trajectory parkLeftBackdropTrajectory = drive.trajectoryBuilder(parkCenterBackdropTrajectory.end())
-                .lineTo(new Vector2d(1 * 12, -1 * 12)) // move diagonal left and forwards 1 foot
+        Trajectory parkRightBackdropTrajectory = drive.trajectoryBuilder(parkCenterBackdropTrajectory.end())
+                .lineTo(new Vector2d(1 * 12, 1 * 12)) // move diagonal right and forwards 1 foot
                 .build();
 
         waitForStart();
@@ -39,6 +39,6 @@ public class ParkLeftBackdrop extends LinearOpMode {
         drive.turn(Math.toRadians(-90));
         drive.followTrajectory(parkAtBackdropTrajectory);
         drive.followTrajectory(parkCenterBackdropTrajectory);
-        drive.followTrajectory(parkLeftBackdropTrajectory);
+        drive.followTrajectory(parkRightBackdropTrajectory);
     }
 }
