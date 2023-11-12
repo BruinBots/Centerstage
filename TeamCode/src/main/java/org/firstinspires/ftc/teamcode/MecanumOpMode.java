@@ -33,7 +33,6 @@ import static java.lang.Thread.sleep;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp(name="Basic: Mecanum TeleOp", group="Iterative Opmode")
 public class MecanumOpMode extends OpMode
@@ -64,7 +63,7 @@ public class MecanumOpMode extends OpMode
     //
     @Override
     public void start() {
-        bot.arm.moveArm(bot.arm.MIN_ARM_POSITION);
+        bot.arm.moveArm(Arm.MIN_ARM_POSITION);
     }
 
     //
@@ -108,7 +107,7 @@ public class MecanumOpMode extends OpMode
         else if (gamepad1.right_bumper) {
             bot.claw.openClaw();
         }
-         ;
+
 
         // drone launch
 
@@ -120,7 +119,7 @@ public class MecanumOpMode extends OpMode
         // TODO: intake
 
 
-        ;
+
         if (gamepad1.x) {
             bot.inOutTake.intake();
         }

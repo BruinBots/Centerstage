@@ -6,11 +6,11 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class Drone {
 
-    private DcMotorEx droneMotor;
+    private final DcMotorEx droneMotor;
     private boolean launchingDrone;
     private long timeWhenLaunched;
-    private static long MOTOR_RUN_TIME = 500; // 500 ms
-    private static double MOTOR_POWER = 1.0;
+    private static final long MOTOR_RUN_TIME = 500; // 500 ms
+    private static final double MOTOR_POWER = 1.0;
 
     Drone(DcMotorEx droneMotor) {
         this.droneMotor = droneMotor;

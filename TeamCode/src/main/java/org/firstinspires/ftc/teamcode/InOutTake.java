@@ -4,9 +4,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class InOutTake {
 
-    // inServo's are continous rotation servos, rotate backwards of each other to in/out-take the pixel
-    private Servo inServoLeft;
-    private Servo inServoRight;
+    // inServo's are continuous rotation servos, rotate backwards of each other to in/out-take the pixel
+    private final Servo inServoLeft;
+    private final Servo inServoRight;
 
     // scoop servo is standard servo to move pixel between intake and claw
 //    private Servo scoopServo;

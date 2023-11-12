@@ -1,12 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
-import static java.lang.Thread.sleep;
 
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class Claw {
 
-    private Servo clawServo;
+    private final Servo clawServo;
 
 
     public static final double CLOSE_BOTH_POS = 0.048; // 0º
