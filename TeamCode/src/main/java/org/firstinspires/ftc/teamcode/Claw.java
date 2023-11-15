@@ -8,7 +8,7 @@ public class Claw {
     private final Servo clawServo;
 
 
-    public static final double CLOSE_BOTH_POS = 0.048; // 0º
+    public static final double CLOSE_BOTH_POS = 0.045; // 0º
     public static final double OPEN_POS = CLOSE_BOTH_POS + 0.1; // 36º
     public static final double CLOSE_ONE_POS = CLOSE_BOTH_POS + 0.046;
 

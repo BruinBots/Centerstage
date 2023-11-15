@@ -63,7 +63,7 @@ public class MecanumOpMode extends OpMode
     //
     @Override
     public void start() {
-        bot.arm.moveArm(Arm.MIN_ARM_POSITION);
+        //bot.arm.moveArm(Arm.MIN_ARM_POSITION);
     }
 
     //
@@ -130,7 +130,7 @@ public class MecanumOpMode extends OpMode
             bot.inOutTake.stopTake();
         }
 
-        if (gamepad1.right_trigger > 0.5) {
+        if (gamepad1.right_trigger > 0.2) {
             bot.inOutTake.scoopUp();
         }
         else {
@@ -138,11 +138,13 @@ public class MecanumOpMode extends OpMode
         }
 
         if (gamepad1.right_stick_y > 0.2) {
-            bot.dropper.dropperUp();
+//            bot.dropper.dropperUp();
         }
         else if (gamepad1.right_stick_y < -0.2) {
-            bot.dropper.dropperDown();
+//            bot.dropper.dropperDown();
         }
+
+
 
         try {
             sleep(20);

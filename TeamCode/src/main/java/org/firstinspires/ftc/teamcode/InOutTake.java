@@ -36,7 +36,7 @@ public class InOutTake {
     // 0        TBD     1
     // down     up      too far up
     public static final double SCOOP_DOWN_POS = 0; // this should work, untested
-    public static final double SCOOP_UP_POS = 0.7; // no idea if this works, untested
+    public static final double SCOOP_UP_POS = 0.5; // no idea if this works, untested
 
     InOutTake (Servo inServoLeft, Servo inServoRight, Servo scoopServo) {
         this.inServoLeft = inServoLeft;
