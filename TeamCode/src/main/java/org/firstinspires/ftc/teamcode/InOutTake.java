@@ -15,8 +15,8 @@ public class InOutTake {
     // SPEED constants are between 0-0.5
     // 0            0.5
     // stop         full speed
-    public static final double IN_SPEED = 0.5;
-    public static final double OUT_SPEED = 0.3;
+    public static final double IN_SPEED = -0.5;
+    public static final double OUT_SPEED = -0.3;
 
 
     // STOP_POS constant is  between 0-1
@@ -35,7 +35,7 @@ public class InOutTake {
     // SCOOP_POS constants are between 0-1
     // 0        TBD     1
     // down     up      too far up
-    public static final double SCOOP_DOWN_POS = 0; // this should work, untested
+    public static final double SCOOP_DOWN_POS = 0.03; // this should work, untested
     public static final double SCOOP_UP_POS = 0.5; // no idea if this works, untested
 
     InOutTake (Servo inServoLeft, Servo inServoRight, Servo scoopServo) {
