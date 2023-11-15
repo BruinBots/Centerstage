@@ -9,7 +9,7 @@ public class InOutTake {
     private final Servo inServoRight;
 
     // scoop servo is standard servo to move pixel between intake and claw
-//    private Servo scoopServo;
+    private Servo scoopServo;
 
     // untested, should work
     // SPEED constants are between 0-0.5
@@ -38,10 +38,10 @@ public class InOutTake {
     public static final double SCOOP_DOWN_POS = 0; // this should work, untested
     public static final double SCOOP_UP_POS = 0.7; // no idea if this works, untested
 
-    InOutTake (Servo inServoLeft, Servo inServoRight) {
+    InOutTake (Servo inServoLeft, Servo inServoRight, Servo scoopServo) {
         this.inServoLeft = inServoLeft;
         this.inServoRight = inServoRight;
-//        this.scoopServo = scoopServo;
+        this.scoopServo = scoopServo;
     }
 
     // suck pixels in
@@ -64,11 +64,11 @@ public class InOutTake {
 
     // move pixel from intake --> claw
     public void scoopUp() {
-//        scoopServo.setPosition(SCOOP_UP_POS);
+        scoopServo.setPosition(SCOOP_UP_POS);
     }
 
     // move intake down to collect next pixel
     public void scoopDown() {
-//        scoopServo.setPosition(SCOOP_DOWN_POS);
+        scoopServo.setPosition(SCOOP_DOWN_POS);
     }
 }

@@ -78,20 +78,20 @@ public class MecanumOpMode extends OpMode
 
         // arm & slide
         if (gamepad1.dpad_up) {
-            bot.arm.moveSlide(bot.arm.getCurrentSlidePos() + 30);
+            bot.arm.moveSlide(bot.arm.getCurrentSlidePos() + 300);
         }
         else if (gamepad1.dpad_down) {
-            bot.arm.moveSlide(bot.arm.getCurrentSlidePos() - 30);
+            bot.arm.moveSlide(bot.arm.getCurrentSlidePos() - 300);
         }
         else {
             bot.arm.holdArmPos();
         }
 
         if (gamepad1.dpad_right) {
-            bot.arm.moveArm(bot.arm.getCurrentArmPos() + 10);
+            bot.arm.moveArm(bot.arm.getCurrentArmPos() + 100);
         }
         else if (gamepad1.dpad_left) {
-            bot.arm.moveArm(bot.arm.getCurrentArmPos() - 10);
+            bot.arm.moveArm(bot.arm.getCurrentArmPos() - 100);
         }
         else {
             bot.arm.holdSlidePos();
@@ -131,10 +131,17 @@ public class MecanumOpMode extends OpMode
         }
 
         if (gamepad1.right_trigger > 0.5) {
-//            bot.inOutTake.scoopUp();
+            bot.inOutTake.scoopUp();
         }
         else {
-//            bot.inOutTake.scoopDown();
+            bot.inOutTake.scoopDown();
+        }
+
+        if (gamepad1.right_stick_y > 0.2) {
+            bot.dropper.dropperUp();
+        }
+        else if (gamepad1.right_stick_y < -0.2) {
+            bot.dropper.dropperDown();
         }
 
         try {

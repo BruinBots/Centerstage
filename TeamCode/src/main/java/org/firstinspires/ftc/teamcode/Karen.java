@@ -46,7 +46,7 @@ public class Karen  {
     // subclasses
     InOutTake inOutTake;
     Claw claw;
-    Drone drone;
+//    Drone drone;
     Arm arm;
     Dropper dropper;
 
@@ -81,16 +81,16 @@ public class Karen  {
         // pixel intake
         intakeServoLeft = map.get(Servo.class, "intake_servo_left");
         intakeServoRight = map.get(Servo.class, "intake_servo_right");
-//        scoopServo = map.get(Servo.class, "scoop_servo");
-        inOutTake = new InOutTake(intakeServoLeft, intakeServoRight);
+        scoopServo = map.get(Servo.class, "scoop_servo");
+        inOutTake = new InOutTake(intakeServoLeft, intakeServoRight, scoopServo);
 
         // claw
         clawServo1 = map.get(Servo.class, "claw_servo1");
         claw = new Claw(clawServo1);
 
         // drone launch
-        droneMotor = map.get(DcMotorEx.class, "drone_motor");
-        drone = new Drone(droneMotor);
+//        droneMotor = map.get(DcMotorEx.class, "drone_motor");
+//        drone = new Drone(droneMotor);
 
         // dropper
         dropperServo = map.get(Servo.class, "dropper_servo");
