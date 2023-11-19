@@ -46,7 +46,7 @@ public class Karen  {
     // subclasses
     InOutTake inOutTake;
     Claw claw;
-//    Drone drone;
+    Drone drone;
     Arm arm;
 //    Dropper dropper;
 
@@ -89,8 +89,8 @@ public class Karen  {
         claw = new Claw(clawServo1);
 
         // drone launch
-//        droneMotor = map.get(DcMotorEx.class, "drone_motor");
-//        drone = new Drone(droneMotor);
+        droneMotor = map.get(DcMotorEx.class, "drone_motor");
+        drone = new Drone(droneMotor);
 
         // dropper
 //        dropperServo = map.get(Servo.class, "dropper_servo");

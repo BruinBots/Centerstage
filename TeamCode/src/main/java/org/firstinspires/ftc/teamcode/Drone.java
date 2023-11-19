@@ -1,35 +1,34 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-public class Drone {
+public class  Drone {
 
-    private final DcMotorEx droneMotor;
+    private DcMotorEx droneMotor;
     private boolean launchingDrone;
     private long timeWhenLaunched;
-    private static final long MOTOR_RUN_TIME = 500; //  500  ms
-    private static final double MOTOR_POWER = 1.0;
+    private static long motorRunTime = 500; // 500 ms
+    private static double motorPower = 0.85; // 85% power
 
     Drone(DcMotorEx droneMotor) {
         this.droneMotor = droneMotor;
     }
 
-    public void launch() {
-        launchingDrone = true;
-        droneMotor.setPower(MOTOR_POWER);
-        timeWhenLaunched = getCurrentTime();
-    }
-
-    public void checkLaunchState() {
+    public void loop() {
         if (launchingDrone) {
-            if (elapsedTime() > MOTOR_RUN_TIME) {
+            if (elapsedTime() > motorRunTime) {
                 stop();
             }
         }
-        telemetry.addData("launching drone", launchingDrone);
-        telemetry.update();
+    }
+
+    public void launch() {
+        droneMotor.setPower(motorPower);
+        launchingDrone = true;
+        timeWhenLaunched = getCurrentTime();
     }
 
     private long getCurrentTime() {
