@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 import static java.lang.Thread.sleep;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -13,6 +15,8 @@ public class HumanOperatedMode extends OpMode
     double turn = 0.0;
     double strafe = 0.0;
     boolean lastAButton;
+    private boolean leftBumper;
+    private boolean rightBumper;
 
     //
     @Override
@@ -47,12 +51,22 @@ public class HumanOperatedMode extends OpMode
         }
         bot.drone.loop();
 
+        if (gamepad1.left_bumper && !leftBumper) {
+            Drone.motorPower -= 0.01;
+        } else if (gamepad1.right_bumper && !rightBumper) {
+            Drone.motorPower += 0.01;
+        }
+        leftBumper = gamepad1.left_bumper;
+        rightBumper = gamepad1.right_bumper;
+
         try {
             sleep(20);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         lastAButton = gamepad1.a;
+        telemetry.addData("MotorPower: ", Drone.motorPower);
+        telemetry.update();
     }
 
 
