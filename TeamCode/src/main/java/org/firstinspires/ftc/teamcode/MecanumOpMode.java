@@ -84,7 +84,7 @@ public class MecanumOpMode extends OpMode
             bot.arm.moveSlide(bot.arm.getCurrentSlidePos() - 30);
         }
         else {
-            bot.arm.holdArmPos();
+//            bot.arm.holdArmPos();
         }
 
         if (gamepad1.dpad_right) {
@@ -98,6 +98,7 @@ public class MecanumOpMode extends OpMode
         }
 
         telemetry.addData("arm", bot.arm.getCurrentArmPos());
+        telemetry.addData("slide", bot.arm.getCurrentSlidePos());
 
         // claw
         if (gamepad1.left_trigger > 0.5) {
