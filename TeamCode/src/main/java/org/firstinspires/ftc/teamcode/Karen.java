@@ -48,7 +48,7 @@ public class Karen  {
     Claw claw;
     Drone drone;
     Arm arm;
-//    Dropper dropper;
+    Dropper dropper;
 
     // constructor with map
     public Karen(HardwareMap map) {
@@ -93,8 +93,8 @@ public class Karen  {
         drone = new Drone(droneMotor);
 
         // dropper
-//        dropperServo = map.get(Servo.class, "dropper_servo");
-//        dropper = new Dropper(dropperServo);
+        dropperServo = map.get(Servo.class, "dropper_servo");
+        dropper = new Dropper(dropperServo);
     }
 
     private double rampUp(double x) {
@@ -103,7 +103,7 @@ public class Karen  {
 
     public void moveBotMecanum(double drive, double rotate, double strafe, double scaleFactor) {
 
-        drive = rampUp(drive); // use S-curve to ramp up drive gradually
+//        drive = rampUp(drive); // use S-curve to ramp up drive gradually
 
         double[] wheelSpeeds = new double[4];
         wheelSpeeds[0] = drive + strafe + rotate;  // left front

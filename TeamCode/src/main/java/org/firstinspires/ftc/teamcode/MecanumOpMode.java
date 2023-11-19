@@ -74,24 +74,24 @@ public class MecanumOpMode extends OpMode
         strafe = gamepad1.left_stick_x;
         turn = gamepad1.right_stick_x;
 
-        bot.moveBotMecanum(drive, turn, strafe, 1); // actually move the robot
+        bot.moveBotMecanum(drive, turn, strafe, 0.3); // actually move the robot
 
         // arm & slide
-        if (gamepad1.dpad_up) {
+        if (gamepad2.left_stick_y > 0.2) {
             bot.arm.moveSlide(bot.arm.getCurrentSlidePos() + 30);
         }
-        else if (gamepad1.dpad_down) {
+        else if (gamepad2.left_stick_y < -0.2) {
             bot.arm.moveSlide(bot.arm.getCurrentSlidePos() - 30);
         }
         else {
-//            bot.arm.holdArmPos();
+            bot.arm.holdArmPos();
         }
 
-        if (gamepad1.dpad_right) {
-            bot.arm.moveArm(bot.arm.getCurrentArmPos() + 1);
+        if (gamepad2.right_stick_y > 0.2) {
+            bot.arm.moveArm(bot.arm.getCurrentArmPos() + 200);
         }
-        else if (gamepad1.dpad_left) {
-            bot.arm.moveArm(bot.arm.getCurrentArmPos() - 1);
+        else if (gamepad2.right_stick_y < -0.2) {
+            bot.arm.moveArm(bot.arm.getCurrentArmPos() - 200);
         }
         else {
             bot.arm.holdSlidePos();
@@ -101,13 +101,13 @@ public class MecanumOpMode extends OpMode
         telemetry.addData("slide", bot.arm.getCurrentSlidePos());
 
         // claw
-        if (gamepad1.left_trigger > 0.5) {
+        if (gamepad2.left_trigger > 0.5) {
             bot.claw.closeBothClaw();
         }
-        else if (gamepad1.left_bumper) {
+        else if (gamepad2.left_bumper) {
             bot.claw.closeOneClaw();
         }
-        else if (gamepad1.right_bumper) {
+        else if (gamepad2.right_bumper) {
             bot.claw.openClaw();
         }
 
@@ -141,10 +141,10 @@ public class MecanumOpMode extends OpMode
         }
 
         if (gamepad1.right_stick_y > 0.2) {
-//            bot.dropper.dropperUp();
+            bot.dropper.dropperUp();
         }
         else if (gamepad1.right_stick_y < -0.2) {
-//            bot.dropper.dropperDown();
+            bot.dropper.dropperDown();
         }
 
 
