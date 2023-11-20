@@ -38,6 +38,10 @@ public class BlueFarBackdrop extends LinearOpMode {
         // -26, 28 left
         // -42, 28 right
 
+        // y=36 center
+        // y=28 right
+        // y=42 left
+
         waitForStart();
 
         if(isStopRequested()) return;

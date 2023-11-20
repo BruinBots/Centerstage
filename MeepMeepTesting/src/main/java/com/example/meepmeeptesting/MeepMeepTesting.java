@@ -18,8 +18,8 @@ public class MeepMeepTesting {
 //                                .splineToConstantHeading(new Vector2d(-26, 32), Math.toRadians(90))
                                 .splineTo(new Vector2d(-36, 60), Math.toRadians(0))
                                 .splineTo(new Vector2d(18, 60), Math.toRadians(0))
-                                .splineTo(new Vector2d(48, 36), Math.toRadians(0))
-                                .splineTo(new Vector2d(40, 36), Math.toRadians(0))
+                                .splineTo(new Vector2d(48, 42), Math.toRadians(0))
+                                .splineTo(new Vector2d(40, 42), Math.toRadians(0))
                                 .splineTo(new Vector2d(60, 60), Math.toRadians(0))
                                 .build()
                 );
