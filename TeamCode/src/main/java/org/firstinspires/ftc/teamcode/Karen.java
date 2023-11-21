@@ -43,11 +43,11 @@ public class Karen  {
     public final int DEADWHEEL_RADIUS = 2; // cm ??
 
     // subclasses
-    InOutTake inOutTake;
-    Claw claw;
-    Drone drone;
-    Arm arm;
-    Dropper dropper;
+    public InOutTake inOutTake;
+    public Claw claw;
+    public Drone drone;
+    public Arm arm;
+    public Dropper dropper;
 
     // constructor with map
     public Karen(HardwareMap map) {
