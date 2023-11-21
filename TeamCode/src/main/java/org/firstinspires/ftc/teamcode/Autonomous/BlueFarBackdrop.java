@@ -23,7 +23,11 @@ public class BlueFarBackdrop extends LinearOpMode {
 
         drive.setPoseEstimate(startPose);
 
-        Trajectory traj1 = drive.trajectoryBuilder(startPose, true)
+        Trajectory traj0 = drive.trajectoryBuilder(startPose, true)
+                .splineTo(new Vector2d(-32, 28), Math.toRadians(90))
+                .build();
+
+        Trajectory traj1 = drive.trajectoryBuilder(traj0.end(), true)
                 .splineTo(new Vector2d(-36, 60), Math.toRadians(0))
                 .splineTo(new Vector2d(18, 60), Math.toRadians(0))
                 .splineTo(new Vector2d(48, 36), Math.toRadians(0))
@@ -45,6 +49,10 @@ public class BlueFarBackdrop extends LinearOpMode {
         waitForStart();
 
         if(isStopRequested()) return;
+
+        drive.followTrajectory(traj0);
+
+        bot.dropper.dropperUp();
 
         drive.followTrajectory(traj1); // navigate to backboard
 
