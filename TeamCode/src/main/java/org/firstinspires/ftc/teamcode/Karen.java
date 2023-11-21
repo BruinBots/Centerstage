@@ -36,18 +36,18 @@ public class Karen  {
     // drone launch motor
     public DcMotorEx droneMotor;
 
-    // dropper
+    // dropper servo
     public Servo dropperServo;
 
     public final int TICKS_PER_REVOLUTION = 200;
     public final int DEADWHEEL_RADIUS = 2; // cm ??
 
     // subclasses
-    public InOutTake inOutTake;
-    public Claw claw;
-//    Drone drone;
-    public Arm arm;
-    public Dropper dropper;
+    InOutTake inOutTake;
+    Claw claw;
+    Drone drone;
+    Arm arm;
+    Dropper dropper;
 
     // constructor with map
     public Karen(HardwareMap map) {
@@ -80,16 +80,16 @@ public class Karen  {
         // pixel intake
         intakeServoLeft = map.get(Servo.class, "intake_servo_left");
         intakeServoRight = map.get(Servo.class, "intake_servo_right");
-//        scoopServo = map.get(Servo.class, "scoop_servo");
-        inOutTake = new InOutTake(intakeServoLeft, intakeServoRight);
+        scoopServo = map.get(Servo.class, "scoop_servo");
+        inOutTake = new InOutTake(intakeServoLeft, intakeServoRight, scoopServo);
 
         // claw
         clawServo1 = map.get(Servo.class, "claw_servo1");
         claw = new Claw(clawServo1);
 
         // drone launch
-//        droneMotor = map.get(DcMotorEx.class, "drone_motor");
-//        drone = new Drone(droneMotor);
+        droneMotor = map.get(DcMotorEx.class, "drone_motor");
+        drone = new Drone(droneMotor);
 
         // dropper
         dropperServo = map.get(Servo.class, "dropper_servo");
@@ -102,7 +102,7 @@ public class Karen  {
 
     public void moveBotMecanum(double drive, double rotate, double strafe, double scaleFactor) {
 
-        drive = rampUp(drive); // use S-curve to ramp up drive gradually
+//        drive = rampUp(drive); // use S-curve to ramp up drive gradually
 
         double[] wheelSpeeds = new double[4];
         wheelSpeeds[0] = drive + strafe + rotate;  // left front
