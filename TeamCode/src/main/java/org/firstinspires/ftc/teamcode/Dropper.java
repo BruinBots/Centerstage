@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class Dropper {
 
     private final Servo dropperServo;
 
-    public static final double DROPPER_UP_POS = 0.1;
-    public static final double DROPPER_DOWN_POS = 0.05;
+    public static final double DROPPER_UP_POS = 0.5;
+    public static final double DROPPER_DOWN_POS = 0;
 
     Dropper (Servo dropperServo) { this.dropperServo = dropperServo; }
 

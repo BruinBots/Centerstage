@@ -16,7 +16,7 @@ public class MeepMeepTesting {
                 .setConstraints(30, 60, Math.toRadians(180), Math.toRadians(180), 16.8)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(new Pose2d(-36, 65, Math.toRadians(90)))
-                                .splineToConstantHeading(new Vector2d(-32, 28), Math.toRadians(90), SampleMecanumDrive.getVelocityConstraint(15, Math.toRadians(195), 16.8), SampleMecanumDrive.getAccelerationConstraint(30))
+                                .splineToConstantHeading(new Vector2d(-32, 30), Math.toRadians(90), SampleMecanumDrive.getVelocityConstraint(15, Math.toRadians(195), 16.8), SampleMecanumDrive.getAccelerationConstraint(30))
                                 .splineTo(new Vector2d(-36, 60), Math.toRadians(0))
                                 .splineTo(new Vector2d(18, 60), Math.toRadians(0))
                                 .splineTo(new Vector2d(48, 42), Math.toRadians(0), SampleMecanumDrive.getVelocityConstraint(20, Math.toRadians(195), 16.8), SampleMecanumDrive.getAccelerationConstraint(30))
