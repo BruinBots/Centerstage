@@ -18,14 +18,34 @@ public class BlueFarBackdrop extends LinearOpMode {
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        // We want to start the bot at x: -36, y: 65, heading: 270 degrees
         Pose2d startPose = new Pose2d(-36,65, Math.toRadians(90));
 
         drive.setPoseEstimate(startPose);
 
-        Trajectory traj0 = drive.trajectoryBuilder(startPose, true)
-                .splineTo(new Vector2d(-32, 28), Math.toRadians(90))
-                .build();
+        TensorFlowForAutonomous tf = new TensorFlowForAutonomous(hardwareMap);
+        String side = tf.getSide();
+
+        Trajectory traj0;
+
+        switch (side) {
+            case "left":
+                traj0 = drive.trajectoryBuilder(startPose)
+                        .splineTo(new Vector2d(-26, 28), Math.toRadians(90))
+                        .build();
+                break;
+            case "center":
+                traj0 = drive.trajectoryBuilder(startPose)
+                        .splineTo(new Vector2d(-36, 28), Math.toRadians(90))
+                        .build();
+                break;
+            case "right":
+                traj0 = drive.trajectoryBuilder(startPose)
+                        .splineTo(new Vector2d(-42, 28), Math.toRadians(90))
+                        .build();
+                break;
+            default:
+                return;
+        }
 
         Trajectory traj1 = drive.trajectoryBuilder(traj0.end(), true)
                 .splineTo(new Vector2d(-36, 60), Math.toRadians(0))
