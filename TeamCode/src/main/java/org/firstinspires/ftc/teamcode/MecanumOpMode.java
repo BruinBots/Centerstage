@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+
 import static java.lang.Thread.sleep;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -73,48 +74,52 @@ public class MecanumOpMode extends OpMode
         drive = -gamepad1.left_stick_y;
         strafe = gamepad1.left_stick_x;
         turn = gamepad1.right_stick_x;
+        drive = -gamepad2.left_stick_x;
+        strafe = gamepad2.left_stick_y;
+        turn = gamepad2.right_stick_y;
+
 
         bot.moveBotMecanum(drive, turn, strafe, 0.3); // actually move the robot
 
-        // arm & slide
-        if (gamepad2.left_stick_y < -0.2) {
+        // arm & slid
+        if (gamepad2.left_trigger < -2) {
             bot.arm.moveSlide(bot.arm.getCurrentSlidePos() + 30);
         }
-        else if (gamepad2.left_stick_y > 0.2) {
+        else if (gamepad2.right_trigger < -2) {
             bot.arm.moveSlide(bot.arm.getCurrentSlidePos() - 30);
         }
         else {
-            bot.arm.holdArmPos();
+            bot.arm.holdSlidePos();
         }
 
-        if (gamepad2.right_stick_y < -0.2) {
+        if (gamepad2.right_bumper ) {
             bot.arm.moveArm(bot.arm.getCurrentArmPos() + 50);
         }
-        else if (gamepad2.right_stick_y > 0.2) {
+        else if (gamepad2.left_bumper) {
             bot.arm.moveArm(bot.arm.getCurrentArmPos() - 50);
-        }
+        }++-
         else {
-            bot.arm.holdSlidePos();
+            bot.arm.holdArmPos();
         }
 
         telemetry.addData("arm", bot.arm.getCurrentArmPos());
         telemetry.addData("slide", bot.arm.getCurrentSlidePos());
 
         // claw
-        if (gamepad2.left_trigger > 0.5) {
+        if (gamepad2.x ) {
             bot.claw.closeBothClaw();
         }
-        else if (gamepad2.left_bumper) {
+        else if (gamepad2.b) {
             bot.claw.closeOneClaw();
         }
-        else if (gamepad2.right_bumper) {
+        else if (gamepad2.a) {
             bot.claw.openClaw();
         }
 
 
         // drone launch
 
-        if (gamepad1.a) {
+        if (gamepad1.y) {
             bot.drone.launch();
         }
         bot.drone.loop();
@@ -123,29 +128,23 @@ public class MecanumOpMode extends OpMode
 
 
 
-        if (gamepad2.dpad_right) {
+        if (gamepad1.left_trigger > .2) {
             bot.inOutTake.intake();
         }
-        else if (gamepad2.dpad_left) {
+        else if (gamepad1.right_trigger > .2) {
             bot.inOutTake.outtake();
         }
         else {
             bot.inOutTake.stopTake();
         }
 
-        if (gamepad2.dpad_up) {
+        if (gamepad1.dpad_up) {
             bot.inOutTake.scoopUp();
         }
-        else {
+        else if (gamepad1.dpad_down) {
             bot.inOutTake.scoopDown();
         }
 
-        if (gamepad1.dpad_up) {
-            bot.dropper.dropperUp();
-        }
-        else {
-            bot.dropper.dropperDown();
-        }
 
 
 
