@@ -97,7 +97,7 @@ public class MecanumOpMode extends OpMode
         }
         else if (gamepad2.left_bumper) {
             bot.arm.moveArm(bot.arm.getCurrentArmPos() - 50);
-        }++-
+        }
         else {
             bot.arm.holdArmPos();
         }
