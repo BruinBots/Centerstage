@@ -33,12 +33,10 @@ public class Arm {
 
     public void moveArm(int targetPos) {
         if (targetPos < MIN_ARM_POSITION) {
-            moveArm(MIN_ARM_POSITION);
-            return;
+            targetPos = MIN_ARM_POSITION;
         }
         else if (targetPos > MAX_ARM_POSITION) {
-            moveArm(MAX_ARM_POSITION);
-            return;
+            targetPos = MAX_ARM_POSITION;
         }
         armMotor.setTargetPosition(targetPos);
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -54,8 +52,11 @@ public class Arm {
     }
 
     public void moveSlide(int targetPos) {
-        if (targetPos < MIN_SLIDE_POSITION || targetPos > MAX_SLIDE_POSITION) {
-            return;
+        if (targetPos < MIN_SLIDE_POSITION) {
+            targetPos = MIN_SLIDE_POSITION;
+        }
+        else if (targetPos > MAX_SLIDE_POSITION) {
+            targetPos = MAX_SLIDE_POSITION;
         }
         slideMotor.setTargetPosition(targetPos);
         slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
