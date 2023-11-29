@@ -74,17 +74,22 @@ public class MecanumOpMode extends OpMode
 //        drive = -gamepad2.left_stick_x;
 //        strafe = gamepad2.left_stick_y;
 //        turn = gamepad2.right_stick_y;
-        strafe = Math.copySign(Math.pow(gamepad1.left_stick_x, 2), gamepad1.left_stick_x);
-        drive = Math.copySign(Math.pow(-gamepad1.left_stick_y, 2), -gamepad1.left_stick_y);
-        turn = Math.copySign(Math.pow(gamepad1.right_stick_x, 2), gamepad1.right_stick_x);
 
-        bot.moveBotMecanum(drive, turn, strafe,  0.3); // actually move the robot
+        drive = gamepad1.left_stick_y - gamepad2.left_stick_y;
+        strafe = gamepad2.left_stick_x - gamepad1.left_stick_x;
+        turn= gamepad1.right_stick_x + gamepad2.right_stick_x;
+
+        strafe = Math.copySign(Math.pow(strafe, 2), strafe);
+        drive = Math.copySign(Math.pow(drive, 2), drive);
+        turn = Math.copySign(Math.pow(turn, 2), turn);
+
+        bot.moveBotMecanum(drive, turn, strafe,  0.5); // actually move the robot
 
         // arm & slid
-        if (gamepad2.right_trigger  > .5) {
+        if (gamepad2.right_trigger  > 0.5) {
             bot.arm.moveSlide(bot.arm.getCurrentSlidePos() + 30);
         }
-        else if (gamepad2.left_trigger  > .5) {
+        else if (gamepad2.left_trigger  > 0.5) {
             bot.arm.moveSlide(bot.arm.getCurrentSlidePos() - 30);
         }
         else {
@@ -113,6 +118,9 @@ public class MecanumOpMode extends OpMode
         }
         else if (gamepad2.a) {
             bot.claw.openClaw();
+        } else if (gamepad2.y) {
+            bot.arm.moveArm(bot.arm.MIN_ARM_POSITION);
+            bot.arm.moveSlide(bot.arm.MIN_SLIDE_POSITION);
         }
 
 
@@ -127,10 +135,10 @@ public class MecanumOpMode extends OpMode
 
 
 
-        if (gamepad1.left_trigger > .2) {
+        if (gamepad1.left_trigger > 0.5) {
             bot.inOutTake.intake();
         }
-        else if (gamepad1.right_trigger > .2) {
+        else if (gamepad1.right_trigger > 0.5) {
             bot.inOutTake.outtake();
         }
         else {
@@ -138,10 +146,16 @@ public class MecanumOpMode extends OpMode
         }
 
         if (gamepad1.dpad_up) {
+            bot.claw.openClaw();
             bot.inOutTake.scoopUp();
         }
         else if (gamepad1.dpad_down) {
+            bot.claw.openClaw();
             bot.inOutTake.scoopDown();
+            bot.arm.moveSlide(bot.arm.MIN_SLIDE_POSITION);
+
+        } else if (gamepad1.dpad_left) {
+            bot.inOutTake.scoopMiddle();
         }
 
 
