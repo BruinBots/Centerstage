@@ -22,32 +22,32 @@ public class BlueFarBackdrop extends LinearOpMode {
 
         drive.setPoseEstimate(startPose);
 
-        TensorFlowForAutonomous tf = new TensorFlowForAutonomous(hardwareMap);
-        String side = tf.getSide();
+//        TensorFlowForAutonomous tf = new TensorFlowForAutonomous(hardwareMap);
+//        String side = tf.getSide();
+//
+//        Trajectory traj0;
+//
+//        switch (side) {
+//            case "left":
+//                traj0 = drive.trajectoryBuilder(startPose)
+//                        .splineTo(new Vector2d(-26, 28), Math.toRadians(90))
+//                        .build();
+//                break;
+//            case "center":
+//                traj0 = drive.trajectoryBuilder(startPose)
+//                        .splineTo(new Vector2d(-36, 28), Math.toRadians(90))
+//                        .build();
+//                break;
+//            case "right":
+//                traj0 = drive.trajectoryBuilder(startPose)
+//                        .splineTo(new Vector2d(-42, 28), Math.toRadians(90))
+//                        .build();
+//                break;
+//            default:
+//                return;
+//        }
 
-        Trajectory traj0;
-
-        switch (side) {
-            case "left":
-                traj0 = drive.trajectoryBuilder(startPose)
-                        .splineTo(new Vector2d(-26, 28), Math.toRadians(90))
-                        .build();
-                break;
-            case "center":
-                traj0 = drive.trajectoryBuilder(startPose)
-                        .splineTo(new Vector2d(-36, 28), Math.toRadians(90))
-                        .build();
-                break;
-            case "right":
-                traj0 = drive.trajectoryBuilder(startPose)
-                        .splineTo(new Vector2d(-42, 28), Math.toRadians(90))
-                        .build();
-                break;
-            default:
-                return;
-        }
-
-        Trajectory traj1 = drive.trajectoryBuilder(traj0.end(), true)
+        Trajectory traj1 = drive.trajectoryBuilder(startPose, true)
                 .splineTo(new Vector2d(-36, 60), Math.toRadians(0))
                 .splineTo(new Vector2d(18, 60), Math.toRadians(0))
                 .splineTo(new Vector2d(48, 36), Math.toRadians(0))
@@ -70,19 +70,22 @@ public class BlueFarBackdrop extends LinearOpMode {
 
         if(isStopRequested()) return;
 
-        drive.followTrajectory(traj0);
+//        drive.followTrajectory(traj0);
 
-        bot.dropper.dropperUp();
+//        bot.dropper.dropperUp();
 
         drive.followTrajectory(traj1); // navigate to backboard
 
         bot.arm.moveArm(Arm.MAX_ARM_POSITION); // move arm up
-        bot.arm.moveSlide(Arm.MAX_SLIDE_POSITION - 300); // move slide up
-        bot.claw.openClaw(); // release the pixels
-
-        bot.claw.closeBothClaw(); // close claw so it doesn't get caught on wires
+        bot.arm.moveSlide(850); // move slide up
+        sleep(3000);
+//        bot.claw.openClaw(); // release the pixels
+//
+//        bot.claw.closeBothClaw(); // close claw so it doesn't get caught on wires
         bot.arm.moveArm(Arm.MIN_ARM_POSITION); // retract arm
         bot.arm.moveSlide(Arm.MIN_SLIDE_POSITION); // retract slide
+
+        sleep(3000);
 
         drive.followTrajectory(traj2);
 
