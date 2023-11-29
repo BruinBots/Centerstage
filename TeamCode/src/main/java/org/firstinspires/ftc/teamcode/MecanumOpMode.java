@@ -41,11 +41,8 @@ public class MecanumOpMode extends OpMode
 
     // drive values
     double drive = 0.0;
-
     double turn = 0.0;
-
-    double strafe= 0.0;
-
+    double strafe = 0.0;
 
 
     // robot
@@ -74,12 +71,12 @@ public class MecanumOpMode extends OpMode
     @Override
     public void loop() {
         // get drive, strafe, and turn values
-        drive = gamepad1.left_stick_y - gamepad2.left_stick_y;
-        strafe = gamepad1.left_stick_x - gamepad2.left_stick_x;
-        turn= gamepad1.right_stick_x - gamepad2.right_stick_x;
-
-
-
+//        drive = -gamepad2.left_stick_x;
+//        strafe = gamepad2.left_stick_y;
+//        turn = gamepad2.right_stick_y;
+        strafe = Math.copySign(Math.pow(gamepad1.left_stick_x, 2), gamepad1.left_stick_x);
+        drive = Math.copySign(Math.pow(-gamepad1.left_stick_y, 2), -gamepad1.left_stick_y);
+        turn = Math.copySign(Math.pow(gamepad1.right_stick_x, 2), gamepad1.right_stick_x);
 
         bot.moveBotMecanum(drive, turn, strafe,  0.3); // actually move the robot
 
@@ -106,6 +103,7 @@ public class MecanumOpMode extends OpMode
 
         telemetry.addData("arm", bot.arm.getCurrentArmPos());
         telemetry.addData("slide", bot.arm.getCurrentSlidePos());
+
         // claw
         if (gamepad2.x ) {
             bot.claw.closeBothClaw();
@@ -155,7 +153,6 @@ public class MecanumOpMode extends OpMode
             e.printStackTrace();
         }
     }
-
 
 
     @Override

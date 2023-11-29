@@ -96,13 +96,14 @@ public class Karen  {
         dropper = new Dropper(dropperServo);
     }
 
-    private double rampUp(double x) {
-        return 1 / (1 + Math.pow(Math.E, -10 * (1.5 * x - 0.8)));
-    }
+//    private double rampUp(double x) {
+//        return 1 / (1 + Math.pow(Math.E, -10 * (1.5 * x - 0.8)));
+//    }
 
     public void moveBotMecanum(double drive, double rotate, double strafe, double scaleFactor) {
 
 //        drive = rampUp(drive); // use S-curve to ramp up drive gradually
+
 
         double[] wheelSpeeds = new double[4];
         wheelSpeeds[0] = drive + strafe + rotate;  // left front
