@@ -74,46 +74,38 @@ public class MecanumOpMode extends OpMode
     @Override
     public void loop() {
         // get drive, strafe, and turn values
-        drive = gamepad1.left_stick_y - gamepad2.left_stick_y;
-        strafe = gamepad1.left_stick_x - gamepad2.left_stick_x;
-        turn= gamepad1.right_stick_x - gamepad2.right_stick_x;
+        drive = gamepad2.left_stick_y - gamepad1.right_stick_y;
+        strafe = gamepad1.right_stick_x - gamepad2.left_stick_x;
+        turn = gamepad1.left_stick_x + gamepad2.right_stick_x;
 
 
-
-
-        bot.moveBotMecanum(drive, turn, strafe,  0.3); // actually move the robot
+        bot.moveBotMecanum(drive, turn, strafe, 0.5); // actually move the robot
 
         // arm & slid
-        if (gamepad2.right_trigger  > .5) {
+        if (gamepad2.right_trigger > .5) {
             bot.arm.moveSlide(bot.arm.getCurrentSlidePos() + 30);
-        }
-        else if (gamepad2.left_trigger  > .5) {
+        } else if (gamepad2.left_trigger > .5) {
             bot.arm.moveSlide(bot.arm.getCurrentSlidePos() - 30);
-        }
-        else {
+        } else {
             bot.arm.holdSlidePos();
         }
 
-        if (gamepad2.right_bumper ) {
+        if (gamepad2.right_bumper) {
             bot.arm.moveArm(bot.arm.getCurrentArmPos() + 50);
-        }
-        else if (gamepad2.left_bumper) {
+        } else if (gamepad2.left_bumper) {
             bot.arm.moveArm(bot.arm.getCurrentArmPos() - 50);
-        }
-        else {
+        } else {
             bot.arm.holdArmPos();
         }
 
         telemetry.addData("arm", bot.arm.getCurrentArmPos());
         telemetry.addData("slide", bot.arm.getCurrentSlidePos());
         // claw
-        if (gamepad2.x ) {
+        if (gamepad2.x) {
             bot.claw.closeBothClaw();
-        }
-        else if (gamepad2.b) {
+        } else if (gamepad2.b) {
             bot.claw.closeOneClaw();
-        }
-        else if (gamepad2.a) {
+        } else if (gamepad2.a) {
             bot.claw.openClaw();
         }
 
@@ -128,41 +120,32 @@ public class MecanumOpMode extends OpMode
         // TODO: intake
 
 
-
         if (gamepad1.left_trigger > .2) {
             bot.inOutTake.intake();
-        }
-        else if (gamepad1.right_trigger > .2) {
+        } else if (gamepad1.right_trigger > .2) {
             bot.inOutTake.outtake();
-        }
-        else {
+        } else {
             bot.inOutTake.stopTake();
         }
 
         if (gamepad1.dpad_up) {
+            bot.claw.openClaw();
             bot.inOutTake.scoopUp();
-        }
-        else if (gamepad1.dpad_down) {
+
+        } else if (gamepad1.dpad_left) {
+
             bot.inOutTake.scoopDown();
+        } else if (gamepad1.dpad_down) {
+
+            bot.inOutTake.scoopmiddle();
+
+
+            try {
+                sleep(20);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
 
-
-
-        try {
-            sleep(20);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
-    @Override
-    public void stop() {
-        bot.stop(); // stop all motors
-    }
-
-
-
-}
+    }}

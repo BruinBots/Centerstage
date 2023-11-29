@@ -11,12 +11,13 @@ public class Arm {
 
 
     // declare constants
-    public static int MAX_SLIDE_POSITION = 2000;
+    //was 2000 need more wire
+    public static int MAX_SLIDE_POSITION = 1500;
     public static int MIN_SLIDE_POSITION = 0;
     public static int MAX_ARM_POSITION = 2225;
     public static int MIN_ARM_POSITION = 0;
-    public static double ARM_POWER = 0.5; // the default power supplied to the arm when being used
-    public static double SLIDE_POWER = 0.6; // the default power supplied to the slide when being used to lift the claw
+    public static double ARM_POWER = 0.9; // the default power supplied to the arm when being used
+    public static double SLIDE_POWER = 0.8; // the default power supplied to the slide when being used to lift the claw
     public static double HANG_POWER = 0.8; // the default power supplied to the slide when being used to lift the robot
 
     public static int HANG_MOVE = 0;
@@ -59,6 +60,7 @@ public class Arm {
             targetPos = MAX_SLIDE_POSITION;
         }
         slideMotor.setTargetPosition(targetPos);
+
         slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slideMotor.setPower(SLIDE_POWER);
     }

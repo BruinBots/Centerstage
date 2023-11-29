@@ -36,7 +36,8 @@ public class InOutTake {
     // SCOOP_POS constants are between 0-1
     // 0        TBD     1
     // down     up      too far up
-    public static final double SCOOP_DOWN_POS = 0; // this should work, untested
+    public static final double SCOOP_DOWN_POS = 0.02; // this should work, untested
+    public static final double SCOOP_MIDDLE_POS = 0.3;
     public static final double SCOOP_UP_POS = 0.5; // no idea if this works, untested
 
     InOutTake (Servo inServoLeft, Servo inServoRight, Servo scoopServo) {
@@ -67,8 +68,10 @@ public class InOutTake {
     public void scoopUp() {
         scoopServo.setPosition(SCOOP_UP_POS);
     }
-
-    // move intake down to collect next pixel
+    public void scoopmiddle() {
+        scoopServo.setPosition(SCOOP_MIDDLE_POS);
+        // move intake down to collect next pixel
+    }
     public void scoopDown() {
         scoopServo.setPosition(SCOOP_DOWN_POS);
     }
