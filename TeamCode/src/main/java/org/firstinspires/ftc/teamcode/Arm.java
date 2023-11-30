@@ -40,9 +40,11 @@ public class Arm {
         else if (targetPos > MAX_ARM_POSITION) {
             targetPos = MAX_ARM_POSITION;
         }
-        armMotor.setTargetPosition(targetPos);
-        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armMotor.setPower(ARM_POWER);
+        if (InOutTake.isSafeForArm()) {
+            armMotor.setTargetPosition(targetPos);
+            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            armMotor.setPower(ARM_POWER);
+        }
     }
 
     public void holdArmPos() {
@@ -60,9 +62,12 @@ public class Arm {
         else if (targetPos > MAX_SLIDE_POSITION) {
             targetPos = MAX_SLIDE_POSITION;
         }
-        slideMotor.setPower(SLIDE_POWER);
-        slideMotor.setTargetPosition(targetPos);
-        slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        if (InOutTake.isSafeForArm()) {
+            slideMotor.setPower(SLIDE_POWER);
+            slideMotor.setTargetPosition(targetPos);
+            slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
     }
 
     public void hangSlide(int targetPos) {

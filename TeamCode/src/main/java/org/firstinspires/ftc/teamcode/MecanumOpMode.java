@@ -88,17 +88,17 @@ public class MecanumOpMode extends OpMode
         bot.moveBotMecanum(drive, turn, strafe,  0.5); // actually move the robot
 
         // arm & slid
-        if (gamepad2.right_trigger  > 0.5) {
+        if (gamepad2.right_trigger > 0.5) {
             bot.arm.moveSlide(bot.arm.getCurrentSlidePos() + bot.arm.SLIDE_SPEED);
         }
-        else if (gamepad2.left_trigger  > 0.5) {
+        else if (gamepad2.left_trigger > 0.5) {
             bot.arm.moveSlide(bot.arm.getCurrentSlidePos() - bot.arm.SLIDE_SPEED);
         }
         else {
             bot.arm.holdSlidePos();
         }
 
-        if (gamepad2.right_bumper ) {
+        if (gamepad2.right_bumper) {
             bot.arm.moveArm(bot.arm.getCurrentArmPos() + bot.arm.ARM_SPEED);
         }
         else if (gamepad2.left_bumper) {

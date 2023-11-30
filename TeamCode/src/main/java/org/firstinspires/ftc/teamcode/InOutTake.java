@@ -10,7 +10,7 @@ public class InOutTake {
     private final Servo inServoRight;
 
     // scoop servo is standard servo to move pixel between intake and claw
-    private Servo scoopServo;
+    private static Servo scoopServo;
 
     // untested, should work
     // SPEED constants are between 0-0.5
@@ -76,5 +76,13 @@ public class InOutTake {
 
     public void scoopMiddle() {
         scoopServo.setPosition(SCOOP_MIDDLE_POS);
+    }
+
+    public static boolean isSafeForArm() {
+        if (scoopServo.getPosition() <= SCOOP_MIDDLE_POS) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
