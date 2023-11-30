@@ -74,6 +74,9 @@ public class BlueFarBackdrop extends LinearOpMode {
         bot.inOutTake.scoopMiddle();
         sleep(250);
 
+        bot.clawServo1.setPosition(Claw.CLOSE_BOTH_POS);
+        sleep(500);
+
 //        drive.followTrajectory(traj0);
 
 //        bot.dropper.dropperUp();
