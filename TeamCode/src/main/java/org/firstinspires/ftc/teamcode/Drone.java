@@ -1,8 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class  Drone {
@@ -13,7 +10,7 @@ public class  Drone {
     private static long motorRunTime = 500; // 500 ms
     private static double motorPower = 0.85; // 85% power
 
-    Drone(DcMotorEx droneMotor) {
+    public Drone(DcMotorEx droneMotor) {
         this.droneMotor = droneMotor;
     }
 

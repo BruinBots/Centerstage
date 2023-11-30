@@ -61,7 +61,13 @@ public class Karen  {
         leftFrontMotor.setDirection(DcMotorEx.Direction.REVERSE);
         leftBackMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
-        // arm and linear slide
+        // pixel intake - must be declared before arm and linear slide
+        intakeServoLeft = map.get(Servo.class, "intake_servo_left");
+        intakeServoRight = map.get(Servo.class, "intake_servo_right");
+        scoopServo = map.get(Servo.class, "scoop_servo");
+        inOutTake = new InOutTake(intakeServoLeft, intakeServoRight, scoopServo);
+
+        // arm and linear slide - pixel intake must be initialized first
         armMotor = map.get(DcMotorEx.class, "arm_motor");
         armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         armMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
@@ -70,18 +76,14 @@ public class Karen  {
         slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         slideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
-        arm = new Arm(armMotor, slideMotor);
+        arm = new Arm(armMotor, slideMotor, inOutTake);
 
         // odometry deadwheels
         leftOdo = map.get(DcMotorEx.class, "right_front");
         rightOdo = map.get(DcMotorEx.class, "left_back");
         backOdo = map.get(DcMotorEx.class, "left_front");
 
-        // pixel intake
-        intakeServoLeft = map.get(Servo.class, "intake_servo_left");
-        intakeServoRight = map.get(Servo.class, "intake_servo_right");
-        scoopServo = map.get(Servo.class, "scoop_servo");
-        inOutTake = new InOutTake(intakeServoLeft, intakeServoRight, scoopServo);
+
 
         // claw
         clawServo1 = map.get(Servo.class, "claw_servo1");

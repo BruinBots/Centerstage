@@ -28,9 +28,13 @@ public class Arm {
     public static int ARM_DOWN = 20;
     public static int ARM_UP = 200;
 
-    Arm (DcMotorEx armMotor, DcMotorEx slideMotor) {
+    InOutTake inOutTake;
+
+    // note: inOutTake must be initialized before calling this constructor
+    public Arm (DcMotorEx armMotor, DcMotorEx slideMotor, InOutTake inOutTake) {
         this.armMotor = armMotor;
         this.slideMotor = slideMotor;
+        this.inOutTake = inOutTake;
     }
 
     public void moveArm(int targetPos) {
@@ -40,7 +44,7 @@ public class Arm {
         else if (targetPos > MAX_ARM_POSITION) {
             targetPos = MAX_ARM_POSITION;
         }
-        if (InOutTake.isSafeForArm()) {
+        if (inOutTake.isSafeForArm()) {
             armMotor.setTargetPosition(targetPos);
             armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             armMotor.setPower(ARM_POWER);
@@ -63,7 +67,7 @@ public class Arm {
             targetPos = MAX_SLIDE_POSITION;
         }
 
-        if (InOutTake.isSafeForArm()) {
+        if (inOutTake.isSafeForArm()) {
             slideMotor.setPower(SLIDE_POWER);
             slideMotor.setTargetPosition(targetPos);
             slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);

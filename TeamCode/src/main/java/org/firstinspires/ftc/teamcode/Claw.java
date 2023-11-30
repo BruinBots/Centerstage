@@ -13,7 +13,7 @@ public class Claw {
     public static final double CLOSE_ONE_POS = CLOSE_BOTH_POS + 0.058;
 
 
-    Claw (Servo clawServo) {
+    public Claw (Servo clawServo) {
         this.clawServo = clawServo;
     }
 

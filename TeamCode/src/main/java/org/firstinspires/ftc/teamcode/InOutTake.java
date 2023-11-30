@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class InOutTake {
@@ -10,7 +9,7 @@ public class InOutTake {
     private final Servo inServoRight;
 
     // scoop servo is standard servo to move pixel between intake and claw
-    private static Servo scoopServo;
+    private Servo scoopServo;
 
     // untested, should work
     // SPEED constants are between 0-0.5
@@ -40,7 +39,7 @@ public class InOutTake {
     public static final double SCOOP_UP_POS = 0.5; // no idea if this works, untested
     public static final double SCOOP_MIDDLE_POS = 0.25; // no idea if this works
 
-    InOutTake (Servo inServoLeft, Servo inServoRight, Servo scoopServo) {
+    public InOutTake (Servo inServoLeft, Servo inServoRight, Servo scoopServo) {
         this.inServoLeft = inServoLeft;
         this.inServoRight = inServoRight;
         this.scoopServo = scoopServo;
@@ -78,11 +77,7 @@ public class InOutTake {
         scoopServo.setPosition(SCOOP_MIDDLE_POS);
     }
 
-    public static boolean isSafeForArm() {
-        if (scoopServo.getPosition() <= SCOOP_MIDDLE_POS) {
-            return true;
-        } else {
-            return false;
-        }
+    public boolean isSafeForArm() {
+        return (scoopServo.getPosition() <= SCOOP_MIDDLE_POS);
     }
 }
