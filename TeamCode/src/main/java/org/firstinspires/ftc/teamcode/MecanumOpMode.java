@@ -44,6 +44,8 @@ public class MecanumOpMode extends OpMode
     double turn = 0.0;
     double strafe = 0.0;
 
+    boolean droneButtonPressed;
+
 
     // robot
     Karen bot;
@@ -126,7 +128,7 @@ public class MecanumOpMode extends OpMode
 
         // drone launch
 
-        if (gamepad1.y) {
+        if (gamepad1.y && !droneButtonPressed) {
             bot.drone.launch();
         }
         bot.drone.loop();
@@ -158,7 +160,7 @@ public class MecanumOpMode extends OpMode
             bot.inOutTake.scoopMiddle();
         }
 
-
+        droneButtonPressed = gamepad1.y;
 
 
         try {
