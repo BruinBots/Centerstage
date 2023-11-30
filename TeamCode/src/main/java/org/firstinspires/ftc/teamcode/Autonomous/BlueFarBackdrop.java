@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Arm;
+import org.firstinspires.ftc.teamcode.Claw;
 import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
@@ -70,33 +71,34 @@ public class BlueFarBackdrop extends LinearOpMode {
 
         if(isStopRequested()) return;
 
+        bot.inOutTake.scoopMiddle();
+        sleep(250);
+
 //        drive.followTrajectory(traj0);
 
 //        bot.dropper.dropperUp();
 
-        drive.followTrajectory(traj1); // navigate to backboard
-
-        bot.inOutTake.scoopDown();
-        sleep(750);
+//        drive.followTrajectory(traj1); // navigate to backboard
 
         bot.arm.moveArm(Arm.MAX_ARM_POSITION); // move arm up
+        sleep(200);
+
         bot.arm.moveSlide(850); // move slide up
-        sleep(3000);
+        sleep(2500);
 
-        bot.claw.openClaw(); // release the pixels
-        sleep(500);
+        bot.clawServo1.setPosition(Claw.OPEN_POS); // release the pixels
+        sleep(1500);
 
-        bot.claw.closeBothClaw(); // close claw so it doesn't get caught on wires
+        bot.clawServo1.setPosition(Claw.CLOSE_BOTH_POS); // close claw so it doesn't get caught on wires
         sleep(500);
 
         bot.arm.moveArm(Arm.MIN_ARM_POSITION); // retract arm
+        sleep(200);
+
         bot.arm.moveSlide(Arm.MIN_SLIDE_POSITION); // retract slide
-        sleep(3500);
+        sleep(2500);
 
-        bot.inOutTake.scoopUp();
-        sleep(750);
-
-        drive.followTrajectory(traj2);
+//        drive.followTrajectory(traj2);
 
     }
 }

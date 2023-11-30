@@ -78,6 +78,6 @@ public class InOutTake {
     }
 
     public boolean isSafeForArm() {
-        return (scoopServo.getPosition() <= SCOOP_MIDDLE_POS);
+        return (scoopServo.getPosition() <= SCOOP_MIDDLE_POS + 0.05);
     }
 }
