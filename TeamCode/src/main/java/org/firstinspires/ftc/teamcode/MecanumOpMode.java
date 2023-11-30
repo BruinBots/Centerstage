@@ -134,7 +134,11 @@ public class MecanumOpMode extends OpMode
         bot.drone.loop();
 
         // TODO: intake
-
+        if (gamepad1.b) {
+            bot.claw.closeBothClaw(); // closes both claw holds
+            bot.inOutTake.scoopMiddle(); // moves scoop to middle pos so it doesnt snap motor mount in half again
+            bot.arm.dropPixelPos(); // moves arm and slide to max
+        }
 
 
         if (gamepad1.left_trigger > 0.5) {

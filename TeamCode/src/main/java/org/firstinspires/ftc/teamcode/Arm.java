@@ -76,4 +76,9 @@ public class Arm {
 
     public int getCurrentArmPos() { return armMotor.getCurrentPosition(); }
     public int getCurrentSlidePos() { return slideMotor.getCurrentPosition(); }
+
+    public void dropPixelPos() {
+        moveArm(MAX_ARM_POSITION);
+        moveSlide(MAX_SLIDE_POSITION);
+    }
 }
