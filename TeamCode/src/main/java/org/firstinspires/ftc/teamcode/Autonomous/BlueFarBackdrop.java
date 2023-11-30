@@ -77,18 +77,24 @@ public class BlueFarBackdrop extends LinearOpMode {
         drive.followTrajectory(traj1); // navigate to backboard
 
         bot.inOutTake.scoopDown();
-        sleep(500);
+        sleep(750);
 
         bot.arm.moveArm(Arm.MAX_ARM_POSITION); // move arm up
         bot.arm.moveSlide(850); // move slide up
         sleep(3000);
-//        bot.claw.openClaw(); // release the pixels
-//
-//        bot.claw.closeBothClaw(); // close claw so it doesn't get caught on wires
+
+        bot.claw.openClaw(); // release the pixels
+        sleep(500);
+
+        bot.claw.closeBothClaw(); // close claw so it doesn't get caught on wires
+        sleep(500);
+
         bot.arm.moveArm(Arm.MIN_ARM_POSITION); // retract arm
         bot.arm.moveSlide(Arm.MIN_SLIDE_POSITION); // retract slide
+        sleep(3500);
 
-        sleep(3000);
+        bot.inOutTake.scoopUp();
+        sleep(750);
 
         drive.followTrajectory(traj2);
 
