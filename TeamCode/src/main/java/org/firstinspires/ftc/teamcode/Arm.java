@@ -13,8 +13,10 @@ public class Arm {
     // declare constants
     public static int MAX_SLIDE_POSITION = 1500; // was 2000
     public static int MIN_SLIDE_POSITION = 0;
+    public static int SLIDE_SPEED = 60;
     public static int MAX_ARM_POSITION = 2225;
     public static int MIN_ARM_POSITION = 0;
+    public static int ARM_SPEED = 100;
     public static double ARM_POWER = 0.7; // the default power supplied to the arm when being used
     public static double SLIDE_POWER = 0.8; // the default power supplied to the slide when being used to lift the claw
     public static double HANG_POWER = 0.8; // the default power supplied to the slide when being used to lift the robot
@@ -58,9 +60,9 @@ public class Arm {
         else if (targetPos > MAX_SLIDE_POSITION) {
             targetPos = MAX_SLIDE_POSITION;
         }
+        slideMotor.setPower(SLIDE_POWER);
         slideMotor.setTargetPosition(targetPos);
         slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slideMotor.setPower(SLIDE_POWER);
     }
 
     public void hangSlide(int targetPos) {
