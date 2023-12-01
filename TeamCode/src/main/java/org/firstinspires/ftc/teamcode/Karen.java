@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 
+import static android.os.SystemClock.sleep;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -61,7 +63,13 @@ public class Karen  {
         leftFrontMotor.setDirection(DcMotorEx.Direction.REVERSE);
         leftBackMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
-        // arm and linear slide
+        // pixel intake - must be declared before arm and linear slide
+        intakeServoLeft = map.get(Servo.class, "intake_servo_left");
+        intakeServoRight = map.get(Servo.class, "intake_servo_right");
+        scoopServo = map.get(Servo.class, "scoop_servo");
+        inOutTake = new InOutTake(intakeServoLeft, intakeServoRight, scoopServo);
+
+        // arm and linear slide - pixel intake must be initialized first
         armMotor = map.get(DcMotorEx.class, "arm_motor");
         armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         armMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
@@ -70,18 +78,14 @@ public class Karen  {
         slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         slideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
-        arm = new Arm(armMotor, slideMotor);
+        arm = new Arm(armMotor, slideMotor, inOutTake);
 
         // odometry deadwheels
         leftOdo = map.get(DcMotorEx.class, "right_front");
         rightOdo = map.get(DcMotorEx.class, "left_back");
         backOdo = map.get(DcMotorEx.class, "left_front");
 
-        // pixel intake
-        intakeServoLeft = map.get(Servo.class, "intake_servo_left");
-        intakeServoRight = map.get(Servo.class, "intake_servo_right");
-        scoopServo = map.get(Servo.class, "scoop_servo");
-        inOutTake = new InOutTake(intakeServoLeft, intakeServoRight, scoopServo);
+
 
         // claw
         clawServo1 = map.get(Servo.class, "claw_servo1");
@@ -136,6 +140,34 @@ public class Karen  {
         while ((leftOdo.getCurrentPosition() + rightOdo.getCurrentPosition()) / 2.0 < targetTicks) {
             this.moveBotMecanum(drive, rotate, strafe, 1);
         }
+    }
+
+    public void startAuto() {
+        inOutTake.scoopMiddle();
+        sleep(250);
+
+        clawServo1.setPosition(Claw.CLOSE_BOTH_POS);
+        sleep(500);
+    }
+
+    public void placePixel() {
+        arm.moveArm(Arm.MAX_ARM_POSITION); // move arm up
+        sleep(200);
+
+        arm.moveSlide(850); // move slide up
+        sleep(2500);
+
+        clawServo1.setPosition(Claw.OPEN_POS); // release the pixels
+        sleep(1500);
+
+        clawServo1.setPosition(Claw.CLOSE_BOTH_POS); // close claw so it doesn't get caught on wires
+        sleep(500);
+
+        arm.moveArm(Arm.MIN_ARM_POSITION); // retract arm
+        sleep(200);
+
+        arm.moveSlide(Arm.MIN_SLIDE_POSITION); // retract slide
+        sleep(2500);
     }
 
     public void stop() {

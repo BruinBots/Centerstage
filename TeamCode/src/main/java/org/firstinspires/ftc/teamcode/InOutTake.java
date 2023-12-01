@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class InOutTake {
@@ -39,8 +38,9 @@ public class InOutTake {
     public static final double SCOOP_DOWN_POS = 0.02; // this should work, untested
     public static final double SCOOP_MIDDLE_POS = 0.3;
     public static final double SCOOP_UP_POS = 0.5; // no idea if this works, untested
+    public static final double SCOOP_MIDDLE_POS = 0.25; // no idea if this works
 
-    InOutTake (Servo inServoLeft, Servo inServoRight, Servo scoopServo) {
+    public InOutTake (Servo inServoLeft, Servo inServoRight, Servo scoopServo) {
         this.inServoLeft = inServoLeft;
         this.inServoRight = inServoRight;
         this.scoopServo = scoopServo;
@@ -74,5 +74,13 @@ public class InOutTake {
     }
     public void scoopDown() {
         scoopServo.setPosition(SCOOP_DOWN_POS);
+    }
+
+    public void scoopMiddle() {
+        scoopServo.setPosition(SCOOP_MIDDLE_POS);
+    }
+
+    public boolean isSafeForArm() {
+        return (scoopServo.getPosition() <= SCOOP_MIDDLE_POS + 0.05);
     }
 }
