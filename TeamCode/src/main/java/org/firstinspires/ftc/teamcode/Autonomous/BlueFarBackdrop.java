@@ -81,7 +81,7 @@ public class BlueFarBackdrop extends LinearOpMode {
 
 //        bot.dropper.dropperUp();
 
-        drive.followTrajectory(traj1); // navigate to backboard
+//        drive.followTrajectory(traj1); // navigate to backboard
 
         bot.placePixel();
 

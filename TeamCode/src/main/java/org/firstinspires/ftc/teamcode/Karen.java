@@ -5,6 +5,7 @@ import static android.os.SystemClock.sleep;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -77,6 +78,7 @@ public class Karen  {
         slideMotor = map.get(DcMotorEx.class, "slide_motor");
         slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         slideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         arm = new Arm(armMotor, slideMotor, inOutTake);
 
@@ -154,7 +156,7 @@ public class Karen  {
         arm.moveArm(Arm.MAX_ARM_POSITION); // move arm up
         sleep(200);
 
-        arm.moveSlide(850); // move slide up
+        arm.moveSlide(-850); // move slide up
         sleep(2500);
 
         clawServo1.setPosition(Claw.OPEN_POS); // release the pixels
