@@ -15,7 +15,7 @@ public class RedFarBackdrop extends LinearOpMode {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         // We want to start the bot at x: -36, y: 65, heading: 270 degrees
-        Pose2d startPose = new Pose2d(-36,65, Math.toRadians(90));
+        Pose2d startPose = new Pose2d(-36,-65, Math.toRadians(90));
 
         drive.setPoseEstimate(startPose);
 
@@ -23,6 +23,11 @@ public class RedFarBackdrop extends LinearOpMode {
                 .splineTo(new Vector2d(-36, -60), Math.toRadians(0))
                 .splineTo(new Vector2d(18, -60), Math.toRadians(0))
                 .splineTo(new Vector2d(48, -36), Math.toRadians(0))
+                .build();
+
+        Trajectory traj2 = drive.trajectoryBuilder(traj1.end(), true)
+                .splineToConstantHeading(new Vector2d(40, -36), Math.toRadians(0))
+                .splineTo(new Vector2d(60, -60), Math.toRadians(0))
                 .build();
 
         waitForStart();

@@ -24,6 +24,11 @@ public class RedNearBackdrop extends LinearOpMode {
                 .splineTo(new Vector2d(48, -36), Math.toRadians(0))
                 .build();
 
+        Trajectory traj2 = drive.trajectoryBuilder(traj1.end(), true)
+                .splineToConstantHeading(new Vector2d(40, -36), Math.toRadians(0))
+                .splineTo(new Vector2d(60, -60), Math.toRadians(0))
+                .build();
+
         waitForStart();
 
         if(isStopRequested()) return;

@@ -23,30 +23,34 @@ public class BlueFarBackdrop extends LinearOpMode {
 
         drive.setPoseEstimate(startPose);
 
-//        TensorFlowForAutonomous tf = new TensorFlowForAutonomous(hardwareMap);
-//        String side = tf.getSide();
-//
+        TensorFlowForAutonomous tf = new TensorFlowForAutonomous(hardwareMap);
+        String side = tf.getSide();
+
 //        Trajectory traj0;
-//
-//        switch (side) {
-//            case "left":
+
+        switch (side) {
+            case "left":
+                telemetry.addData("side", "left");
 //                traj0 = drive.trajectoryBuilder(startPose)
 //                        .splineTo(new Vector2d(-26, 28), Math.toRadians(90))
 //                        .build();
-//                break;
-//            case "center":
+                break;
+            case "center":
+                telemetry.addData("side", "center");
 //                traj0 = drive.trajectoryBuilder(startPose)
 //                        .splineTo(new Vector2d(-36, 28), Math.toRadians(90))
 //                        .build();
-//                break;
-//            case "right":
+                break;
+            case "right":
+                telemetry.addData("side", "right");
 //                traj0 = drive.trajectoryBuilder(startPose)
 //                        .splineTo(new Vector2d(-42, 28), Math.toRadians(90))
 //                        .build();
-//                break;
-//            default:
-//                return;
-//        }
+                break;
+            default:
+                telemetry.addData("side", "default");
+                return;
+        }
 
         Trajectory traj1 = drive.trajectoryBuilder(startPose, true)
                 .splineTo(new Vector2d(-36, 60), Math.toRadians(0))
@@ -55,7 +59,7 @@ public class BlueFarBackdrop extends LinearOpMode {
                 .build();
 
         Trajectory traj2 = drive.trajectoryBuilder(traj1.end(), true)
-                .splineTo(new Vector2d(40, 36), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(40, 36), Math.toRadians(0))
                 .splineTo(new Vector2d(60, 60), Math.toRadians(0))
                 .build();
 
@@ -71,11 +75,7 @@ public class BlueFarBackdrop extends LinearOpMode {
 
         if(isStopRequested()) return;
 
-        bot.inOutTake.scoopMiddle();
-        sleep(250);
-
-        bot.clawServo1.setPosition(Claw.CLOSE_BOTH_POS);
-        sleep(500);
+        bot.startAuto();
 
 //        drive.followTrajectory(traj0);
 
@@ -83,23 +83,7 @@ public class BlueFarBackdrop extends LinearOpMode {
 
         drive.followTrajectory(traj1); // navigate to backboard
 
-        bot.arm.moveArm(Arm.MAX_ARM_POSITION); // move arm up
-        sleep(200);
-
-        bot.arm.moveSlide(850); // move slide up
-        sleep(2500);
-
-        bot.clawServo1.setPosition(Claw.OPEN_POS); // release the pixels
-        sleep(1500);
-
-        bot.clawServo1.setPosition(Claw.CLOSE_BOTH_POS); // close claw so it doesn't get caught on wires
-        sleep(500);
-
-        bot.arm.moveArm(Arm.MIN_ARM_POSITION); // retract arm
-        sleep(200);
-
-        bot.arm.moveSlide(Arm.MIN_SLIDE_POSITION); // retract slide
-        sleep(2500);
+        bot.placePixel();
 
 //        drive.followTrajectory(traj2);
 

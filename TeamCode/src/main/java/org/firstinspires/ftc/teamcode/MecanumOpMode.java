@@ -95,7 +95,7 @@ public class MecanumOpMode extends OpMode
             bot.arm.moveSlide(bot.arm.getCurrentSlidePos() - bot.arm.SLIDE_SPEED);
         }
         else {
-            bot.arm.holdSlidePos();
+//            bot.arm.holdSlidePos();
         }
 
         if (gamepad2.right_bumper) {
