@@ -45,7 +45,7 @@ public class MecanumOpMode extends OpMode
     double strafe = 0.0;
 
     boolean droneButtonPressed;
-
+    boolean gp2dpadleft;
 
     // robot
     Karen bot;
@@ -120,7 +120,8 @@ public class MecanumOpMode extends OpMode
         }
         else if (gamepad2.a) {
             bot.claw.openClaw();
-        } else if (gamepad2.y) {
+        } else if (gamepad2.dpad_down) {
+            bot.claw.closeBothClaw();
             bot.arm.moveArm(bot.arm.MIN_ARM_POSITION);
             bot.arm.moveSlide(bot.arm.MIN_SLIDE_POSITION);
         }
@@ -134,10 +135,13 @@ public class MecanumOpMode extends OpMode
         bot.drone.loop();
 
         // TODO: intake
-        if (gamepad1.b) {
-            bot.claw.closeBothClaw(); // closes both claw holds
-            bot.inOutTake.scoopMiddle(); // moves scoop to middle pos so it doesnt snap motor mount in half again
-            bot.arm.dropPixelPos(); // moves arm and slide to max
+        if (gamepad2.dpad_left && !gp2dpadleft) {
+            if (!bot.inOutTake.isSafeForArm()) {
+                bot.inOutTake.scoopMiddle(); // moves scoop to middle pos so it doesnt snap motor mount in half again
+            } else {
+                bot.claw.closeBothClaw(); // closes both claw holds
+                bot.arm.dropPixelPos(); // moves arm and slide to max
+            }
         }
 
 
@@ -165,6 +169,7 @@ public class MecanumOpMode extends OpMode
         }
 
         droneButtonPressed = gamepad1.y;
+        gp2dpadleft = gamepad2.dpad_left;
 
 
         try {
