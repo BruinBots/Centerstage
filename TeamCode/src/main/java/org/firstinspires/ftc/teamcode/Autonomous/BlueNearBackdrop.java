@@ -87,9 +87,16 @@ public class BlueNearBackdrop extends LinearOpMode {
 //                .splineTo(new Vector2d(48, 36), Math.toRadians(0))
 //                .build();
 //
-        Trajectory traj2 = drive.trajectoryBuilder(traj0b.end().plus(new Pose2d(0, 0, Math.toRadians(180))), true)
+        Pose2d traj2Start = traj0b.end();
+        if (side.equals("center")) {
+            traj2Start = traj2Start.plus(new Pose2d(0, 0, Math.toRadians(-90)));
+        }
+        else if (side.equals("right")) {
+            traj2Start = traj2Start.plus(new Pose2d(0, 0, Math.toRadians(180)));
+        }
+        Trajectory traj2 = drive.trajectoryBuilder(traj2Start, true)
 //                .splineToConstantHeading(new Vector2d(40, 36), Math.toRadians(0))
-                .splineTo(new Vector2d(60, 60), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(60, 60), Math.toRadians(0))
                 .build();
 
 
