@@ -52,14 +52,19 @@ public class BlueFarBackdrop extends LinearOpMode {
 //                return;
 //        }
 
-        Trajectory traj1 = drive.trajectoryBuilder(startPose, true)
-                .splineTo(new Vector2d(-36, 60), Math.toRadians(0))
-                .splineTo(new Vector2d(18, 60), Math.toRadians(0))
-                .splineTo(new Vector2d(48, 36), Math.toRadians(0))
-                .build();
+//        Trajectory traj1 = drive.trajectoryBuilder(startPose, true)
+//                .splineTo(new Vector2d(-36, 60), Math.toRadians(0))
+//                .splineTo(new Vector2d(18, 60), Math.toRadians(0))
+//                .splineTo(new Vector2d(48, 36), Math.toRadians(0))
+//                .build();
+//
+//        Trajectory traj2 = drive.trajectoryBuilder(traj1.end(), true)
+//                .splineToConstantHeading(new Vector2d(40, 36), Math.toRadians(0))
+//                .splineTo(new Vector2d(60, 60), Math.toRadians(0))
+//                .build();
 
-        Trajectory traj2 = drive.trajectoryBuilder(traj1.end(), true)
-                .splineToConstantHeading(new Vector2d(40, 36), Math.toRadians(0))
+        Trajectory trajPark = drive.trajectoryBuilder(startPose, true)
+                .splineTo(new Vector2d(-36, 60), Math.toRadians(0))
                 .splineTo(new Vector2d(60, 60), Math.toRadians(0))
                 .build();
 
@@ -77,15 +82,17 @@ public class BlueFarBackdrop extends LinearOpMode {
 
         bot.startAuto();
 
+//        drive.followTrajectory(trajPark);
+
 //        drive.followTrajectory(traj0);
 
-//        bot.dropper.dropperUp();
+        bot.dropper.dropperUp();
 
-        drive.followTrajectory(traj1); // navigate to backboard
+//        drive.followTrajectory(traj1); // navigate to backboard
 
 //        bot.placePixel();
 
-        drive.followTrajectory(traj2);
+//        drive.followTrajectory(traj2);
 
     }
 }
