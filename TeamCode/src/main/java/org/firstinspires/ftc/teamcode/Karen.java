@@ -148,8 +148,8 @@ public class Karen  {
         inOutTake.scoopMiddle();
         sleep(250);
 
-        clawServo1.setPosition(Claw.CLOSE_BOTH_POS);
-        sleep(500);
+//        clawServo1.setPosition(Claw.CLOSE_BOTH_POS);
+//        sleep(500);
     }
 
     public void placePixel() {

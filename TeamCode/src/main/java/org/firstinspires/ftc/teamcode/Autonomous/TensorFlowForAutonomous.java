@@ -1,7 +1,10 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
+import static android.os.SystemClock.sleep;
+
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -14,31 +17,32 @@ public class TensorFlowForAutonomous {
     private TfodProcessor tfod;
     int CamSize = 0;
     String Sides="";
-    private VisionPortal visionPortal;
+    public VisionPortal visionPortal;
 
     HardwareMap hardwareMap;
+    Telemetry telemetry;
 
     public static final String TFOD_MODEL_ASSET_BLUE = "farblueorb.tflite";
 
     public static final String TFOD_MODEL_ASSET_RED = "RedSphere1.tflite";
     public static final String[] LABELS = {
             "redSphere",
-            "orb"
+//            "farblueorb"
+
     };
 
-    public TensorFlowForAutonomous(HardwareMap hardwareMap) {
+    public TensorFlowForAutonomous(HardwareMap hardwareMap, Telemetry telemetry) {
         this.hardwareMap = hardwareMap;
+        this.telemetry = telemetry;
     }
 
     public String getSide() {
-        initTfod();
-        visionPortal.resumeStreaming();
+        sleep(500);
         Sides=telemetryTfod();
-        visionPortal.close();
         return Sides;
     }
 
-    private void initTfod() {
+    public void initTfod() {
 
         // Create the TensorFlow processor by using a builder.
         tfod = new TfodProcessor.Builder()
@@ -95,32 +99,46 @@ public class TensorFlowForAutonomous {
     private String telemetryTfod() {
         // 1 left 2 center 3 right
         List<Recognition> currentRecognitions = tfod.getRecognitions();
+        telemetry.addData("# Objects Detected", currentRecognitions.size());
         //size of pikel
         CamSize=640;
         int MaxConfident=0;
         int xMax=0;
+        telemetry.addData("camara size",CamSize);
         // Step through the list of recognitions and display info for each one.
         for (Recognition recognition : currentRecognitions) {
             double x = (recognition.getLeft() + recognition.getRight()) / 2;
+            telemetry.addData("camara size R",recognition.getRight());
+            telemetry.addData("camera size C", x);
+            telemetry.addData("camara size L",recognition.getLeft());
             if (MaxConfident<(int)(recognition.getConfidence() * 100)){
-                MaxConfident= (int)recognition.getConfidence() * 100;
+                MaxConfident= (int)(recognition.getConfidence() * 100);
                 xMax=(int)x;
             }
 
+            telemetry.addData(""," ");
+            telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
 
 
         }   // end for() loop
-        if (xMax<=CamSize/3) {
+        if (currentRecognitions.size() < 1) {
+            return "none";
+        }
+        telemetry.addData("The x value",xMax);
+        if (xMax<=CamSize/3-120) {
 
+            telemetry.addData("is in left",1);
             return "left";
         }
-        else if (xMax<=CamSize*2/3) {
+        else if (xMax<=CamSize*2/3-120) {
 
+            telemetry.addData("is in center",2);
             return "center";
 
         }
-        else if (xMax>CamSize*2/3) {
+        else if (xMax>CamSize*2/3-120) {
 
+            telemetry.addData("is in right ",3);
             return "right";
         }
         else
