@@ -1,16 +1,11 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
-import static android.os.SystemClock.sleep;
-
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.Arm;
-import org.firstinspires.ftc.teamcode.Claw;
 import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
@@ -28,7 +23,7 @@ public class RedFarBackdrop extends LinearOpMode {
 
         drive.setPoseEstimate(startPose);
 
-        TensorFlowForAutonomous tf = new TensorFlowForAutonomous(hardwareMap, telemetry);
+        TensorFlowForAutonomousRed tf = new TensorFlowForAutonomousRed(hardwareMap, telemetry);
         tf.initTfod();
         sleep(500);
 

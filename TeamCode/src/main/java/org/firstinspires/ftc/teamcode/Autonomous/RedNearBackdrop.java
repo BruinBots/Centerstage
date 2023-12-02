@@ -1,16 +1,11 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
-import static android.os.SystemClock.sleep;
-
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.Arm;
-import org.firstinspires.ftc.teamcode.Claw;
 import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
@@ -28,7 +23,7 @@ public class RedNearBackdrop extends LinearOpMode {
 
         drive.setPoseEstimate(startPose);
 
-        TensorFlowForAutonomous tf = new TensorFlowForAutonomous(hardwareMap, telemetry);
+        TensorFlowForAutonomousRed tf = new TensorFlowForAutonomousRed(hardwareMap, telemetry);
         tf.initTfod();
         sleep(500);
 
@@ -64,19 +59,19 @@ public class RedNearBackdrop extends LinearOpMode {
             case "left":
                 telemetry.addData("side", "left");
                 traj0b = drive.trajectoryBuilder(traj0a.end())
-                        .lineToConstantHeading(new Vector2d(-35+48, -34))
+                        .lineToConstantHeading(new Vector2d(-36+48, -34))
                         .build();
                 break;
             case "center":
                 telemetry.addData("side", "center");
                 traj0b = drive.trajectoryBuilder(traj0a.end())
-                        .lineToConstantHeading(new Vector2d(-42+48, -30))
+                        .lineToConstantHeading(new Vector2d(-28+48, -31))
                         .build();
                 break;
             case "right":
                 telemetry.addData("side", "right");
                 traj0b = drive.trajectoryBuilder(traj0a.end())
-                        .lineToConstantHeading(new Vector2d(-57+48, -32))
+                        .lineToConstantHeading(new Vector2d(-15+48, -32))
                         .build();
                 break;
             default:
@@ -96,7 +91,7 @@ public class RedNearBackdrop extends LinearOpMode {
 //                .build();
 
         Trajectory traj2 = drive.trajectoryBuilder(traj0c.end(), true)
-                .splineTo(new Vector2d(60, -60), Math.toRadians(0))
+                .lineTo(new Vector2d(60, -60))
                 .build();
 
         if(isStopRequested()) return;

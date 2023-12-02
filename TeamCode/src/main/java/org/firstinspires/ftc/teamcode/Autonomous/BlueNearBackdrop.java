@@ -21,32 +21,30 @@ public class BlueNearBackdrop extends LinearOpMode {
 
         drive.setPoseEstimate(startPose);
 
-//        TensorFlowForAutonomous tf = new TensorFlowForAutonomous(hardwareMap, telemetry);
-//        tf.initTfod();
-//        sleep(500);
+        TensorFlowForAutonomousBlue tf = new TensorFlowForAutonomousBlue(hardwareMap, telemetry);
+        tf.initTfod();
+        sleep(500);
 
         waitForStart();
 
         bot.dropper.dropperDown();
 
-//        tf.visionPortal.resumeStreaming();
+        tf.visionPortal.resumeStreaming();
 
-//        int i = 0;
-//        String side = "none";
-//        while (side.equals("none") && i < 10) {
-//            side = tf.getSide();
-//            telemetry.addData("A-side", side);
-//            telemetry.update();
-//            i ++;
-//            sleep(20);
-//        }
+        int i = 0;
+        String side = "none";
+        while (side.equals("none") && i < 10) {
+            side = tf.getSide();
+            telemetry.addData("A-side", side);
+            telemetry.update();
+            i ++;
+            sleep(20);
+        }
 
-//        tf.visionPortal.stopStreaming();
-//        tf.visionPortal.close();
+        tf.visionPortal.stopStreaming();
 
-        String side = "left";
+//        String side = "left";
         telemetry.addData("side", side);
-//        sleep(5000);
 
         Trajectory traj0a = drive.trajectoryBuilder(startPose, true)
                 .lineToConstantHeading(new Vector2d(12, 55))
@@ -93,7 +91,6 @@ public class BlueNearBackdrop extends LinearOpMode {
                 .build();
 
 
-//        sleep(5000);
 
 //        Trajectory traj1 = drive.trajectoryBuilder(startPose, true)
 //                .splineTo(new Vector2d(12, 60), Math.toRadians(270))
@@ -104,20 +101,6 @@ public class BlueNearBackdrop extends LinearOpMode {
 //                .splineToConstantHeading(new Vector2d(40, 36), Math.toRadians(0))
                 .lineTo(new Vector2d(60, 60))
                 .build();
-
-
-        // -36, 28 center
-        // -34, 34 left
-        // -42, 28 right
-
-        // NEW
-        // -42, 30 center
-        // -35 34 left
-        // -57, 32 right
-
-        // y=36 center
-        // y=28 right
-        // y=42 left
 
         if(isStopRequested()) return;
 

@@ -1,16 +1,11 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
-import static android.os.SystemClock.sleep;
-
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.Arm;
-import org.firstinspires.ftc.teamcode.Claw;
 import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
@@ -28,32 +23,30 @@ public class BlueFarBackdrop extends LinearOpMode {
 
         drive.setPoseEstimate(startPose);
 
-//        TensorFlowForAutonomous tf = new TensorFlowForAutonomous(hardwareMap, telemetry);
-//        tf.initTfod();
-//        sleep(500);
+        TensorFlowForAutonomousBlue tf = new TensorFlowForAutonomousBlue(hardwareMap, telemetry);
+        tf.initTfod();
+        sleep(500);
 
         waitForStart();
 
         bot.dropper.dropperDown();
 
-//        tf.visionPortal.resumeStreaming();
+        tf.visionPortal.resumeStreaming();
 
-//        int i = 0;
-//        String side = "none";
-//        while (side.equals("none") && i < 10) {
-//            side = tf.getSide();
-//            telemetry.addData("A-side", side);
-//            telemetry.update();
-//            i ++;
-//            sleep(20);
-//        }
+        int i = 0;
+        String side = "none";
+        while (side.equals("none") && i < 10) {
+            side = tf.getSide();
+            telemetry.addData("A-side", side);
+            telemetry.update();
+            i ++;
+            sleep(20);
+        }
 
-//        tf.visionPortal.stopStreaming();
-//        tf.visionPortal.close();
+        tf.visionPortal.stopStreaming();
 
-        String side = "center";
+//        String side = "center";
         telemetry.addData("side", side);
-//        sleep(5000);
 
         Trajectory traj0a = drive.trajectoryBuilder(startPose, true)
                 .lineToConstantHeading(new Vector2d(-44, 55))
@@ -92,7 +85,6 @@ public class BlueFarBackdrop extends LinearOpMode {
                 .build();
 
 
-//        sleep(5000);
 
 //        Trajectory traj1 = drive.trajectoryBuilder(traj0.end(), true)
 //                .splineTo(new Vector2d(-36, 60), Math.toRadians(0))

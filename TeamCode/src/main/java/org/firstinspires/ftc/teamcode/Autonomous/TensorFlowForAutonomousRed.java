@@ -5,7 +5,6 @@ import static android.os.SystemClock.sleep;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -13,7 +12,7 @@ import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
 import java.util.List;
 
-public class TensorFlowForAutonomous {
+public class TensorFlowForAutonomousRed {
     private TfodProcessor tfod;
     int CamSize = 0;
     String Sides="";
@@ -26,12 +25,12 @@ public class TensorFlowForAutonomous {
 
     public static final String TFOD_MODEL_ASSET_RED = "RedSphere1.tflite";
     public static final String[] LABELS = {
-//            "redSphere",
-            "farblueorb"
+            "redSphere",
+//            "farblueorb"
 
     };
 
-    public TensorFlowForAutonomous(HardwareMap hardwareMap, Telemetry telemetry) {
+    public TensorFlowForAutonomousRed(HardwareMap hardwareMap, Telemetry telemetry) {
         this.hardwareMap = hardwareMap;
         this.telemetry = telemetry;
     }
@@ -49,7 +48,7 @@ public class TensorFlowForAutonomous {
 
                 // Use setModelAssetName() if the TF Model is built in as an asset.
                 // Use setModelFileName() if you have downloaded a custom team model to the Robot Controller.
-                .setModelAssetName(TFOD_MODEL_ASSET_BLUE)
+                .setModelAssetName(TFOD_MODEL_ASSET_RED)
                 //.setModelFileName(TFOD_MODEL_FILE)
 
                 .setModelLabels(LABELS)
