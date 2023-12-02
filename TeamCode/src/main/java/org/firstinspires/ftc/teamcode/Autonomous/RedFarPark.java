@@ -15,7 +15,7 @@ public class RedFarPark extends LinearOpMode {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         // We want to start the bot at x: -36, y: 65, heading: 270 degrees
-        Pose2d startPose = new Pose2d(-36,-65, Math.toRadians(90));
+        Pose2d startPose = new Pose2d(-36,-65, Math.toRadians(270));
 
         drive.setPoseEstimate(startPose);
 
