@@ -23,34 +23,34 @@ public class BlueFarBackdrop extends LinearOpMode {
 
         drive.setPoseEstimate(startPose);
 
-        TensorFlowForAutonomous tf = new TensorFlowForAutonomous(hardwareMap);
-        String side = tf.getSide();
+//        TensorFlowForAutonomous tf = new TensorFlowForAutonomous(hardwareMap);
+//        String side = tf.getSide();
 
 //        Trajectory traj0;
 
-        switch (side) {
-            case "left":
-                telemetry.addData("side", "left");
-//                traj0 = drive.trajectoryBuilder(startPose)
-//                        .splineTo(new Vector2d(-26, 28), Math.toRadians(90))
-//                        .build();
-                break;
-            case "center":
-                telemetry.addData("side", "center");
-//                traj0 = drive.trajectoryBuilder(startPose)
-//                        .splineTo(new Vector2d(-36, 28), Math.toRadians(90))
-//                        .build();
-                break;
-            case "right":
-                telemetry.addData("side", "right");
-//                traj0 = drive.trajectoryBuilder(startPose)
-//                        .splineTo(new Vector2d(-42, 28), Math.toRadians(90))
-//                        .build();
-                break;
-            default:
-                telemetry.addData("side", "default");
-                return;
-        }
+//        switch (side) {
+//            case "left":
+//                telemetry.addData("side", "left");
+////                traj0 = drive.trajectoryBuilder(startPose)
+////                        .splineTo(new Vector2d(-26, 28), Math.toRadians(90))
+////                        .build();
+//                break;
+//            case "center":
+//                telemetry.addData("side", "center");
+////                traj0 = drive.trajectoryBuilder(startPose)
+////                        .splineTo(new Vector2d(-36, 28), Math.toRadians(90))
+////                        .build();
+//                break;
+//            case "right":
+//                telemetry.addData("side", "right");
+////                traj0 = drive.trajectoryBuilder(startPose)
+////                        .splineTo(new Vector2d(-42, 28), Math.toRadians(90))
+////                        .build();
+//                break;
+//            default:
+//                telemetry.addData("side", "default");
+//                return;
+//        }
 
         Trajectory traj1 = drive.trajectoryBuilder(startPose, true)
                 .splineTo(new Vector2d(-36, 60), Math.toRadians(0))
@@ -81,11 +81,11 @@ public class BlueFarBackdrop extends LinearOpMode {
 
 //        bot.dropper.dropperUp();
 
-//        drive.followTrajectory(traj1); // navigate to backboard
+        drive.followTrajectory(traj1); // navigate to backboard
 
-        bot.placePixel();
+//        bot.placePixel();
 
-//        drive.followTrajectory(traj2);
+        drive.followTrajectory(traj2);
 
     }
 }

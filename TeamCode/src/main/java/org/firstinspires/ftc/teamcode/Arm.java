@@ -14,7 +14,7 @@ public class Arm {
     public static int MAX_SLIDE_POSITION = 1500; // was 2000
     public static int MIN_SLIDE_POSITION = 0;
     public static int SLIDE_SPEED = 60;
-    public static int MAX_ARM_POSITION = 2225;
+    public static int MAX_ARM_POSITION = 2150;
     public static int MIN_ARM_POSITION = 0;
     public static int ARM_SPEED = 100;
     public static double ARM_POWER = 0.7; // the default power supplied to the arm when being used
