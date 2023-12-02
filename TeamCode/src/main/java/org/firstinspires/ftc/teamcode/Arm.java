@@ -12,7 +12,7 @@ public class Arm {
 
     // declare constants
     public static int MAX_SLIDE_POSITION = 1500; // was 2000
-    public static int MIN_SLIDE_POSITION = 0;
+    public static int MIN_SLIDE_POSITION = 75;// was 0 could not take 2 pixels
     public static int SLIDE_SPEED = 60;
     public static int MAX_ARM_POSITION = 2150;
     public static int MIN_ARM_POSITION = 0;
