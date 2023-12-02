@@ -21,29 +21,30 @@ public class BlueNearBackdrop extends LinearOpMode {
 
         drive.setPoseEstimate(startPose);
 
-        TensorFlowForAutonomous tf = new TensorFlowForAutonomous(hardwareMap, telemetry);
-        tf.initTfod();
-        sleep(500);
+//        TensorFlowForAutonomous tf = new TensorFlowForAutonomous(hardwareMap, telemetry);
+//        tf.initTfod();
+//        sleep(500);
 
         waitForStart();
 
         bot.dropper.dropperDown();
 
-        tf.visionPortal.resumeStreaming();
+//        tf.visionPortal.resumeStreaming();
 
-        int i = 0;
-        String side = "none";
-        while (side.equals("none") && i < 10) {
-            side = tf.getSide();
-            telemetry.addData("A-side", side);
-            telemetry.update();
-            i ++;
-            sleep(20);
-        }
+//        int i = 0;
+//        String side = "none";
+//        while (side.equals("none") && i < 10) {
+//            side = tf.getSide();
+//            telemetry.addData("A-side", side);
+//            telemetry.update();
+//            i ++;
+//            sleep(20);
+//        }
 
-        tf.visionPortal.stopStreaming();
+//        tf.visionPortal.stopStreaming();
 //        tf.visionPortal.close();
 
+        String side = "left";
         telemetry.addData("side", side);
 //        sleep(5000);
 
@@ -79,6 +80,18 @@ public class BlueNearBackdrop extends LinearOpMode {
                 break;
         }
 
+        Pose2d traj0cStart = traj0b.end();
+        if (side.equals("center")) {
+            traj0cStart = traj0cStart.plus(new Pose2d(0, 0, Math.toRadians(-90)));
+        }
+        else if (side.equals("right")) {
+            traj0cStart = traj0cStart.plus(new Pose2d(0, 0, Math.toRadians(-180)));
+        }
+
+        Trajectory traj0c = drive.trajectoryBuilder(traj0cStart)
+                .lineTo(new Vector2d(12, 60))
+                .build();
+
 
 //        sleep(5000);
 
@@ -87,16 +100,9 @@ public class BlueNearBackdrop extends LinearOpMode {
 //                .splineTo(new Vector2d(48, 36), Math.toRadians(0))
 //                .build();
 //
-        Pose2d traj2Start = traj0b.end();
-        if (side.equals("center")) {
-            traj2Start = traj2Start.plus(new Pose2d(0, 0, Math.toRadians(-90)));
-        }
-        else if (side.equals("right")) {
-            traj2Start = traj2Start.plus(new Pose2d(0, 0, Math.toRadians(180)));
-        }
-        Trajectory traj2 = drive.trajectoryBuilder(traj2Start, true)
+        Trajectory traj2 = drive.trajectoryBuilder(traj0c.end(), true)
 //                .splineToConstantHeading(new Vector2d(40, 36), Math.toRadians(0))
-                .splineToConstantHeading(new Vector2d(60, 60), Math.toRadians(0))
+                .lineTo(new Vector2d(60, 60))
                 .build();
 
 
@@ -113,7 +119,7 @@ public class BlueNearBackdrop extends LinearOpMode {
         // y=28 right
         // y=42 left
 
-//        if(isStopRequested()) return;
+        if(isStopRequested()) return;
 
 //        bot.startAuto();
         sleep(2000);
@@ -132,6 +138,8 @@ public class BlueNearBackdrop extends LinearOpMode {
         if (side.equals("right")) {
             drive.turn(Math.toRadians(-10));
         }
+
+        drive.followTrajectory(traj0c);
 
 //        drive.followTrajectory(traj1); // navigate to backboard
 
