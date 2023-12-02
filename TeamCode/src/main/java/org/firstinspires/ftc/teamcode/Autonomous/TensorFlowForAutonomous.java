@@ -18,7 +18,7 @@ public class TensorFlowForAutonomous {
 
     HardwareMap hardwareMap;
 
-    public static final String TFOD_MODEL_ASSET_BLUE = "neworb.tflite";
+    public static final String TFOD_MODEL_ASSET_BLUE = "farblueorb.tflite";
 
     public static final String TFOD_MODEL_ASSET_RED = "RedSphere1.tflite";
     public static final String[] LABELS = {
@@ -60,6 +60,7 @@ public class TensorFlowForAutonomous {
         VisionPortal.Builder builder = new VisionPortal.Builder();
 
         // Set the camera (webcam vs. built-in RC phone camera).
+
 
         builder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
 
