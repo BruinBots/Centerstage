@@ -9,8 +9,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
-@Autonomous(name = "RedFarBackdrop", group = "Autonomous: Testing")
-public class RedFarBackdrop extends LinearOpMode {
+@Autonomous(name = "RedFarSpike", group = "Autonomous: Testing")
+public class RedFarSpike extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -71,7 +71,7 @@ public class RedFarBackdrop extends LinearOpMode {
             case "right":
                 telemetry.addData("side", "right");
                 traj0b = drive.trajectoryBuilder(traj0a.end())
-                        .lineToConstantHeading(new Vector2d(14-48, -36))
+                        .lineToConstantHeading(new Vector2d(16-48, -36))
                         .build();
                 break;
             default:
@@ -136,13 +136,14 @@ public class RedFarBackdrop extends LinearOpMode {
             drive.turn(Math.toRadians(-10));
         }
 
-        drive.followTrajectory(traj0c);
 
+
+//        drive.followTrajectory(traj0c);
 
 //        drive.followTrajectory(traj1); // navigate to backboard
 
 //        bot.placePixel();
 
-        drive.followTrajectory(traj2);
+//        drive.followTrajectory(traj2);
     }
 }

@@ -104,6 +104,8 @@ public class RedNearBackdrop extends LinearOpMode {
 
         bot.dropper.dropperUp();
 
+        sleep(1000);
+
         drive.followTrajectory(traj0c);
 
 //        drive.followTrajectory(traj1); // navigate to backboard

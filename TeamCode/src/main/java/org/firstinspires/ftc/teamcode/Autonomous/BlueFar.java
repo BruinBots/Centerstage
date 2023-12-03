@@ -1,52 +1,66 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
+import static android.os.SystemClock.sleep;
+
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.robocol.TelemetryMessage;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
-@Autonomous(name = "BlueFarBackdrop", group = "Autonomous: Testing")
-public class BlueFarBackdrop extends LinearOpMode {
+public class BlueFar {
 
-    @Override
-    public void runOpMode() throws InterruptedException {
+    public HardwareMap hardwareMap;
+    public Telemetry telemetry;
+    public SampleMecanumDrive drive;
 
-        Karen bot = new Karen(hardwareMap);
+    Karen bot;
 
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+    public BlueFar(HardwareMap hardwareMap, Telemetry telemetry) {
 
-        Pose2d startPose = new Pose2d(-36,65, Math.toRadians(90));
+        this.hardwareMap = hardwareMap;
+        this.telemetry = telemetry;
+        this.drive = drive;
 
+        bot = new Karen(hardwareMap);
+
+        drive = new SampleMecanumDrive(hardwareMap);
+        Pose2d startPose = new Pose2d(-36, 65, Math.toRadians(90));
         drive.setPoseEstimate(startPose);
+    }
+
+    public String tfSpike() {
 
         TensorFlowForAutonomousBlue tf = new TensorFlowForAutonomousBlue(hardwareMap, telemetry);
         tf.initTfod();
         sleep(500);
 
-        waitForStart();
-
-        bot.dropper.dropperDown();
-
         tf.visionPortal.resumeStreaming();
 
         int i = 0;
         String side = "none";
-        while (side.equals("none") && i < 10) {
+        while (side.equals("none") && i < 15) {
             side = tf.getSide();
             telemetry.addData("A-side", side);
             telemetry.update();
-            i ++;
-            sleep(20);
+            i++;
+            sleep(30);
         }
 
-        tf.visionPortal.stopStreaming();
+        tf.visionPortal.close();
 
-//        String side = "center";
-        telemetry.addData("side", side);
+        return side;
+    }
+
+    public Trajectory spike(Pose2d startPose, String side) {
+
+        bot.dropper.dropperDown();
+
+        sleep(300);
 
         Trajectory traj0a = drive.trajectoryBuilder(startPose, true)
                 .lineToConstantHeading(new Vector2d(-44, 55))
@@ -58,7 +72,7 @@ public class BlueFarBackdrop extends LinearOpMode {
             case "left":
                 telemetry.addData("side", "left");
                 traj0b = drive.trajectoryBuilder(traj0a.end())
-                        .lineToConstantHeading(new Vector2d(-36, 34))
+                        .lineToConstantHeading(new Vector2d(-35, 34))
                         .build();
                 break;
             case "center":
@@ -85,54 +99,26 @@ public class BlueFarBackdrop extends LinearOpMode {
                 .lineTo(new Vector2d(-44, 60))
                 .build();
 
-
-
-//        Trajectory traj1 = drive.trajectoryBuilder(traj0.end(), true)
-//                .splineTo(new Vector2d(-36, 60), Math.toRadians(0))
-//                .splineTo(new Vector2d(18, 60), Math.toRadians(0))
-//                .splineTo(new Vector2d(48, 36), Math.toRadians(0))
-//                .build();
-//
-        Trajectory traj2 = drive.trajectoryBuilder(traj0c.end(), true)
-//                .splineToConstantHeading(new Vector2d(40, 36), Math.toRadians(0))
-                .lineTo(new Vector2d(60, 60))
-                .build();
-
-
-        // -36, 28 center
-        // -34, 34 left
-        // -42, 28 right
-
-        // NEW
-        // -42, 30 center
-        // -35 34 left
-        // -57, 32 right
-
-        // y=36 center
-        // y=28 right
-        // y=42 left
-
-        if(isStopRequested()) return;
-
-//        bot.startAuto();
-        sleep(2000);
-
         drive.followTrajectory(traj0a);
         drive.followTrajectory(traj0b);
 
         bot.dropper.dropperUp();
 
-        sleep(1000);
+        sleep(500);
 
         drive.followTrajectory(traj0c);
 
-//        drive.followTrajectory(traj1); // navigate to backboard
+        return traj0c;
+    }
 
-//        bot.placePixel();
+    public Trajectory park(Pose2d startPose) {
+
+        Trajectory traj2 = drive.trajectoryBuilder(startPose, true)
+                .lineTo(new Vector2d(60, 60))
+                .build();
 
         drive.followTrajectory(traj2);
 
-        sleep(1000);
-
+        return traj2;
     }
 }

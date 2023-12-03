@@ -62,18 +62,19 @@ public class BlueNearBackdrop extends LinearOpMode {
             case "center":
                 telemetry.addData("side", "center");
                 traj0b = drive.trajectoryBuilder(traj0a.end())
-                        .lineToConstantHeading(new Vector2d(12, 37))
+                        .lineToConstantHeading(new Vector2d(12, 38))
                         .build();
                 break;
             case "right":
                 telemetry.addData("side", "right");
                 traj0b = drive.trajectoryBuilder(traj0a.end())
-                        .lineToConstantHeading(new Vector2d(14, 36))
+                        .lineToConstantHeading(new Vector2d(12, 36))
                         .build();
                 break;
             default:
                 telemetry.addData("side", "default");
                 traj0b = drive.trajectoryBuilder(traj0a.end())
+                        .lineToConstantHeading(new Vector2d(13, 34))
                         .build();
                 break;
         }
@@ -117,6 +118,8 @@ public class BlueNearBackdrop extends LinearOpMode {
         }
 
         bot.dropper.dropperUp();
+
+        sleep(1000);
 
         if (side.equals("right")) {
             drive.turn(Math.toRadians(-10));

@@ -124,18 +124,18 @@ public class TensorFlowForAutonomousRed {
             return "none";
         }
         telemetry.addData("The x value",xMax);
-        if (xMax<=CamSize/3-120) {
+        if (xMax<=CamSize/3-70) {
 
             telemetry.addData("is in left",1);
             return "left";
         }
-        else if (xMax<=CamSize*2/3-120) {
+        else if (xMax<=CamSize*2/3-70) {
 
             telemetry.addData("is in center",2);
             return "center";
 
         }
-        else if (xMax>CamSize*2/3-120) {
+        else if (xMax>CamSize*2/3-70) {
 
             telemetry.addData("is in right ",3);
             return "right";

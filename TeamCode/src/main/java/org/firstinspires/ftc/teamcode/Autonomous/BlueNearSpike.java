@@ -9,21 +9,19 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
-@Autonomous(name = "RedFarBackdrop", group = "Autonomous: Testing")
-public class RedFarBackdrop extends LinearOpMode {
-
+@Autonomous(name = "BlueNearSpike", group = "Autonomous: Testing")
+public class BlueNearSpike extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-
         Karen bot = new Karen(hardwareMap);
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        Pose2d startPose = new Pose2d(-36,-65, Math.toRadians(270));
+        Pose2d startPose = new Pose2d(12,65, Math.toRadians(90));
 
         drive.setPoseEstimate(startPose);
 
-        TensorFlowForAutonomousRed tf = new TensorFlowForAutonomousRed(hardwareMap, telemetry);
+        TensorFlowForAutonomousBlue tf = new TensorFlowForAutonomousBlue(hardwareMap, telemetry);
         tf.initTfod();
         sleep(500);
 
@@ -43,14 +41,13 @@ public class RedFarBackdrop extends LinearOpMode {
             sleep(20);
         }
 
-        tf.visionPortal.close();
+        tf.visionPortal.stopStreaming();
 
 //        String side = "left";
         telemetry.addData("side", side);
-//        sleep(5000);
 
         Trajectory traj0a = drive.trajectoryBuilder(startPose, true)
-                .lineToConstantHeading(new Vector2d(-44, -55))
+                .lineToConstantHeading(new Vector2d(12, 55))
                 .build();
 
         Trajectory traj0b;
@@ -59,24 +56,25 @@ public class RedFarBackdrop extends LinearOpMode {
             case "left":
                 telemetry.addData("side", "left");
                 traj0b = drive.trajectoryBuilder(traj0a.end())
-                        .lineToConstantHeading(new Vector2d(13-48, -34))
+                        .lineToConstantHeading(new Vector2d(13, 34))
                         .build();
                 break;
             case "center":
                 telemetry.addData("side", "center");
                 traj0b = drive.trajectoryBuilder(traj0a.end())
-                        .lineToConstantHeading(new Vector2d(12-48, -37))
+                        .lineToConstantHeading(new Vector2d(12, 38))
                         .build();
                 break;
             case "right":
                 telemetry.addData("side", "right");
                 traj0b = drive.trajectoryBuilder(traj0a.end())
-                        .lineToConstantHeading(new Vector2d(14-48, -36))
+                        .lineToConstantHeading(new Vector2d(12, 36))
                         .build();
                 break;
             default:
                 telemetry.addData("side", "default");
                 traj0b = drive.trajectoryBuilder(traj0a.end())
+                        .lineToConstantHeading(new Vector2d(13, 34))
                         .build();
                 break;
         }
@@ -89,28 +87,20 @@ public class RedFarBackdrop extends LinearOpMode {
             traj0cStart = traj0cStart.plus(new Pose2d(0, 0, Math.toRadians(-180)));
         }
 
-        Trajectory traj0c;
+        Trajectory traj0c = drive.trajectoryBuilder(traj0cStart)
+                .lineTo(new Vector2d(12, 60))
+                .build();
 
-        if (side.equals("right")) {
-            traj0c = drive.trajectoryBuilder(traj0cStart, true)
-                    .lineTo(new Vector2d(-55, -60))
-                    .build();
-        }
-        else {
-            traj0c = drive.trajectoryBuilder(traj0cStart, true)
-                    .lineTo(new Vector2d(-36, -60))
-                    .build();
-        }
+
 
 //        Trajectory traj1 = drive.trajectoryBuilder(startPose, true)
-//                .splineTo(new Vector2d(-36, -60), Math.toRadians(0))
-//                .splineTo(new Vector2d(18, -60), Math.toRadians(0))
-//                .splineTo(new Vector2d(48, -36), Math.toRadians(0))
+//                .splineTo(new Vector2d(12, 60), Math.toRadians(270))
+//                .splineTo(new Vector2d(48, 36), Math.toRadians(0))
 //                .build();
 //
-
         Trajectory traj2 = drive.trajectoryBuilder(traj0c.end(), true)
-                .lineTo(new Vector2d(60, -60))
+//                .splineToConstantHeading(new Vector2d(40, 36), Math.toRadians(0))
+                .lineTo(new Vector2d(60, 60))
                 .build();
 
         if(isStopRequested()) return;
@@ -120,7 +110,6 @@ public class RedFarBackdrop extends LinearOpMode {
 
         drive.followTrajectory(traj0a);
         drive.followTrajectory(traj0b);
-
         if (side.equals("center")) {
             drive.turn(Math.toRadians(-90));
         }
@@ -136,13 +125,14 @@ public class RedFarBackdrop extends LinearOpMode {
             drive.turn(Math.toRadians(-10));
         }
 
-        drive.followTrajectory(traj0c);
-
+//        drive.followTrajectory(traj0c);
 
 //        drive.followTrajectory(traj1); // navigate to backboard
 
 //        bot.placePixel();
 
-        drive.followTrajectory(traj2);
+//        drive.followTrajectory(traj2);
+
+        sleep(1000);
     }
 }

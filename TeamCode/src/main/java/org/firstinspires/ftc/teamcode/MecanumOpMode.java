@@ -126,6 +126,11 @@ public class MecanumOpMode extends OpMode
             bot.arm.moveSlide(bot.arm.MIN_SLIDE_POSITION);
         }
 
+        // dropper
+        if (gamepad2.y) {
+            bot.dropper.dropperUp();
+        }
+
 
         // drone launch
 
