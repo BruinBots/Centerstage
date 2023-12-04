@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.Autonomous.AutoBases;
 
 import static android.os.SystemClock.sleep;
 
@@ -6,13 +6,13 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.robocol.TelemetryMessage;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Autonomous.TensorFlowForAutonomousBlue;
 import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
-public class BlueFar {
+public class BaseAuto {
 
     public HardwareMap hardwareMap;
     public Telemetry telemetry;
@@ -20,7 +20,9 @@ public class BlueFar {
 
     Karen bot;
 
-    public BlueFar(HardwareMap hardwareMap, Telemetry telemetry) {
+    public static Pose2d startingPosition;
+
+    public BaseAuto(HardwareMap hardwareMap, Telemetry telemetry) {
 
         this.hardwareMap = hardwareMap;
         this.telemetry = telemetry;
@@ -29,8 +31,7 @@ public class BlueFar {
         bot = new Karen(hardwareMap);
 
         drive = new SampleMecanumDrive(hardwareMap);
-        Pose2d startPose = new Pose2d(-36, 65, Math.toRadians(90));
-        drive.setPoseEstimate(startPose);
+        drive.setPoseEstimate(startingPosition);
     }
 
     public String tfSpike() {
@@ -60,65 +61,77 @@ public class BlueFar {
 
         bot.dropper.dropperDown();
 
-        sleep(300);
+        sleep(250);
 
-        Trajectory traj0a = drive.trajectoryBuilder(startPose, true)
-                .lineToConstantHeading(new Vector2d(-44, 55))
-                .build();
+        Trajectory traj0a = spikeStart(startPose);
 
         Trajectory traj0b;
 
         switch (side) {
             case "left":
                 telemetry.addData("side", "left");
-                traj0b = drive.trajectoryBuilder(traj0a.end())
-                        .lineToConstantHeading(new Vector2d(-35, 34))
-                        .build();
+                traj0b = spikeLeft(traj0a.end());
                 break;
             case "center":
                 telemetry.addData("side", "center");
-                traj0b = drive.trajectoryBuilder(traj0a.end())
-                        .lineToConstantHeading(new Vector2d(-42, 30))
-                        .build();
+                traj0b = spikeCenter(traj0a.end());
                 break;
             case "right":
                 telemetry.addData("side", "right");
-                traj0b = drive.trajectoryBuilder(traj0a.end())
-                        .lineToConstantHeading(new Vector2d(-57, 32))
-                        .build();
+                traj0b = spikeRight(traj0a.end());
                 break;
             default:
                 telemetry.addData("side", "default");
-                traj0b = drive.trajectoryBuilder(traj0a.end())
-                        .lineToConstantHeading(new Vector2d(-35, 34))
-                        .build();
+                traj0b = spikeLeft(traj0a.end());
                 break;
         }
 
-        Trajectory traj0c = drive.trajectoryBuilder(traj0b.end())
-                .lineTo(new Vector2d(-44, 60))
-                .build();
+        Trajectory traj0c = spikeEnd(traj0b.end());
 
         drive.followTrajectory(traj0a);
         drive.followTrajectory(traj0b);
 
         bot.dropper.dropperUp();
 
-        sleep(500);
+        sleep(250);
 
         drive.followTrajectory(traj0c);
 
         return traj0c;
     }
 
+    public Trajectory spikeStart(Pose2d startPose) {
+        return drive.trajectoryBuilder(startPose).build();
+    }
+
+    public Trajectory spikeLeft(Pose2d startPose) {
+        return drive.trajectoryBuilder(startPose).build();
+    }
+
+    public Trajectory spikeCenter(Pose2d startPose) {
+        return drive.trajectoryBuilder(startPose).build();
+    }
+
+    public Trajectory spikeRight(Pose2d startPose) {
+        return drive.trajectoryBuilder(startPose).build();
+    }
+
+    public Trajectory spikeEnd(Pose2d startPose) {
+        return drive.trajectoryBuilder(startPose).build();
+    }
+
+
+
     public Trajectory park(Pose2d startPose) {
 
-        Trajectory traj2 = drive.trajectoryBuilder(startPose, true)
-                .lineTo(new Vector2d(60, 60))
-                .build();
+        Trajectory traj2 = parkTraj(startPose);
 
         drive.followTrajectory(traj2);
 
         return traj2;
+    }
+
+    public Trajectory parkTraj(Pose2d startPose) {
+        return drive.trajectoryBuilder(startPose).build();
     }
 }
