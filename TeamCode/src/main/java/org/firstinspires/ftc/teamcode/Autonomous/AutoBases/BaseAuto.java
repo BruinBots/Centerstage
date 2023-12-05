@@ -8,6 +8,7 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Arm;
 import org.firstinspires.ftc.teamcode.Autonomous.TensorFlowForAutonomousBlue;
 import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -57,14 +58,14 @@ public class BaseAuto {
         return side;
     }
 
-    public Trajectory spike(Pose2d startPose, String side) {
+    // place the pixel by the spike mark on given side
+    public Trajectory spike(Pose2d startPose, String side, boolean finishSpike) {
 
+        // ensure the pixel is securely in the dropper
         bot.dropper.dropperDown();
-
         sleep(250);
 
         Trajectory traj0a = spikeStart(startPose);
-
         Trajectory traj0b;
 
         switch (side) {
@@ -88,18 +89,20 @@ public class BaseAuto {
 
         Trajectory traj0c = spikeEnd(traj0b.end());
 
-        drive.followTrajectory(traj0a);
-        drive.followTrajectory(traj0b);
+        drive.followTrajectory(traj0a); // move to the spikeStart position to ensure no crashing during navigation
+        drive.followTrajectory(traj0b); // move to the spike mark
 
-        bot.dropper.dropperUp();
-
+        bot.dropper.dropperUp(); // release the pixel
         sleep(250);
 
-        drive.followTrajectory(traj0c);
+        if (finishSpike) {
+            drive.followTrajectory(traj0c); // if finishing spike, return to spikeEnd position to prepare for parking/pixel placing
+        }
 
         return traj0c;
     }
 
+    // will be run before doing spike placement
     public Trajectory spikeStart(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose).build();
     }
@@ -116,12 +119,12 @@ public class BaseAuto {
         return drive.trajectoryBuilder(startPose).build();
     }
 
+    // will be run after doing spike placement
     public Trajectory spikeEnd(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose).build();
     }
 
-
-
+    // park the bot in the corner by the backdrop
     public Trajectory park(Pose2d startPose) {
 
         Trajectory traj2 = parkTraj(startPose);
@@ -132,6 +135,59 @@ public class BaseAuto {
     }
 
     public Trajectory parkTraj(Pose2d startPose) {
+        return drive.trajectoryBuilder(startPose).build();
+    }
+
+    // Place the pixel on the backdrop
+    public Trajectory placePixel(Pose2d startPose) {
+        // TODO: navigate to backdrop
+        Trajectory startTraj = backdropStart(startPose);
+        drive.followTrajectory(startTraj);
+
+        // EXTREMELY IMPORTANT; STUFF WILL BREAK WITHOUT THIS
+        bot.inOutTake.scoopMiddle();
+        sleep(250);
+
+        // lift up the arm
+        bot.arm.moveArm(Arm.MAX_ARM_POSITION);
+        sleep(250);
+
+        // lift up the slide
+        bot.arm.moveSlide(Arm.MIN_SLIDE_POSITION); // TODO: change this to an actual value
+        sleep(500);
+
+        // open the claw to release the pixels onto the backdrop
+        bot.claw.openClaw();
+        sleep(500);
+
+        // close the claw after releasing the pixels
+        bot.claw.closeBothClaw();
+        sleep(100);
+
+        // retract the slide
+        bot.arm.moveSlide(Arm.MIN_SLIDE_POSITION);
+        sleep(500);
+
+        // retract the arm
+        bot.arm.moveArm(Arm.MIN_ARM_POSITION);
+        sleep(250);
+
+        // TODO: may need to back up to let the pixels fall down
+
+        // TODO: return to position for parking
+        Trajectory endTraj = backdropEnd(startTraj.end());
+        drive.followTrajectory(endTraj);
+
+        return endTraj;
+    }
+
+    // this is run before pixel placing
+    public Trajectory backdropStart(Pose2d startPose) {
+        return drive.trajectoryBuilder(startPose).build();
+    }
+
+    // this is run after pixel placing
+    public Trajectory backdropEnd(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose).build();
     }
 }
