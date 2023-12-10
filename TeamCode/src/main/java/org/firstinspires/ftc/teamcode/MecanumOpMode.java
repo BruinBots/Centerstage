@@ -81,6 +81,10 @@ public class MecanumOpMode extends OpMode
         strafe = gamepad2.left_stick_x - gamepad1.left_stick_x;
         turn= gamepad1.right_stick_x + gamepad2.right_stick_x;
 
+        if (drive > 1) { drive = 1; }
+        if (strafe > 1) { strafe = 1; }
+        if (turn > 1) { turn = 1; }
+
         strafe = Math.copySign(Math.pow(strafe, 2), strafe);
         drive = Math.copySign(Math.pow(drive, 2), drive);
         turn = Math.copySign(Math.pow(turn, 2), turn);
