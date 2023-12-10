@@ -97,9 +97,10 @@ public class BaseAuto {
 
         if (finishSpike) {
             drive.followTrajectory(traj0c); // if finishing spike, return to spikeEnd position to prepare for parking/pixel placing
+            return traj0c;
         }
 
-        return traj0c;
+        return traj0b;
     }
 
     // will be run before doing spike placement
