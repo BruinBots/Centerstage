@@ -103,7 +103,7 @@ public class Karen  {
     }
 
     private double rampUp(double x) {
-        return 1 / (1 + Math.pow(Math.E, -10 * (1.5 * x - 0.8)));
+        return Math.copySign(1 / (1 + Math.pow(Math.E, -10 * (1.5 * x - 0.8))), x);
     }
 
     public void moveBotMecanum(double drive, double rotate, double strafe, double scaleFactor) {
