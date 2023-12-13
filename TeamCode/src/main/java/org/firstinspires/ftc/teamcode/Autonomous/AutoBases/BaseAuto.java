@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.Autonomous.AutoBases;
 import static android.os.SystemClock.sleep;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -27,7 +26,6 @@ public class BaseAuto {
 
         this.hardwareMap = hardwareMap;
         this.telemetry = telemetry;
-        this.drive = drive;
 
         bot = new Karen(hardwareMap);
 
@@ -45,12 +43,12 @@ public class BaseAuto {
 
         int i = 0;
         String side = "none";
-        while (side.equals("none") && i < 15) {
+        while (side.equals("none") && i < 2) {
             side = tf.getSide();
             telemetry.addData("A-side", side);
             telemetry.update();
             i++;
-            sleep(30);
+            sleep(20);
         }
 
         tf.visionPortal.close();
