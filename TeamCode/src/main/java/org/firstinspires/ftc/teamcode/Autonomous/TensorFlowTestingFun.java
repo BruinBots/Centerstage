@@ -48,7 +48,6 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
 
-
 @TeleOp(name = "TFOD Orb Testing", group = "Concept")
 public class TensorFlowTestingFun extends LinearOpMode {
 
@@ -66,11 +65,11 @@ public class TensorFlowTestingFun extends LinearOpMode {
      */
     private VisionPortal visionPortal;
 
-    //public static final String TFOD_MODEL_ASSET_BLUE = "farblueorb.tflite";
+    public static final String TFOD_MODEL_ASSET = "allorb.tflite";
 
-    public static final String TFOD_MODEL_ASSET_RED = "RedSphere1.tflite";
+    //public static final String TFOD_MODEL_FILE = "allorb.tflite";
     public static final String[] LABELS = {
-            "redSphere"
+            "redorb", "blueorb"
     };
 
     @Override
@@ -120,8 +119,8 @@ public class TensorFlowTestingFun extends LinearOpMode {
 
                 // Use setModelAssetName() if the TF Model is built in as an asset.
                 // Use setModelFileName() if you have downloaded a custom team model to the Robot Controller.
-                .setModelAssetName(TFOD_MODEL_ASSET_RED)
-                //.setModelFileName(TFOD_MODEL_FILE)
+                .setModelAssetName(TFOD_MODEL_ASSET)
+      //          .setModelFileName(TFOD_MODEL_FILE)
 
                 .setModelLabels(LABELS)
                 //.setIsModelTensorFlow2(true)
