@@ -41,7 +41,7 @@ public class Karen  {
 
 
         // arm
-        armMotor = map.get(DcMotorEx.class, "arm_motor");
+        armMotor = map.get(DcMotorEx.class, "slide_motor");
         armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         armMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
