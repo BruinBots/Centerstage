@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
-@Autonomous(name = "BlueFarBackdrop", group = "Autonomous: Testing")
+@Autonomous(name = "Ezra Auto", group = "Autonomous: Testing")
 public class EzraAuto extends LinearOpMode {
 
     @Override
