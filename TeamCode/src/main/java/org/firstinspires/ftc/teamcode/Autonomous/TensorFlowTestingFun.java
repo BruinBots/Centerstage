@@ -31,10 +31,10 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
@@ -53,11 +53,10 @@ public class TensorFlowTestingFun extends LinearOpMode {
 
     private static final boolean USE_WEBCAM = true;  // true for webc// m, false for phone camera
     //1 is blue 2 is red
-
     /**
      * The variable to store our instance of the TensorFlow Object Detection processor.
      */
-    private TfodProcessor tfod;
+    private TfodProcessor tfodProcessor;
     int CamSize = 0;
     String Sides="";
     /**
@@ -87,11 +86,7 @@ public class TensorFlowTestingFun extends LinearOpMode {
         if (opModeIsActive()) {
             while (opModeIsActive()) {
 
-                Sides=telemetryTfod();
-                telemetry.addData("the side is ", Sides);
-                // Push telemetry to the Driver Station.
-                telemetry.update();
-
+                telemetryTfod();
                 // Save CPU resources; can resume streaming when needed.
                 if (gamepad1.dpad_down) {
                     visionPortal.stopStreaming();
@@ -113,9 +108,8 @@ public class TensorFlowTestingFun extends LinearOpMode {
      * Initialize the TensorFlow Object Detection processor.
      */
     private void initTfod() {
-
         // Create the TensorFlow processor by using a builder.
-        tfod = new TfodProcessor.Builder()
+        tfodProcessor = new TfodProcessor.Builder()
 
                 // Use setModelAssetName() if the TF Model is built in as an asset.
                 // Use setModelFileName() if you have downloaded a custom team model to the Robot Controller.
@@ -155,13 +149,13 @@ public class TensorFlowTestingFun extends LinearOpMode {
         //builder.setAutoStopLiveView(false);
 
         // Set and enable the processor.
-        builder.addProcessor(tfod);
+        builder.addProcessor(tfodProcessor);
 
         // Build the Vision Portal, using the above settings.
         visionPortal = builder.build();
 
         // Set confidence threshold for TFOD recognitions, at any time.
-        tfod.setMinResultConfidence(0.4f);
+        tfodProcessor.setMinResultConfidence(0.4f);
 
         // Disable or re-enable the TFOD processor at any time.
         //visionPortal.setProcessorEnabled(tfod, true);
@@ -171,49 +165,38 @@ public class TensorFlowTestingFun extends LinearOpMode {
     /**
      * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.
      */
-    private String telemetryTfod() {
-        // 1 left 2 center 3 right
-        List<Recognition> currentRecognitions = tfod.getRecognitions();
-        telemetry.addData("# Objects Detected", currentRecognitions.size());
-        //size of pikel
-        CamSize=640;
-        int MaxConfident=0;
-        int xMax=0;
-        telemetry.addData("camara size",CamSize);
-        // Step through the list of recognitions and display info for each one.
-        for (Recognition recognition : currentRecognitions) {
-            double x = (recognition.getLeft() + recognition.getRight()) / 2;
-            telemetry.addData("camara size R",recognition.getRight());
-            telemetry.addData("camara size L",recognition.getLeft());
-            if (MaxConfident<(int)(recognition.getConfidence() * 100)){
-                MaxConfident= (int)recognition.getConfidence() * 100;
-                xMax=(int)x;
+    private void telemetryTfod() {
+        if (tfodProcessor != null) {
+            // Get updated recognition list.
+            List<Recognition> updatedRecognitions = tfodProcessor.getRecognitions();
+            if (updatedRecognitions != null) {
+                telemetry.addData("# Objects Detected", updatedRecognitions.size());
+
+                for (Recognition recognition : updatedRecognitions) {
+                    // Check if the recognized object is the one you are looking for.
+                    if (recognition.getLabel().equals(LABELS)) {
+                        // Implement logic to determine object position (left, center, right).
+                        double objectX = recognition.getLeft();
+                        double objectWidth = recognition.getWidth();
+                        double screenWidth = tfod.getCameraView().getWidth();
+
+                        double objectCenterX = objectX + objectWidth / 2.0;
+
+                        if (objectCenterX < screenWidth / 3.0) {
+                            telemetry.addData("Position", "Left");
+                        } else if (objectCenterX < 2 * screenWidth / 3.0) {
+                            telemetry.addData("Position", "Center");
+                        } else {
+                            telemetry.addData("Position", "Right");
+                        }
+
+                        telemetry.addData("Object Center X", objectCenterX);
+                    }
+                }
+
+                telemetry.update();
             }
-
-            telemetry.addData(""," ");
-            telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
-
-
-        }   // end for() loop
-        telemetry.addData("The x value",xMax);
-        if (xMax<=CamSize/3) {
-
-            telemetry.addData("is in left",1);
-            return "left";
         }
-        else if (xMax<=CamSize*2/3) {
-
-            telemetry.addData("is in center",2);
-            return "center";
-
-        }
-        else if (xMax>CamSize*2/3) {
-
-            telemetry.addData("is in right ",3);
-            return "right";
-        }
-        else
-            return "none";
-    }   // end method telemetryTfod()
+    }
 
 }   // end class
