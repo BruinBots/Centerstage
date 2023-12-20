@@ -69,7 +69,7 @@ public class TensorFlowTestingFun extends LinearOpMode {
 
     //public static final String TFOD_MODEL_FILE = "allorb.tflite";
     public static final String[] LABELS = {
-            "redorb", "blueorb"
+            "blueorb", "redorb"
     };
 
     @Override
@@ -161,7 +161,7 @@ public class TensorFlowTestingFun extends LinearOpMode {
         visionPortal = builder.build();
 
         // Set confidence threshold for TFOD recognitions, at any time.
-        tfod.setMinResultConfidence(0.5f);
+        tfod.setMinResultConfidence(0.4f);
 
         // Disable or re-enable the TFOD processor at any time.
         //visionPortal.setProcessorEnabled(tfod, true);
