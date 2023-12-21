@@ -37,6 +37,8 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
+import org.opencv.core.Mat;
+import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.List;
 
@@ -179,7 +181,7 @@ public class TensorFlowTestingFun extends LinearOpMode {
                         double objectX = recognition.getLeft();
                         double objectWidth = recognition.getWidth();
                         double screenWidth = tfod.getCameraView().getWidth();
-
+C
                         double objectCenterX = objectX + objectWidth / 2.0;
 
                         if (objectCenterX < screenWidth / 3.0) {
