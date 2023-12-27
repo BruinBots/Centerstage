@@ -29,6 +29,8 @@
 
 package org.firstinspires.ftc.teamcode.Autonomous;
 
+import android.util.Size;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
@@ -61,7 +63,7 @@ public class TensorFlowTestingFun extends LinearOpMode {
     private TfodProcessor tfodProcessor;
     int CamSize = 0;
     String Sides="";
-    /**
+    /**z
      * The variable to store our instance of the vision portal.
      */
     private VisionPortal visionPortal;
@@ -119,10 +121,10 @@ public class TensorFlowTestingFun extends LinearOpMode {
       //          .setModelFileName(TFOD_MODEL_FILE)
 
                 .setModelLabels(LABELS)
-                //.setIsModelTensorFlow2(true)
-                //.setIsModelQuantized(true)
-                //.setModelInputSize(300)
-                //.setModelAspectRatio(16.0 / 9.0)
+                .setIsModelTensorFlow2(true)
+                .setIsModelQuantized(true)
+                .setModelInputSize(300)
+                .setModelAspectRatio(16.0 / 9.0)
 
                 .build();
 
@@ -137,18 +139,18 @@ public class TensorFlowTestingFun extends LinearOpMode {
         }
 
         // Choose a camera resolution. Not all cameras support all resolutions.
-        //builder.setCameraResolution(new Size(640, 480));
+        builder.setCameraResolution(new Size(1920, 1080));
 
         // Enable the RC preview (LiveView).  Set "false" to omit camera monitoring.
-        //builder.enableCameraMonitoring(true);
+        builder.enableLiveView(true);
 
         // Set the stream format; MJPEG uses less bandwidth than default YUY2.
-        //builder.setStreamFormat(VisionPortal.StreamFormat.YUY2);
+        builder.setStreamFormat(VisionPortal.StreamFormat.YUY2);
 
         // Choose whether or not LiveView stops if no processors are enabled.
         // If set "true", monitor shows solid orange screen if no processors enabled.
         // If set "false", monitor shows camera view without annotations.
-        //builder.setAutoStopLiveView(false);
+        builder.setAutoStopLiveView(false);
 
         // Set and enable the processor.
         builder.addProcessor(tfodProcessor);
@@ -157,10 +159,9 @@ public class TensorFlowTestingFun extends LinearOpMode {
         visionPortal = builder.build();
 
         // Set confidence threshold for TFOD recognitions, at any time.
-        tfodProcessor.setMinResultConfidence(0.4f);
-
+        tfodProcessor.setMinResultConfidence(0.85f);
         // Disable or re-enable the TFOD processor at any time.
-        //visionPortal.setProcessorEnabled(tfod, true);
+        visionPortal.setProcessorEnabled(tfodProcessor, true);
 
     }   // end method initTfod()
 
@@ -174,14 +175,27 @@ public class TensorFlowTestingFun extends LinearOpMode {
             if (updatedRecognitions != null) {
                 telemetry.addData("# Objects Detected", updatedRecognitions.size());
 
+                telemetry.addData("LABELS 0: ", LABELS[0]);
+                telemetry.addData("LABELS 1: ", LABELS[1]);
                 for (Recognition recognition : updatedRecognitions) {
+                    telemetry.addData("getLabel(): ", recognition.getLabel());
+
                     // Check if the recognized object is the one you are looking for.
-                    if (recognition.getLabel().equals(LABELS)) {
+                    if (recognition.getLabel().equals(LABELS[0]) || recognition.getLabel().equals(LABELS[1])) {
+                        double x = (recognition.getLeft() + recognition.getRight()) / 2 ;
+                        double y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
+
+                        telemetry.addData(""," ");
+                        telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
+                        telemetry.addData("- Position", "%.0f / %.0f", x, y);
+                        telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
+
                         // Implement logic to determine object position (left, center, right).
                         double objectX = recognition.getLeft();
                         double objectWidth = recognition.getWidth();
-                        double screenWidth = tfod.getCameraView().getWidth();
-C
+                        double screenWidth = 1920;//tfodProcessor..getCameraView().getWidth();
+
+
                         double objectCenterX = objectX + objectWidth / 2.0;
 
                         if (objectCenterX < screenWidth / 3.0) {
