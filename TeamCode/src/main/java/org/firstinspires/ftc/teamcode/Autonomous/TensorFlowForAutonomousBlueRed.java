@@ -29,10 +29,15 @@
 
 package org.firstinspires.ftc.teamcode.Autonomous;
 
+import static android.os.SystemClock.sleep;
+
 import android.util.Size;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -62,7 +67,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
     /**z
      * The variable to store our instance of the vision portal.
      */
-    private VisionPortal visionPortal;
+    public VisionPortal visionPortal;
 
     public static final String TFOD_MODEL_ASSET = "allorb.tflite";
 
@@ -71,6 +76,18 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
             "blueorb", "redorb"
     };
 
+    String Sides="";
+    int xMax=0;
+    public TensorFlowForAutonomousBlueRed(HardwareMap hardwareMap, Telemetry telemetry) {
+        this.hardwareMap = hardwareMap;
+        this.telemetry = telemetry;
+    }
+
+    public String getSide() {
+        sleep(500);
+        Sides=telemetryTfod();
+        return Sides;
+    }
     @Override
 
     public void runOpMode() {
@@ -107,7 +124,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
     /**
      * Initialize the TensorFlow Object Detection processor.
      */
-    private void initTfod() {
+    public void initTfod() {
         // Create the TensorFlow processor by using a builder.
         tfodProcessor = new TfodProcessor.Builder()
 
@@ -164,7 +181,10 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
     /**
      * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.
      */
-    private void telemetryTfod() {
+    private String telemetryTfod() {
+        String direction="";
+        double screenWidth = 1920;//tfodProcessor..getCameraView().getWidth();
+
         if (tfodProcessor != null) {
             // Get updated recognition list.
             List<Recognition> updatedRecognitions = tfodProcessor.getRecognitions();
@@ -189,7 +209,6 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
                         // Implement logic to determine object position (left, center, right).
                         double objectX = recognition.getLeft();
                         double objectWidth = recognition.getWidth();
-                        double screenWidth = 1920;//tfodProcessor..getCameraView().getWidth();
                         double objectCenterX = objectX + objectWidth / 2.0;
 
                         if (objectCenterX < screenWidth / 3.0) {
@@ -204,7 +223,30 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
                 }
                 telemetry.update();
             }
-        }
-    }
+            if (updatedRecognitions.size() < 1) {
+                return "none";
+            }
+            telemetry.addData("The x value",xMax);
+            if (xMax<=screenWidth/3) {
 
+                telemetry.addData("is in left",1);
+                return "left";
+            }
+            else if (xMax<=screenWidth*2/3) {
+
+                telemetry.addData("is in center",2);
+                return "center";
+
+            }
+            else if (xMax>screenWidth*2/3-70) {
+
+                telemetry.addData("is in right ",3);
+                return "right";
+            }
+            else
+                return "none";
+
+        }
+        return direction;
+    }
 }   // end class
