@@ -23,7 +23,7 @@ public class RedFarBackdrop extends LinearOpMode {
 
         drive.setPoseEstimate(startPose);
 
-        TensorFlowForAutonomousRed tf = new TensorFlowForAutonomousRed(hardwareMap, telemetry);
+        TensorFlowForAutonomousBlueAndRed tf = new TensorFlowForAutonomousBlueAndRed(hardwareMap, telemetry);
         tf.initTfod();
         sleep(500);
 

@@ -23,7 +23,7 @@ public class BlueFarSpike extends LinearOpMode {
 
         drive.setPoseEstimate(startPose);
 
-        TensorFlowForAutonomousBlue tf = new TensorFlowForAutonomousBlue(hardwareMap, telemetry);
+        TensorFlowForAutonomousBlueAndRed tf = new TensorFlowForAutonomousBlueAndRed(hardwareMap, telemetry);
         tf.initTfod();
         sleep(500);
 
