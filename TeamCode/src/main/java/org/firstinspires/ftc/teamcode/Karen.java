@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public class Karen {
     // Class variables
@@ -11,11 +12,14 @@ public class Karen {
 //    public DcMotorEx rightBackMotor;
 
     DcMotorEx droneMotor;
-    Drone drone;
+    Servo droneServo;
+    NewDrone drone;
     // constructor with map
     public Karen(HardwareMap map) {
-        droneMotor = map.get(DcMotorEx.class, "drone_motor");
-        drone = new Drone(droneMotor);
+//        droneMotor = map.get(DcMotorEx.class, "drone_motor");
+//        drone = new OldDrone(droneMotor);
+        droneServo = map.get(Servo.class, "drone_servo");
+        drone = new NewDrone(droneServo);
 
 //        leftFrontMotor = map.get(DcMotorEx.class, "left_front");
 //        rightFrontMotor = map.get(DcMotorEx.class, "right_front");
