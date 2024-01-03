@@ -36,11 +36,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
-import org.opencv.core.Mat;
-import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.List;
 
@@ -53,7 +50,7 @@ import java.util.List;
  */
 
 @TeleOp(name = "TFOD Orb Testing", group = "Concept")
-public class TensorFlowTestingFun extends LinearOpMode {
+public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
 
     private static final boolean USE_WEBCAM = true;  // true for webc// m, false for phone camera
     //1 is blue 2 is red
@@ -61,8 +58,7 @@ public class TensorFlowTestingFun extends LinearOpMode {
      * The variable to store our instance of the TensorFlow Object Detection processor.
      */
     private TfodProcessor tfodProcessor;
-    int CamSize = 0;
-    String Sides="";
+
     /**z
      * The variable to store our instance of the vision portal.
      */
@@ -194,8 +190,6 @@ public class TensorFlowTestingFun extends LinearOpMode {
                         double objectX = recognition.getLeft();
                         double objectWidth = recognition.getWidth();
                         double screenWidth = 1920;//tfodProcessor..getCameraView().getWidth();
-
-
                         double objectCenterX = objectX + objectWidth / 2.0;
 
                         if (objectCenterX < screenWidth / 3.0) {
@@ -205,11 +199,9 @@ public class TensorFlowTestingFun extends LinearOpMode {
                         } else {
                             telemetry.addData("Position", "Right");
                         }
-
                         telemetry.addData("Object Center X", objectCenterX);
                     }
                 }
-
                 telemetry.update();
             }
         }
