@@ -7,53 +7,53 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class BlueNearAuto extends BaseAuto {
+public class RedFarAuto extends BaseAuto {
 
-    public static Pose2d startingPosition = new Pose2d(12, 65, Math.toRadians(90));
+    public static Pose2d startingPosition = new Pose2d(-36, -65, Math.toRadians(270));
 
-    public BlueNearAuto(HardwareMap hardwareMap, Telemetry telemetry) {
+    public RedFarAuto(HardwareMap hardwareMap, Telemetry telemetry) {
         super(hardwareMap, telemetry);
     }
 
     @Override
     public Trajectory spikeStart(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(12, 55))
+                .lineToConstantHeading(new Vector2d(-44, -55))
                 .build();
     }
 
     @Override
     public Trajectory spikeLeft(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(13, 34))
+                .lineToConstantHeading(new Vector2d(-35, -34))
                 .build();
     }
 
     @Override
     public Trajectory spikeCenter(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(12, 30))
+                .lineToConstantHeading(new Vector2d(-36, -37))
                 .build();
     }
 
     @Override
     public Trajectory spikeRight(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(12, 36))
+                .lineToConstantHeading(new Vector2d(-34, -36))
                 .build();
     }
 
     @Override
     public Trajectory spikeEnd(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineTo(new Vector2d(12, 60))
+                .lineTo(new Vector2d(-55, -60))
                 .build();
     }
 
     @Override
     public Trajectory parkTraj(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineTo(new Vector2d(60, 60))
+                .lineTo(new Vector2d(60, -60))
                 .build();
     }
 }
