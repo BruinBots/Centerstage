@@ -40,8 +40,8 @@ public class AprilTags extends LinearOpMode {
      * {@link #visionPortal} is the variable to store our instance of the vision portal.
      */
     private VisionPortal visionPortal;
-    //this variable is the ofset for the robot dosent hit the wall
-    double y= 1;
+    //this variable is the offset for the robot dosen't hit the backboard
+    double OffSetBackboard= 3;
 
     @Override
     public void runOpMode() {
@@ -53,7 +53,8 @@ public class AprilTags extends LinearOpMode {
 
         drive.setPoseEstimate(startPose);
         initAprilTag();
-        double x;
+        //The variable that stores the distance that the apritag is from the backboard
+        double ApriltagDictance;
 
 
 
@@ -65,13 +66,13 @@ public class AprilTags extends LinearOpMode {
         telemetry.update();
         waitForStart();
 
-        x=telemetryAprilTag();
+        ApriltagDictance=telemetryAprilTag();
 
                 // Push telemetry to the Driver Station.
         telemetry.update();
 
         Trajectory traj0a = drive.trajectoryBuilder(startPose, true)
-                .lineToConstantHeading(new Vector2d(36+x-y, 36))
+                .lineToConstantHeading(new Vector2d(36+ApriltagDictance-OffSetBackboard, 36))
                 .build();
 
         // Save more CPU resources when camera is no longer needed.
