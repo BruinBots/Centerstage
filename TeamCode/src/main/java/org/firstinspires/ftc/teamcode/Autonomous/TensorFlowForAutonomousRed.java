@@ -49,7 +49,11 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
 
+<<<<<<< HEAD
 @TeleOp(name = "TFOD Orb Testing Red", group = "Concept")
+=======
+@TeleOp(name = "TFOD", group = "Concept")
+>>>>>>> c6cfa7d (Change camera name to Front Camera.)
 public class TensorFlowForAutonomousRed extends LinearOpMode {
 
     private static final boolean USE_WEBCAM = true;  // true for webc// m, false for phone camera
