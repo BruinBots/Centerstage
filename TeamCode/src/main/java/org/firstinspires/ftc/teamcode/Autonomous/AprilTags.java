@@ -26,7 +26,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
-@Autonomous(name = "Concept: AprilTag", group = "Concept")
+@Autonomous(name = "AprilTag", group = "Concept")
 
 public class AprilTags extends LinearOpMode {
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
@@ -40,11 +40,11 @@ public class AprilTags extends LinearOpMode {
      * {@link #visionPortal} is the variable to store our instance of the vision portal.
      */
     private VisionPortal visionPortal;
-    //this variable is the offset for the robot dosen't hit the backboard
-    double OffSetBackboard= 3;
+    //this variable is the offset for the robot dosen't hit the backboard in inch
+    double OffSetBackboard=3;
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
         Karen bot = new Karen(hardwareMap);
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -59,7 +59,7 @@ public class AprilTags extends LinearOpMode {
 
 
 
-
+        ApriltagDictance=telemetryAprilTag();
         // Wait for the DS start button to be touched.
         telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
         telemetry.addData(">", "Touch Play to start OpMode");
@@ -67,15 +67,19 @@ public class AprilTags extends LinearOpMode {
         waitForStart();
 
         ApriltagDictance=telemetryAprilTag();
-
+        telemetry.addData("the distance:", ApriltagDictance);
                 // Push telemetry to the Driver Station.
         telemetry.update();
 
         Trajectory traj0a = drive.trajectoryBuilder(startPose, true)
-                .lineToConstantHeading(new Vector2d(36+ApriltagDictance-OffSetBackboard, 36))
+                .lineToConstantHeading(new Vector2d(-36-ApriltagDictance+OffSetBackboard, 36))
                 .build();
 
+
         // Save more CPU resources when camera is no longer needed.
+        //\
+        drive.followTrajectory(traj0a);
+
         visionPortal.close();
 
     }   // end method runOpMode()
@@ -106,7 +110,7 @@ public class AprilTags extends LinearOpMode {
 
         // Set the camera (webcam vs. built-in RC phone camera).
         if (USE_WEBCAM) {
-            builder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
+            builder.setCamera(hardwareMap.get(WebcamName.class, "Back Camera"));
         } else {
             builder.setCamera(BuiltinCameraDirection.BACK);
         }

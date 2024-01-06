@@ -25,7 +25,7 @@ public class Karen  {
     public Servo scoopServo;
 
     // arm and slide motors
-    public DcMotorEx slideMotor;
+   // public DcMotorEx slideMotor;
     public DcMotorEx armMotor;
 
     // odometry wheels
@@ -34,21 +34,21 @@ public class Karen  {
     public DcMotorEx backOdo;
 
     // claw motor
-    public Servo clawServo1;
+    //public Servo clawServo1;
 
     // drone launch motor
-    public DcMotorEx droneMotor;
-
-    // dropper servo
-    public Servo dropperServo;
+//    public DcMotorEx droneMotor;
+//
+//    // dropper servo
+//    public Servo dropperServo;
 
     public final int TICKS_PER_REVOLUTION = 200;
     public final int DEADWHEEL_RADIUS = 2; // cm ??
 
     // subclasses
     public InOutTake inOutTake;
-    public Claw claw;
-    public Drone drone;
+   // public Claw claw;
+ //   public Drone drone;
     public Arm arm;
     public Dropper dropper;
 
@@ -74,13 +74,13 @@ public class Karen  {
         armMotor = map.get(DcMotorEx.class, "arm_motor");
         armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         armMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-
-        slideMotor = map.get(DcMotorEx.class, "slide_motor");
-        slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        slideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        arm = new Arm(armMotor, slideMotor, inOutTake);
+//
+//        slideMotor = map.get(DcMotorEx.class, "slide_motor");
+//        slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        slideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+//        slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+//
+//        arm = new Arm(armMotor, slideMotor, inOutTake);
 
         // odometry deadwheels
         leftOdo = map.get(DcMotorEx.class, "right_front");
@@ -88,18 +88,18 @@ public class Karen  {
         backOdo = map.get(DcMotorEx.class, "left_front");
 
 
-
-        // claw
-        clawServo1 = map.get(Servo.class, "claw_servo1");
-        claw = new Claw(clawServo1);
-
-        // drone launch
-        droneMotor = map.get(DcMotorEx.class, "drone_motor");
-        drone = new Drone(droneMotor);
-
-        // dropper
-        dropperServo = map.get(Servo.class, "dropper_servo");
-        dropper = new Dropper(dropperServo);
+//
+//        // claw
+//        clawServo1 = map.get(Servo.class, "claw_servo1");
+//        claw = new Claw(clawServo1);
+//
+//        // drone launch
+//        droneMotor = map.get(DcMotorEx.class, "drone_motor");
+//        drone = new Drone(droneMotor);
+//
+//        // dropper
+//        dropperServo = map.get(Servo.class, "dropper_servo");
+//        dropper = new Dropper(dropperServo);
     }
 
     private double rampUp(double x) {
@@ -159,11 +159,11 @@ public class Karen  {
         arm.moveSlide(-850); // move slide up
         sleep(2500);
 
-        clawServo1.setPosition(Claw.OPEN_POS); // release the pixels
-        sleep(1500);
-
-        clawServo1.setPosition(Claw.CLOSE_BOTH_POS); // close claw so it doesn't get caught on wires
-        sleep(500);
+//        clawServo1.setPosition(Claw.OPEN_POS); // release the pixels
+//        sleep(1500);
+//
+//        clawServo1.setPosition(Claw.CLOSE_BOTH_POS); // close claw so it doesn't get caught on wires
+//        sleep(500);
 
         arm.moveArm(Arm.MIN_ARM_POSITION); // retract arm
         sleep(200);
@@ -180,11 +180,11 @@ public class Karen  {
         rightBackMotor.setPower(0);
 
         // stop slide and arm motors
-        slideMotor.setPower(0);
+       // slideMotor.setPower(0);
         armMotor.setPower(0);
 
         // stop drone motor
-        droneMotor.setPower(0);
+    //    droneMotor.setPower(0);
 
         // stop intake motor
 //        intakeServo.setPower(0);
