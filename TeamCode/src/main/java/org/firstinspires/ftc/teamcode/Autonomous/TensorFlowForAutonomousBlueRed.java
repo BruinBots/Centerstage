@@ -1,38 +1,14 @@
-/* Copyright (c) 2019 FIRST. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted (subject to the limitations in the disclaimer below) provided that
- * the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice, this list
- * of conditions and the following disclaimer.
- *
- * Redistributions in binary form must reproduce the above copyright notice, this
- * list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution.
- *
- * Neither the name of FIRST nor the names of its contributors may be used to endorse or
- * promote products derived from this software without specific prior written permission.
- *
- * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
- * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package org.firstinspires.ftc.teamcode.Autonomous;
+
+import static android.os.SystemClock.sleep;
 
 import android.util.Size;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -50,20 +26,18 @@ import java.util.List;
  */
 
 @TeleOp(name = "TFOD Orb Testing", group = "Concept")
-public class TensorFlowForAutonomousRed extends LinearOpMode {
-
+public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
     private static final boolean USE_WEBCAM = true;  // true for webc// m, false for phone camera
     //1 is blue 2 is red
     /**
      * The variable to store our instance of the TensorFlow Object Detection processor.
      */
     private TfodProcessor tfodProcessor;
-    int CamSize = 0;
-    String Sides="";
+
     /**z
      * The variable to store our instance of the vision portal.
      */
-    private VisionPortal visionPortal;
+    public VisionPortal visionPortal;
 
     public static final String TFOD_MODEL_ASSET = "allorb.tflite";
 
@@ -72,6 +46,18 @@ public class TensorFlowForAutonomousRed extends LinearOpMode {
             "blueorb", "redorb"
     };
 
+    String Sides="";
+    int xMax=0;
+    public TensorFlowForAutonomousBlueRed(HardwareMap hardwareMap, Telemetry telemetry) {
+        this.hardwareMap = hardwareMap;
+        this.telemetry = telemetry;
+    }
+
+    public String getSide() {
+        sleep(500);
+        Sides=telemetryTfod();
+        return Sides;
+    }
     @Override
 
     public void runOpMode() {
@@ -108,7 +94,7 @@ public class TensorFlowForAutonomousRed extends LinearOpMode {
     /**
      * Initialize the TensorFlow Object Detection processor.
      */
-    private void initTfod() {
+    public void initTfod() {
         // Create the TensorFlow processor by using a builder.
         tfodProcessor = new TfodProcessor.Builder()
 
@@ -142,7 +128,7 @@ public class TensorFlowForAutonomousRed extends LinearOpMode {
         builder.enableLiveView(true);
 
         // Set the stream format; MJPEG uses less bandwidth than default YUY2.
-        builder.setStreamFormat(VisionPortal.StreamFormat.YUY2);
+        //builder.setStreamFormat(VisionPortal.StreamFormat.YUY2);
 
         // Choose whether or not LiveView stops if no processors are enabled.
         // If set "true", monitor shows solid orange screen if no processors enabled.
@@ -156,7 +142,7 @@ public class TensorFlowForAutonomousRed extends LinearOpMode {
         visionPortal = builder.build();
 
         // Set confidence threshold for TFOD recognitions, at any time.
-        tfodProcessor.setMinResultConfidence(0.85f);
+        tfodProcessor.setMinResultConfidence(0.40f);
         // Disable or re-enable the TFOD processor at any time.
         visionPortal.setProcessorEnabled(tfodProcessor, true);
 
@@ -165,7 +151,10 @@ public class TensorFlowForAutonomousRed extends LinearOpMode {
     /**
      * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.
      */
-    private void telemetryTfod() {
+    private String telemetryTfod() {
+        String direction="";
+        double screenWidth = 1920;//tfodProcessor..getCameraView().getWidth();
+
         if (tfodProcessor != null) {
             // Get updated recognition list.
             List<Recognition> updatedRecognitions = tfodProcessor.getRecognitions();
@@ -190,9 +179,6 @@ public class TensorFlowForAutonomousRed extends LinearOpMode {
                         // Implement logic to determine object position (left, center, right).
                         double objectX = recognition.getLeft();
                         double objectWidth = recognition.getWidth();
-                        double screenWidth = 1920;//tfodProcessor..getCameraView().getWidth();
-
-
                         double objectCenterX = objectX + objectWidth / 2.0;
 
                         if (objectCenterX < screenWidth / 3.0) {
@@ -202,16 +188,34 @@ public class TensorFlowForAutonomousRed extends LinearOpMode {
                         } else {
                             telemetry.addData("Position", "Right");
                         }
-
                         telemetry.addData("Object Center X", objectCenterX);
                     }
                 }
-
                 telemetry.update();
             }
+            if (updatedRecognitions.size() < 1) {
+                return "none";
+            }
+            telemetry.addData("The x value",xMax);
+            if (xMax<=screenWidth/3) {
+                telemetry.addData("is in left",1);
+                return "left";
+            }
+            else if (xMax<=screenWidth*2/3) {
+
+                telemetry.addData("is in center",2);
+                return "center";
+
+            }
+            else if (xMax>screenWidth*2/3-70) {
+
+                telemetry.addData("is in right ",3);
+                return "right";
+            }
+            else
+                return "none";
+
         }
+        return direction;
     }
-
 }   // end class
-
-
