@@ -12,7 +12,7 @@ public class RedFarAuto extends BaseAuto {
     public static Pose2d startingPosition = new Pose2d(-36, -65, Math.toRadians(270));
 
     public RedFarAuto(HardwareMap hardwareMap, Telemetry telemetry) {
-        super(hardwareMap, telemetry);
+        super(hardwareMap, telemetry, startingPosition);
     }
 
     @Override

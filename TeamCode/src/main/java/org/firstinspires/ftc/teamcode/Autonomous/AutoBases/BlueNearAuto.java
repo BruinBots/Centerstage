@@ -12,7 +12,8 @@ public class BlueNearAuto extends BaseAuto {
     public static Pose2d startingPosition = new Pose2d(12, 65, Math.toRadians(90));
 
     public BlueNearAuto(HardwareMap hardwareMap, Telemetry telemetry) {
-        super(hardwareMap, telemetry);
+        super(hardwareMap, telemetry, startingPosition);
+
     }
 
     @Override

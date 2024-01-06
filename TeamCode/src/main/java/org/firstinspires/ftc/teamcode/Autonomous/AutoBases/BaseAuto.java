@@ -22,9 +22,8 @@ public class BaseAuto {
     Karen bot;
 
     // every child class of BaseAuto will declare this startingPosition
-    public static Pose2d startingPosition;
 
-    public BaseAuto(HardwareMap hardwareMap, Telemetry telemetry) {
+    public BaseAuto(HardwareMap hardwareMap, Telemetry telemetry, Pose2d startingPosition) {
 
         // assign class variables
         this.hardwareMap = hardwareMap;
