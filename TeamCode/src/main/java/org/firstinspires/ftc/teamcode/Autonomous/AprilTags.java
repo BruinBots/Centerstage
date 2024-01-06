@@ -59,14 +59,13 @@ public class AprilTags extends LinearOpMode {
 
 
 
-        ApriltagDictance=telemetryAprilTag();
         // Wait for the DS start button to be touched.
         telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
         telemetry.addData(">", "Touch Play to start OpMode");
         telemetry.update();
         waitForStart();
-
-        ApriltagDictance=telemetryAprilTag();
+        //two is the id that you whant to make the robot scan and go to
+        ApriltagDictance=telemetryAprilTag(2);
         telemetry.addData("the distance:", ApriltagDictance);
                 // Push telemetry to the Driver Station.
         telemetry.update();
@@ -144,15 +143,15 @@ public class AprilTags extends LinearOpMode {
     /**
      * Function to add telemetry about AprilTag detections.
      */
-
-    private double telemetryAprilTag() {
+//it gives the distance to the apriltag with the id of the number you gave it
+    private double telemetryAprilTag(int id) {
 
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();
         telemetry.addData("# AprilTags Detected", currentDetections.size());
 
         // Step through the list of detections and display info for each one.
         for (AprilTagDetection detection : currentDetections) {
-            if (detection.metadata != null) {
+            if (detection.metadata != null && detection.id==id) {
                 telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
 
                 return detection.ftcPose.range;
