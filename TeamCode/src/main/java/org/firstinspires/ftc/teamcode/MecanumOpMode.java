@@ -35,7 +35,7 @@ import static java.lang.Thread.sleep;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name="Basic: Mecanum TeleOp", group="Iterative Opmode")
+@TeleOp(name="New Arm Testing", group="Iterative Opmode")
 public class MecanumOpMode extends OpMode
 {
 
