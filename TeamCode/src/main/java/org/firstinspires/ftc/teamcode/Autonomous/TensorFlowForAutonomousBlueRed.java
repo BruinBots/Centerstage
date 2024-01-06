@@ -25,7 +25,7 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
 
-@TeleOp(name = "TFOD Orb Testing", group = "Concept")
+@TeleOp(name = "TFOD Orb Testing Blue/Red", group = "Concept")
 public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
     private static final boolean USE_WEBCAM = true;  // true for webc// m, false for phone camera
     //1 is blue 2 is red
@@ -33,6 +33,8 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
      * The variable to store our instance of the TensorFlow Object Detection processor.
      */
     private TfodProcessor tfodProcessor;
+
+    public static final int CAMERA_OFFSET = 70; // positive = left, negative = right, this compensates for the offset of the camera on the robot
 
     /**z
      * The variable to store our instance of the vision portal.
@@ -207,7 +209,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
                 return "center";
 
             }
-            else if (xMax>screenWidth*2/3-70) {
+            else if (xMax>screenWidth*2/3-CAMERA_OFFSET) {
 
                 telemetry.addData("is in right ",3);
                 return "right";
