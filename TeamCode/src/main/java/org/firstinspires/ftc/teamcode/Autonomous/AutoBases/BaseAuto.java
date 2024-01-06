@@ -155,9 +155,7 @@ public class BaseAuto {
         bot.arm.moveArm(Arm.MAX_ARM_POSITION);
         sleep(250);
 
-        // lift up the slide
-        bot.arm.moveSlide(Arm.MIN_SLIDE_POSITION); // TODO: change this to an actual value
-        sleep(500);
+        // lift up the slide\
 
         // open the claw to release the pixels onto the backdrop
         bot.claw.openClaw();
@@ -168,8 +166,6 @@ public class BaseAuto {
         sleep(100);
 
         // retract the slide
-        bot.arm.moveSlide(Arm.MIN_SLIDE_POSITION);
-        sleep(500);
 
         // retract the arm
         bot.arm.moveArm(Arm.MIN_ARM_POSITION);
