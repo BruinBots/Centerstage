@@ -56,4 +56,18 @@ public class RedFarAuto extends BaseAuto {
                 .lineTo(new Vector2d(60, -60))
                 .build();
     }
+
+    @Override
+    public Trajectory spikeEnter2(Pose2d startPose) {
+        return drive.trajectoryBuilder(startPose)
+                .lineToConstantHeading(new Vector2d(-35, -35))
+                .build();
+    }
+
+    @Override
+    public Trajectory spikeExit2(Pose2d startPose) {
+        return drive.trajectoryBuilder(startPose)
+                .lineToConstantHeading(new Vector2d(startingPosition.getX(), startingPosition.getY()))
+                .build();
+    }
 }

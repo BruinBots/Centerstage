@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 public class BaseAuto {
 
-    // initializa class variables
+    // initialize class variables
     public HardwareMap hardwareMap;
     public Telemetry telemetry;
     public SampleMecanumDrive drive;
@@ -37,6 +37,13 @@ public class BaseAuto {
         drive.setPoseEstimate(startingPosition);
     }
 
+    /*
+    tfSpike() -> String
+    use tensorflow to determine which side the spike mark is on, returning as a string from:
+    - "left"
+    - "center"
+    - "right"
+     */
     public String tfSpike() {
 
         TensorFlowForAutonomousBlueRed tf = new TensorFlowForAutonomousBlueRed(hardwareMap, telemetry);
@@ -137,6 +144,10 @@ public class BaseAuto {
         return traj2;
     }
 
+    public Trajectory park(Trajectory startTraj) {
+        return park(startTraj.end());
+    }
+
     public Trajectory parkTraj(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose).build();
     }
@@ -156,7 +167,7 @@ public class BaseAuto {
         sleep(250);
 
         // lift up the slide
-        bot.arm.moveSlide(Arm.MIN_SLIDE_POSITION); // TODO: change this to an actual value
+        bot.arm.moveSlide(Arm.MIN_SLIDE_POSITION);
         sleep(500);
 
         // open the claw to release the pixels onto the backdrop
@@ -175,9 +186,6 @@ public class BaseAuto {
         bot.arm.moveArm(Arm.MIN_ARM_POSITION);
         sleep(250);
 
-        // TODO: may need to back up to let the pixels fall down
-
-        // TODO: return to position for parking
         Trajectory endTraj = backdropEnd(startTraj.end());
         drive.followTrajectory(endTraj);
 
@@ -193,4 +201,80 @@ public class BaseAuto {
     public Trajectory backdropEnd(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose).build();
     }
+
+
+    //region ---------- BaseAuto v2.0 ----------
+
+    /*
+    spike(Pose2d startPose, String side, boolean finishSpike) -> Trajectory
+
+     parameters:
+        - startPose: the position the robot is currently in
+        - side: the side to navigate to on the spike
+        - finishSpike: if true, the robot will follow the trajectory given by spikeEnd() after placing pixel on spike mark
+
+     places the pixel by the spike mark on given side
+     */
+    public Pose2d spike2(Pose2d startPose, String side, boolean finishSpike) {
+
+        Trajectory enter = spikeEnter2(startPose);
+
+        drive.followTrajectory(enter);
+
+        Pose2d endEnter = enter.end();
+
+        switch (side) {
+            case "left":
+                telemetry.addData("side", "left");
+                drive.turn(Math.toRadians(90));
+                endEnter = endEnter.plus(new Pose2d(0, 0, Math.toRadians(90)));
+                break;
+            case "center":
+                telemetry.addData("side", "center");
+                break;
+            case "right":
+                telemetry.addData("side", "right");
+                drive.turn(Math.toRadians(-90));
+                endEnter = endEnter.plus(new Pose2d(0, 0, Math.toRadians(-90)));
+                break;
+            default:
+                telemetry.addData("side", "default");
+                drive.turn(Math.toRadians(90));
+                endEnter = endEnter.plus(new Pose2d(0, 0, Math.toRadians(90)));
+                break;
+        }
+
+        // TODO: release the pixel
+
+        if (finishSpike) {
+            Trajectory exit = spikeExit2(endEnter);
+            drive.followTrajectory(exit); // if finishing spike, return to spikeEnd position to prepare for parking/pixel placing
+            return exit.end();
+        }
+
+        return endEnter;
+    }
+
+    public Trajectory spikeEnter2(Pose2d startPose) {
+        return drive.trajectoryBuilder(startPose).build();
+    }
+
+    public Trajectory spikeExit2(Pose2d startPose) {
+        return drive.trajectoryBuilder(startPose).build();
+    }
+
+    public Trajectory placePixel2(Pose2d startPose) {
+        Trajectory start = backdropStart(startPose);
+        drive.followTrajectory(start);
+
+        // TODO: place pixel
+
+        Trajectory end = backdropEnd(start.end());
+        drive.followTrajectory(end);
+
+        return end;
+    }
+
+    //endregion
+
 }

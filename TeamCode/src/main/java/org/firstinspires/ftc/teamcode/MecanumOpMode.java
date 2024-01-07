@@ -143,7 +143,6 @@ public class MecanumOpMode extends OpMode
 //        }
 //        bot.drone.loop();
 
-        // TODO: intake
         if (gamepad2.dpad_left && !gp2dpadleft) {
             if (!bot.inOutTake.isSafeForArm()) {
                 bot.inOutTake.scoopMiddle(); // moves scoop to middle pos so it doesnt snap motor mount in half again
