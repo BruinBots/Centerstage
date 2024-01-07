@@ -48,7 +48,6 @@ public class Karen  {
     // subclasses
     public InOutTake inOutTake;
     public Claw claw;
-    public Drone drone;
     public Arm arm;
     public Dropper dropper;
 
@@ -75,27 +74,16 @@ public class Karen  {
         armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         armMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
-        slideMotor = map.get(DcMotorEx.class, "slide_motor");
-        slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        slideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        arm = new Arm(armMotor, slideMotor, inOutTake);
+        arm = new Arm(armMotor, inOutTake);
 
         // odometry deadwheels
-        leftOdo = map.get(DcMotorEx.class, "right_front");
-        rightOdo = map.get(DcMotorEx.class, "left_back");
-        backOdo = map.get(DcMotorEx.class, "left_front");
-
-
+        leftOdo = map.get(DcMotorEx.class, "left_front");
+        rightOdo = map.get(DcMotorEx.class, "right_odo");
+        backOdo = map.get(DcMotorEx.class, "left_back");
 
         // claw
         clawServo1 = map.get(Servo.class, "claw_servo1");
         claw = new Claw(clawServo1);
-
-        // drone launch
-        droneMotor = map.get(DcMotorEx.class, "drone_motor");
-        drone = new Drone(droneMotor);
 
         // dropper
         dropperServo = map.get(Servo.class, "dropper_servo");
@@ -156,9 +144,6 @@ public class Karen  {
         arm.moveArm(Arm.MAX_ARM_POSITION); // move arm up
         sleep(200);
 
-        arm.moveSlide(-850); // move slide up
-        sleep(2500);
-
         clawServo1.setPosition(Claw.OPEN_POS); // release the pixels
         sleep(1500);
 
@@ -167,9 +152,6 @@ public class Karen  {
 
         arm.moveArm(Arm.MIN_ARM_POSITION); // retract arm
         sleep(200);
-
-        arm.moveSlide(Arm.MIN_SLIDE_POSITION); // retract slide
-        sleep(2500);
     }
 
     public void stop() {
