@@ -50,6 +50,7 @@ public class Karen  {
     public Claw claw;
     public Arm arm;
     public Dropper dropper;
+    public Drone drone;
 
     // constructor with map
     public Karen(HardwareMap map) {
@@ -80,6 +81,10 @@ public class Karen  {
         leftOdo = map.get(DcMotorEx.class, "left_front");
         rightOdo = map.get(DcMotorEx.class, "right_odo");
         backOdo = map.get(DcMotorEx.class, "left_back");
+
+        // drone launch
+        droneMotor = map.get(DcMotorEx.class, "drone_motor");
+        drone = new Drone(droneMotor);
 
         // claw
         clawServo1 = map.get(Servo.class, "claw_servo1");
