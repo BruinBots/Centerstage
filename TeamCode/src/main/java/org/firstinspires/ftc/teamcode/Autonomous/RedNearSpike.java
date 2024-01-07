@@ -19,7 +19,7 @@ public class RedNearSpike extends LinearOpMode {
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        Pose2d startPose = new Pose2d(12,-65, Math.toRadians(270));
+        Pose2d startPose = new Pose2d(0,0, Math.toRadians(0));
 
         drive.setPoseEstimate(startPose);
 
@@ -29,7 +29,7 @@ public class RedNearSpike extends LinearOpMode {
 
         waitForStart();
 
-        bot.dropper.dropperDown();
+
 
         tf.visionPortal.resumeStreaming();
 
@@ -45,9 +45,7 @@ public class RedNearSpike extends LinearOpMode {
 
         tf.visionPortal.close();
 
-//        String side = "left";
         telemetry.addData("side", side);
-//        sleep(5000);
 
         Trajectory traj0a = drive.trajectoryBuilder(startPose, true)
                 .lineToConstantHeading(new Vector2d(20, -55))
@@ -56,43 +54,44 @@ public class RedNearSpike extends LinearOpMode {
         Trajectory traj0b;
 
         switch (side) {
-            case "left":
+            case "Left":
                 telemetry.addData("side", "left");
                 traj0b = drive.trajectoryBuilder(traj0a.end())
-                        .lineToConstantHeading(new Vector2d(-36+48, -34))
+                        .lineToConstantHeading(new Vector2d(12 +12, -65+40))
                         .build();
                 break;
-            case "center":
+            case "Center":
                 telemetry.addData("side", "center");
                 traj0b = drive.trajectoryBuilder(traj0a.end())
-                        .lineToConstantHeading(new Vector2d(-28+48, -31))
+                        .lineToConstantHeading(new Vector2d(12, -65+45))
                         .build();
                 break;
-            case "right":
+            case "Right":
                 telemetry.addData("side", "right");
                 traj0b = drive.trajectoryBuilder(traj0a.end())
-                        .lineToConstantHeading(new Vector2d(-15+48, -32))
+                        .lineToConstantHeading(new Vector2d(12+10, -65+40))
                         .build();
                 break;
             default:
                 telemetry.addData("side", "default");
                 traj0b = drive.trajectoryBuilder(traj0a.end())
+                        .lineToConstantHeading(new Vector2d(12+10, -65+40))
                         .build();
                 break;
         }
 
-        Trajectory traj0c = drive.trajectoryBuilder(traj0b.end())
-                .lineTo(new Vector2d(12, -60))
-                .build();
+//        Trajectory traj0c = drive.trajectoryBuilder(traj0b.end())
+//                .lineTo(new Vector2d(12, -65))
+//                .build();
 
 //        Trajectory traj1 = drive.trajectoryBuilder(startPose, true)
 //                .splineTo(new Vector2d(12, -60), Math.toRadians(90))
 //                .splineTo(new Vector2d(48, -36), Math.toRadians(0))
 //                .build();
 
-        Trajectory traj2 = drive.trajectoryBuilder(traj0c.end(), true)
-                .lineTo(new Vector2d(60, -60))
-                .build();
+//        Trajectory traj2 = drive.trajectoryBuilder(traj0c.end(), true)
+//                .lineTo(new Vector2d(60, -60))
+//                .build();
 
         if(isStopRequested()) return;
 
@@ -102,7 +101,6 @@ public class RedNearSpike extends LinearOpMode {
         drive.followTrajectory(traj0a);
         drive.followTrajectory(traj0b);
 
-        bot.dropper.dropperUp();
 
         sleep(1000);
 

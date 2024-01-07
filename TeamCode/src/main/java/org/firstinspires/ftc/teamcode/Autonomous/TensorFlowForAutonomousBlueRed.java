@@ -142,7 +142,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
         visionPortal = builder.build();
 
         // Set confidence threshold for TFOD recognitions, at any time.
-        tfodProcessor.setMinResultConfidence(0.40f);
+        tfodProcessor.setMinResultConfidence(0.75f);
         // Disable or re-enable the TFOD processor at any time.
         visionPortal.setProcessorEnabled(tfodProcessor, true);
 
@@ -153,7 +153,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
      */
     private String telemetryTfod() {
         String direction="";
-        double screenWidth = 1920;//tfodProcessor..getCameraView().getWidth();
+        double screenWidth = 2200;//tfodProcessor..getCameraView().getWidth();
 
         if (tfodProcessor != null) {
             // Get updated recognition list.
@@ -183,38 +183,19 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
 
                         if (objectCenterX < screenWidth / 3.0) {
                             telemetry.addData("Position", "Left");
+                            direction ="Left";
                         } else if (objectCenterX < 2 * screenWidth / 3.0) {
                             telemetry.addData("Position", "Center");
+                            direction ="Center";
                         } else {
                             telemetry.addData("Position", "Right");
+                            direction ="Right";
                         }
                         telemetry.addData("Object Center X", objectCenterX);
                     }
                 }
-                telemetry.update();
             }
-            if (updatedRecognitions.size() < 1) {
-                return "none";
-            }
-            telemetry.addData("The x value",xMax);
-            if (xMax<=screenWidth/3) {
-                telemetry.addData("is in left",1);
-                return "left";
-            }
-            else if (xMax<=screenWidth*2/3) {
-
-                telemetry.addData("is in center",2);
-                return "center";
-
-            }
-            else if (xMax>screenWidth*2/3-70) {
-
-                telemetry.addData("is in right ",3);
-                return "right";
-            }
-            else
-                return "none";
-
+            telemetry.update();
         }
         return direction;
     }

@@ -116,77 +116,77 @@ public class MecanumOpMode extends OpMode
         telemetry.addData("slide", bot.arm.getCurrentSlidePos());
 
         // claw
-        if (gamepad2.x ) {
-            bot.claw.closeBothClaw();
-        }
-        else if (gamepad2.b) {
-            bot.claw.closeOneClaw();
-        }
-        else if (gamepad2.a) {
-            bot.claw.openClaw();
-        } else if (gamepad2.dpad_down) {
-            bot.claw.closeBothClaw();
-            bot.arm.moveArm(bot.arm.MIN_ARM_POSITION);
-            bot.arm.moveSlide(bot.arm.MIN_SLIDE_POSITION);
+ //       if (gamepad2.x ) {
+   //         bot.claw.closeBothClaw();
+ //       }
+  //      else if (gamepad2.b) {
+   //         bot.claw.closeOneClaw();
+    //    }
+     //   else if (gamepad2.a) {
+      //      bot.claw.openClaw();
+  //      } else if (gamepad2.dpad_down) {
+   //         bot.claw.closeBothClaw();
+    //        bot.arm.moveArm(bot.arm.MIN_ARM_POSITION);
+     //       bot.arm.moveSlide(bot.arm.MIN_SLIDE_POSITION);
         }
 
         // dropper
-        if (gamepad2.y) {
-            bot.dropper.dropperUp();
-        }
+ //       if (gamepad2.y) {
+   //         bot.dropper.dropperUp();
+       // }
 
 
         // drone launch
 
-        if (gamepad1.y && !droneButtonPressed) {
-            bot.drone.launch();
-        }
-        bot.drone.loop();
+ //       if (gamepad1.y && !droneButtonPressed) {
+  //          bot.drone.launch();
+   //     }
+    //    bot.drone.loop();
 
         // TODO: intake
-        if (gamepad2.dpad_left && !gp2dpadleft) {
-            if (!bot.inOutTake.isSafeForArm()) {
-                bot.inOutTake.scoopMiddle(); // moves scoop to middle pos so it doesnt snap motor mount in half again
-            } else {
-                bot.claw.closeBothClaw(); // closes both claw holds
-                bot.arm.dropPixelPos(); // moves arm and slide to max
-            }
-        }
+     //   if (gamepad2.dpad_left && !gp2dpadleft) {
+     //       if (!bot.inOutTake.isSafeForArm()) {
+      //          bot.inOutTake.scoopMiddle(); // moves scoop to middle pos so it doesnt snap motor mount in half again
+       //     } else {
+        //        bot.claw.closeBothClaw(); // closes both claw holds
+         //       bot.arm.dropPixelPos(); // moves arm and slide to max
+         //   }
+       // }
 
 
-        if (gamepad1.left_trigger > 0.5) {
-            bot.inOutTake.intake();
-        }
-        else if (gamepad1.right_trigger > 0.5) {
-            bot.inOutTake.outtake();
-        }
-        else {
-            bot.inOutTake.stopTake();
-        }
+      //  if (gamepad1.left_trigger > 0.5) {
+       //     bot.inOutTake.intake();
+        //}
+     //   else if (gamepad1.right_trigger > 0.5) {
+      //      bot.inOutTake.outtake();
+       // }
+       // else {
+        //    bot.inOutTake.stopTake();
+       // }
 
-        if (gamepad1.dpad_up) {
-            bot.claw.openClaw();
-            bot.inOutTake.scoopUp();
-        }
-        else if (gamepad1.dpad_down) {
-            bot.claw.openClaw();
-            bot.inOutTake.scoopDown();
-            bot.arm.moveSlide(bot.arm.MIN_SLIDE_POSITION);
+       // if (gamepad1.dpad_up) {
+        //    bot.claw.openClaw();
+         //   bot.inOutTake.scoopUp();
+       // }
+        //else if (gamepad1.dpad_down) {
+         //   bot.claw.openClaw();
+          //  bot.inOutTake.scoopDown();
+           // bot.arm.moveSlide(bot.arm.MIN_SLIDE_POSITION);
 
-        } else if (gamepad1.dpad_left) {
-            bot.inOutTake.scoopMiddle();
-        }
+      //  } else if (gamepad1.dpad_left) {
+       //     bot.inOutTake.scoopMiddle();
+       // }
 
-        droneButtonPressed = gamepad1.y;
-        gp2dpadleft = gamepad2.dpad_left;
+        //droneButtonPressed = gamepad1.y;
+        //gp2dpadleft = gamepad2.dpad_left;
 
 
-        try {
-            sleep(20);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
+ //       try {
+   //         sleep(20);
+    //    } catch (InterruptedException e) {
+     //       e.printStackTrace();
+      //  }
+   // }
 
 
     @Override

@@ -19,7 +19,7 @@ public class RedNearBackdrop extends LinearOpMode {
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        Pose2d startPose = new Pose2d(12,-65, Math.toRadians(270));
+        Pose2d startPose = new Pose2d(12,-65, Math.toRadians(0));
 
         drive.setPoseEstimate(startPose);
 
@@ -29,7 +29,7 @@ public class RedNearBackdrop extends LinearOpMode {
 
         waitForStart();
 
-        bot.dropper.dropperDown();
+
 
         tf.visionPortal.resumeStreaming();
 
@@ -101,8 +101,6 @@ public class RedNearBackdrop extends LinearOpMode {
 
         drive.followTrajectory(traj0a);
         drive.followTrajectory(traj0b);
-
-        bot.dropper.dropperUp();
 
         sleep(1000);
 

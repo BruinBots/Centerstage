@@ -29,7 +29,7 @@ public class BlueFarBackdrop extends LinearOpMode {
 
         waitForStart();
 
-        bot.dropper.dropperDown();
+       // bot.dropper.dropperDown();
 
         tf.visionPortal.resumeStreaming();
 
@@ -120,7 +120,7 @@ public class BlueFarBackdrop extends LinearOpMode {
         drive.followTrajectory(traj0a);
         drive.followTrajectory(traj0b);
 
-        bot.dropper.dropperUp();
+       // bot.dropper.dropperUp();
 
         sleep(1000);
 
