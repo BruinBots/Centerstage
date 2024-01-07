@@ -71,10 +71,10 @@ public class Karen  {
         inOutTake = new InOutTake(intakeServoLeft, intakeServoRight, scoopServo);
 
         // arm and linear slide - pixel intake must be initialized first
-        armMotor = map.get(DcMotorEx.class, "arm_motor");
-        armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        armMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-//
+//        armMotor = map.get(DcMotorEx.class, "arm_motor");
+//        armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        armMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+////
 //        slideMotor = map.get(DcMotorEx.class, "slide_motor");
 //        slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 //        slideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);

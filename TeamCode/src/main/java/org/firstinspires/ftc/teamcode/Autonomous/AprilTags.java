@@ -40,8 +40,8 @@ public class AprilTags extends LinearOpMode {
      * {@link #visionPortal} is the variable to store our instance of the vision portal.
      */
     private VisionPortal visionPortal;
-    //this variable is the offset for the robot dosen't hit the backboard in inch
-    double OffSetBackboard=3;
+    //this variable is the offset for the robot dosen't hit the backboard in inch to how close you whant it to the backboard/ put always if you whant a number put add one
+    double OffSetBackboardX=5;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -69,15 +69,17 @@ public class AprilTags extends LinearOpMode {
         telemetry.addData("the distance:", ApriltagDictance);
                 // Push telemetry to the Driver Station.
         telemetry.update();
-
-        Trajectory traj0a = drive.trajectoryBuilder(startPose, true)
-                .lineToConstantHeading(new Vector2d(-36-ApriltagDictance+OffSetBackboard, 36))
-                .build();
-
+        if (ApriltagDictance>0) {
+            Trajectory traj0a = drive.trajectoryBuilder(startPose, true)
+                    //put y minus y value like 36-pich y
+                    .lineToConstantHeading(new Vector2d(36 - ApriltagDictance + OffSetBackboardX, 36))
+                    .build();
+                    drive.followTrajectory(traj0a);
+        }
 
         // Save more CPU resources when camera is no longer needed.
         //\
-        drive.followTrajectory(traj0a);
+
 
         visionPortal.close();
 
@@ -153,6 +155,8 @@ public class AprilTags extends LinearOpMode {
         for (AprilTagDetection detection : currentDetections) {
             if (detection.metadata != null && detection.id==id) {
                 telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
+                telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (x,y,z)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
+                telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (pitch, yaw, roll)", detection.ftcPose.pitch, detection.ftcPose.yaw, detection.ftcPose.roll));
 
                 return detection.ftcPose.range;
 
