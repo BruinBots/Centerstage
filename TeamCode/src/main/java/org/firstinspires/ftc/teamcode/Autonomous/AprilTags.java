@@ -65,7 +65,7 @@ public class AprilTags extends LinearOpMode {
         telemetry.update();
         waitForStart();
 
-            double apriltagSideWays = AlignHorisontal(2);
+            double apriltagSideWays = AlignHorisontal(1);
             telemetry.update();
 
         if(apriltagSideWays>0){
@@ -89,7 +89,7 @@ public class AprilTags extends LinearOpMode {
 
         }
         //two is the id that you whant to make the robot scan and go to
-        apriltagDictance=telemetryAprilTag(2);
+        apriltagDictance=telemetryAprilTag(1);
         telemetry.addData("the distance:", apriltagDictance);
                 // Push telemetry to the Driver Station.
         telemetry.update();
