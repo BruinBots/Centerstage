@@ -72,11 +72,11 @@ public class Karen  {
         inOutTake = new InOutTake(intakeServoLeft, intakeServoRight, scoopServo);
 
         // arm and linear slide - pixel intake must be initialized first
-        armMotor = map.get(DcMotorEx.class, "arm_motor");
-        armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        armMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+//        armMotor = map.get(DcMotorEx.class, "arm_motor");
+//        armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        armMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
-        arm = new Arm(armMotor, inOutTake);
+//        arm = new Arm(armMotor, inOutTake);
 
         // odometry deadwheels
         leftOdo = map.get(DcMotorEx.class, "left_front");
@@ -84,8 +84,8 @@ public class Karen  {
         backOdo = map.get(DcMotorEx.class, "left_back");
 
         // claw
-        clawServo1 = map.get(Servo.class, "claw_servo1");
-        claw = new Claw(clawServo1);
+//        clawServo1 = map.get(Servo.class, "claw_servo1");
+//        claw = new Claw(clawServo1);
 
         // dropper
         dropperServo = map.get(Servo.class, "dropper_servo");
@@ -147,7 +147,7 @@ public class Karen  {
     }
 
     public void placePixel() {
-        arm.moveArm(Arm.MAX_ARM_POSITION); // move arm up
+//        arm.moveArm(Arm.MAX_ARM_POSITION); // move arm up
         sleep(200);
 
         clawServo1.setPosition(Claw.OPEN_POS); // release the pixels
@@ -156,7 +156,7 @@ public class Karen  {
         clawServo1.setPosition(Claw.CLOSE_BOTH_POS); // close claw so it doesn't get caught on wires
         sleep(500);
 
-        arm.moveArm(Arm.MIN_ARM_POSITION); // retract arm
+//        arm.moveArm(Arm.MIN_ARM_POSITION); // retract arm
         sleep(200);
     }
 
@@ -169,7 +169,7 @@ public class Karen  {
 
         // stop slide and arm motors
         slideMotor.setPower(0);
-        armMotor.setPower(0);
+//        armMotor.setPower(0);
 
         // stop intake motor
 //        intakeServo.setPower(0);

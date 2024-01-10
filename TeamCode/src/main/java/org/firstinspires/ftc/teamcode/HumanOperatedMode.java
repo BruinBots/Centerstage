@@ -5,7 +5,7 @@ import static java.lang.Thread.sleep;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name="Basic: Mecanum TeleOp", group="Iterative Opmode")
+@TeleOp(name="Drone Test", group="Iterative Opmode")
 public class HumanOperatedMode extends OpMode
 {
     Karen bot;
@@ -19,6 +19,7 @@ public class HumanOperatedMode extends OpMode
 
         bot = new Karen(hardwareMap);
         telemetry.addData("Status", "Initialized");
+        bot.drone.setServoPos(bot.droneRotateServo, 0.25);
     }
 
     //
@@ -36,14 +37,15 @@ public class HumanOperatedMode extends OpMode
     public void loop() {
 
         if (gamepad1.dpad_up && !gp1dpadup) {
-            bot.drone.rotateServo(0.1);
+            bot.drone.rotateServo(0.05);
         }
         if (gamepad1.dpad_down && !gp1dpaddown) {
-            bot.drone.rotateServo(-0.1);
+            bot.drone.rotateServo(-0.05);
         }
+        bot.drone.loop();
 
         if (gamepad1.a && !gp1a) {
-            bot.drone.launch();
+            bot.drone.launchWithRotation();
         }
 
         try {
