@@ -3,15 +3,17 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class Drone {
-    private Servo droneReleaseServo;
-    private Servo droneRotateServo;
-    private boolean launched = false;
-    private double OPEN_POS = 0.5;
-    private double CLOSED_POS = 1;
-    private long timeWhenLaunched;
-    private boolean Launched = false;
-    private long rotateAndLaunchDelay = 300;
-    private enum launchPoses {open, closed};
+    public Servo droneReleaseServo;
+    public Servo droneRotateServo;
+    public boolean launched = false;
+    public double OPEN_POS = 0.5;
+    public double CLOSED_POS = 1;
+    public long timeWhenLaunched;
+    public boolean Launched = false;
+    public long rotateAndLaunchDelay = 300;
+    public enum launchPoses {open, closed};
+    public double MAX_ROTATE_POS = 0.30;
+    public double MIN_ROTATE_POS = 0.05;
 
     Drone(Servo droneReleaseServo, Servo droneRotateServo) {
         this.droneReleaseServo = droneReleaseServo;
@@ -36,13 +38,19 @@ public class Drone {
     public void launchWithRotation() {
         timeWhenLaunched = getCurrentTime();
         launched = true;
-        rotateServo(0.5);
+        rotateServo(0.1);
     }
 
     public void loop() {
         if (launched && getCurrentTime() > timeWhenLaunched + rotateAndLaunchDelay) {
             launched = false;
             launch(launchPoses.open);
+        }
+
+        if (droneRotateServo.getPosition() > MAX_ROTATE_POS) {
+            droneRotateServo.setPosition(MAX_ROTATE_POS);
+        } else if (droneRotateServo.getPosition() < MIN_ROTATE_POS) {
+            droneRotateServo.setPosition(MIN_ROTATE_POS);
         }
     }
 

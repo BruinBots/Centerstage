@@ -12,6 +12,8 @@ public class HumanOperatedMode extends OpMode
     boolean gp1dpadup;
     boolean gp1dpaddown;
     boolean gp1a;
+    boolean gp1b;
+    boolean gp1y;
 
     //
     @Override
@@ -19,7 +21,7 @@ public class HumanOperatedMode extends OpMode
 
         bot = new Karen(hardwareMap);
         telemetry.addData("Status", "Initialized");
-        bot.drone.setServoPos(bot.droneRotateServo, 0.25);
+        bot.drone.setServoPos(bot.droneRotateServo, 0.3);
     }
 
     //
@@ -37,15 +39,23 @@ public class HumanOperatedMode extends OpMode
     public void loop() {
 
         if (gamepad1.dpad_up && !gp1dpadup) {
-            bot.drone.rotateServo(0.05);
+            if (bot.droneRotateServo.getPosition() < bot.drone.MAX_ROTATE_POS) {
+                bot.drone.rotateServo(0.05);
+            }
         }
         if (gamepad1.dpad_down && !gp1dpaddown) {
-            bot.drone.rotateServo(-0.05);
+            if (bot.droneRotateServo.getPosition() > bot.drone.MIN_ROTATE_POS) {
+                bot.drone.rotateServo(-0.05);
+            }
         }
         bot.drone.loop();
 
         if (gamepad1.a && !gp1a) {
             bot.drone.launchWithRotation();
+        } else if (gamepad1.b && !gp1b) {
+            bot.drone.launch(Drone.launchPoses.open);
+        } else if (gamepad1.y && !gp1y) {
+            bot.drone.launch(Drone.launchPoses.closed);
         }
 
         try {
@@ -60,6 +70,8 @@ public class HumanOperatedMode extends OpMode
         gp1dpadup = gamepad1.dpad_up;
         gp1dpaddown = gamepad1.dpad_down;
         gp1a = gamepad1.a;
+        gp1b = gamepad1.b;
+        gp1y = gamepad1.y;
     }
 
 
