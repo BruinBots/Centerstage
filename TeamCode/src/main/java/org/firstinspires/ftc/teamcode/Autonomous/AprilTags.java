@@ -90,7 +90,7 @@ public class AprilTags extends LinearOpMode {
             telemetry.update();
             Trajectory traj0a = drive.trajectoryBuilder(startPose, true)
                     //put y minus y value like 36-pitch y
-                    .lineToConstantHeading(new Vector2d(36 - apriltagDistance + offSetBackboardX, y))
+                    .lineToConstantHeading(new Vector2d(36 - apriltagDistance + offSetBackboardX,y))
                     .build();
             drive.followTrajectory(traj0a);
         }
@@ -170,6 +170,7 @@ public class AprilTags extends LinearOpMode {
         }
         return 0;// end for() loop
     }   // end method telemetryAprilTag()u
+
     // end class
     private double alignHorizontal(int id) {
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();
@@ -192,9 +193,10 @@ public class AprilTags extends LinearOpMode {
                     telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
                 }
             }
-            return 0;
         }
+        return 0;
     }
+}
 
 
 
