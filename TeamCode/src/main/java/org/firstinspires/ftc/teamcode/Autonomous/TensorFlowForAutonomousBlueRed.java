@@ -39,11 +39,11 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
      */
     public VisionPortal visionPortal;
 
-    public static final String TFOD_MODEL_ASSET = "allorb.tflite";
+    public static final String TFOD_MODEL_ASSET = "orb.tflite";
 
-    //public static final String TFOD_MODEL_FILE = "allorb.tflite";
+    //public static final String TFOD_MODEL_FILE = "orb.tflite";
     public static final String[] LABELS = {
-            "blueorb", "redorb"
+            "orb"
     };
 
     String Sides="";
