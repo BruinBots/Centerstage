@@ -18,10 +18,10 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 public class BaseAuto {
 
     // initialize class variables
-    public HardwareMap hardwareMap;
-    public Telemetry telemetry;
+    private HardwareMap hardwareMap;
+    private Telemetry telemetry;
     public SampleMecanumDrive drive;
-    Karen bot;
+    private Karen bot;
 
     // every child class of BaseAuto will declare this startingPosition
 

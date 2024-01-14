@@ -75,21 +75,21 @@ public class BlueNearAuto extends BaseAuto {
     @Override
     public Trajectory backdropStart1(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(12, 60))
+                .lineToConstantHeading(new Vector2d(24, 60))
                 .build();
     }
 
     @Override
     public Trajectory backdropStart2(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(12, 35))
+                .splineTo(new Vector2d(36, 35), Math.toRadians(270))
                 .build();
     }
 
     @Override
     public Trajectory backdropEnd(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(12, 35))
+                .lineToConstantHeading(new Vector2d(36, 35))
                 .build();
     }
 }
