@@ -3,11 +3,13 @@ package org.firstinspires.ftc.teamcode.Autonomous.AutoBases;
 import static android.os.SystemClock.sleep;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Arm;
+import org.firstinspires.ftc.teamcode.Autonomous.AprilTags;
 import org.firstinspires.ftc.teamcode.Autonomous.TensorFlowForAutonomousBlue;
 import org.firstinspires.ftc.teamcode.Autonomous.TensorFlowForAutonomousBlueRed;
 import org.firstinspires.ftc.teamcode.Karen;
@@ -153,47 +155,57 @@ public class BaseAuto {
     }
 
     // Place the pixel on the backdrop
-    public Trajectory placePixel(Pose2d startPose) {
-        // TODO: navigate to backdrop
-        Trajectory startTraj = backdropStart(startPose);
-        drive.followTrajectory(startTraj);
+    public Trajectory placePixel(Pose2d startPose, String side) {
+        // navigate to backdrop
 
-        // EXTREMELY IMPORTANT; STUFF WILL BREAK WITHOUT THIS
-        bot.inOutTake.scoopMiddle();
-        sleep(250);
+        Trajectory start1 = backdropStart1(startPose);
+        drive.followTrajectory(start1);
 
-        // lift up the arm
-        bot.arm.moveArm(Arm.MAX_ARM_POSITION);
-        sleep(250);
+        Trajectory start2 = backdropStart2(start1.end());
+        drive.followTrajectory(start2);
 
-        // lift up the slide
-        bot.arm.moveSlide(Arm.MIN_SLIDE_POSITION);
-        sleep(500);
+        AprilTags aprilTags = new AprilTags();
+        Trajectory aprilTraj = aprilTags.getTraj(hardwareMap, bot, drive, start2.end());
+        drive.followTrajectory(aprilTraj);
 
-        // open the claw to release the pixels onto the backdrop
-        bot.claw.openClaw();
-        sleep(500);
+        Trajectory horizontalTraj;
 
-        // close the claw after releasing the pixels
-        bot.claw.closeBothClaw();
-        sleep(100);
+        switch (side) {
+            case "left":
+                horizontalTraj = drive.trajectoryBuilder(aprilTraj.end())
+                        .lineTo(new Vector2d(aprilTraj.end().getX(), aprilTraj.end().getY() + 2))
+                        .build();
+                break;
+            case "right":
+                horizontalTraj = drive.trajectoryBuilder(aprilTraj.end())
+                        .lineTo(new Vector2d(aprilTraj.end().getX(), aprilTraj.end().getY() - 2))
+                        .build();
+                break;
+            default:
+                horizontalTraj = drive.trajectoryBuilder(aprilTraj.end())
+                        .build();
 
-        // retract the slide
-        bot.arm.moveSlide(Arm.MIN_SLIDE_POSITION);
-        sleep(500);
+        }
 
-        // retract the arm
-        bot.arm.moveArm(Arm.MIN_ARM_POSITION);
-        sleep(250);
+        drive.followTrajectory(horizontalTraj);
 
-        Trajectory endTraj = backdropEnd(startTraj.end());
-        drive.followTrajectory(endTraj);
+        // TODO: place pixel
+        // move arm up
+        // release claw
+        // move arm down
 
-        return endTraj;
+        Trajectory end = backdropEnd(horizontalTraj.end());
+        drive.followTrajectory(end);
+
+        return end;
+    }
+
+    public Trajectory backdropStart1(Pose2d startPose) {
+        return drive.trajectoryBuilder(startPose).build();
     }
 
     // this is run before pixel placing
-    public Trajectory backdropStart(Pose2d startPose) {
+    public Trajectory backdropStart2(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose).build();
     }
 
@@ -261,18 +273,6 @@ public class BaseAuto {
 
     public Trajectory spikeExit2(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose).build();
-    }
-
-    public Trajectory placePixel2(Pose2d startPose) {
-        Trajectory start = backdropStart(startPose);
-        drive.followTrajectory(start);
-
-        // TODO: place pixel
-
-        Trajectory end = backdropEnd(start.end());
-        drive.followTrajectory(end);
-
-        return end;
     }
 
     //endregion
