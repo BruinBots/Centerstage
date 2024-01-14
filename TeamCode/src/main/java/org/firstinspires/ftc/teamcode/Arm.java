@@ -8,7 +8,6 @@ public class Arm {
     // declare  motors
     private final DcMotorEx armMotor;
 
-
     // declare constants
     public static int MAX_ARM_POSITION = 2100;
     public static int MIN_ARM_POSITION = 0;
@@ -21,7 +20,6 @@ public class Arm {
     public Arm (DcMotorEx armMotor) {
         this.armMotor = armMotor;
     }
-
 
     public void holdArmPos() {
         armMotor.setPower(1);
