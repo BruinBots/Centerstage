@@ -9,33 +9,37 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Arm;
 import org.firstinspires.ftc.teamcode.Autonomous.TensorFlowForAutonomousBlue;
+import org.firstinspires.ftc.teamcode.Autonomous.TensorFlowForAutonomousBlueRed;
 import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 public class BaseAuto {
 
+    // initializa class variables
     public HardwareMap hardwareMap;
     public Telemetry telemetry;
     public SampleMecanumDrive drive;
-
     Karen bot;
 
-    public static Pose2d startingPosition;
+    // every child class of BaseAuto will declare this startingPosition
 
-    public BaseAuto(HardwareMap hardwareMap, Telemetry telemetry) {
+    public BaseAuto(HardwareMap hardwareMap, Telemetry telemetry, Pose2d startingPosition) {
 
+        // assign class variables
         this.hardwareMap = hardwareMap;
         this.telemetry = telemetry;
 
+        // create bot from hardwareMap
         bot = new Karen(hardwareMap);
 
+        // create SampleMecanumDrive from hardwareMap and set the startingPosition
         drive = new SampleMecanumDrive(hardwareMap);
         drive.setPoseEstimate(startingPosition);
     }
 
     public String tfSpike() {
 
-        TensorFlowForAutonomousBlue tf = new TensorFlowForAutonomousBlue(hardwareMap, telemetry);
+        TensorFlowForAutonomousBlueRed tf = new TensorFlowForAutonomousBlueRed(hardwareMap, telemetry);
         tf.initTfod();
         sleep(500);
 
@@ -151,9 +155,7 @@ public class BaseAuto {
         bot.arm.moveArm(Arm.MAX_ARM_POSITION);
         sleep(250);
 
-        // lift up the slide
-        bot.arm.moveSlide(Arm.MIN_SLIDE_POSITION); // TODO: change this to an actual value
-        sleep(500);
+        // lift up the slide\
 
         // open the claw to release the pixels onto the backdrop
 //        bot.claw.openClaw();
@@ -164,8 +166,6 @@ public class BaseAuto {
 //        sleep(100);
 
         // retract the slide
-        bot.arm.moveSlide(Arm.MIN_SLIDE_POSITION);
-        sleep(500);
 
         // retract the arm
         bot.arm.moveArm(Arm.MIN_ARM_POSITION);
