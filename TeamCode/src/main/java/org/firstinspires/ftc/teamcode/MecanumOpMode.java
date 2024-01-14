@@ -44,6 +44,9 @@ public class MecanumOpMode extends OpMode
     double turn = 0.0;
     double strafe = 0.0;
 
+    boolean droneButtonPressed;
+    boolean gp2dpadleft;
+
     // robot
     Karen bot;
 
@@ -53,7 +56,6 @@ public class MecanumOpMode extends OpMode
 
         bot = new Karen(hardwareMap);
         telemetry.addData("Status", "Initialized");
-        bot.claw.setClawWrist(0.1);
     }
 
     //
@@ -89,29 +91,75 @@ public class MecanumOpMode extends OpMode
 
         bot.moveBotMecanum(drive, turn, strafe,  0.5); // actually move the robot
 
-        // if bumper pressed increase or decrease arm
+        // arm & slide
+
         if (gamepad2.right_bumper) {
             bot.arm.moveArm(bot.arm.getCurrentArmPos() + bot.arm.ARM_SPEED);
-            bot.claw.setClawWristFromAngle(bot.arm.clawAngle());
         }
         else if (gamepad2.left_bumper) {
             bot.arm.moveArm(bot.arm.getCurrentArmPos() - bot.arm.ARM_SPEED);
-            bot.claw.setClawWristFromAngle(bot.arm.clawAngle());
         }
         else {
             bot.arm.holdArmPos();
         }
 
-        if (gamepad2.left_trigger > 0.1) {
-            bot.claw.moveClawWrist(-0.1);
-        } else if (gamepad2.right_trigger > 0.1) {
-            bot.claw.moveClawWrist(0.1);
+        telemetry.addData("arm", bot.arm.getCurrentArmPos());
+
+        // claw
+        if (gamepad2.x ) {
+        }
+        else if (gamepad2.b) {
+        }
+        else if (gamepad2.a) {
+        } else if (gamepad2.dpad_down) {
+            bot.arm.moveArm(bot.arm.MIN_ARM_POSITION);
         }
 
-        telemetry.addData("arm", bot.arm.getCurrentArmPos());
-        telemetry.addData("armAngle", bot.arm.armAngle());
-        telemetry.addData("clawAngle", bot.arm.clawAngle());
-        telemetry.addData("clawPos", bot.claw.getCurrentWristPosition());
+        // dropper
+        if (gamepad2.y) {
+            bot.dropper.dropperUp();
+        }
+
+
+        // drone launch
+
+//        if (gamepad1.y && !droneButtonPressed) {
+//            bot.drone.launch();
+//        }
+//        bot.drone.loop();
+
+        // TODO: intake
+        if (gamepad2.dpad_left && !gp2dpadleft) {
+            if (!bot.inOutTake.isSafeForArm()) {
+                bot.inOutTake.scoopMiddle(); // moves scoop to middle pos so it doesnt snap motor mount in half again
+            } else {
+            }
+        }
+
+
+        if (gamepad1.left_trigger > 0.5) {
+            bot.inOutTake.intake();
+        }
+        else if (gamepad1.right_trigger > 0.5) {
+            bot.inOutTake.outtake();
+        }
+        else {
+            bot.inOutTake.stopTake();
+        }
+
+        if (gamepad1.dpad_up) {
+            bot.inOutTake.scoopUp();
+        }
+        else if (gamepad1.dpad_down) {
+            bot.inOutTake.scoopDown();
+
+        } else if (gamepad1.dpad_left) {
+            bot.inOutTake.scoopMiddle();
+        }
+
+        droneButtonPressed = gamepad1.y;
+        gp2dpadleft = gamepad2.dpad_left;
+
 
         try {
             sleep(20);
