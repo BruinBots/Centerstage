@@ -1,39 +1,38 @@
 package org.firstinspires.ftc.teamcode;
 
-
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class Claw {
+    private final Servo clawWrist;
+    private static final double CLAW_WRIST_MIN = 0;
+    private static final double CLAW_WRIST_MAX = 0.8;
+    private static final double ZERO_ANGLE_POS = 0.1;
+    private static final double TICKS_PER_DEGREE = 0.0033333333;
 
-    private final Servo clawServo;
-
-
-    public static final double CLOSE_BOTH_POS = 0; // 0º
-    public static final double OPEN_POS = CLOSE_BOTH_POS + 0.35; // 36º
-    public static final double CLOSE_ONE_POS = CLOSE_BOTH_POS + 0.058;
-
-
-    public Claw (Servo clawServo) {
-        this.clawServo = clawServo;
+    public Claw(Servo clawWrist) {
+        this.clawWrist = clawWrist;
     }
 
-    public void openClaw() {
-        clawMove(OPEN_POS);
-    }
-
-    public void closeBothClaw() {
-        clawMove(CLOSE_BOTH_POS);
-    }
-    public void closeOneClaw() { clawMove(CLOSE_ONE_POS); }
-    private void clawMove(double position) {
-        // if position is negative,  go reverse, as servos don't accept negative values. If position is positive, go forwards, and if 0, it doesn't matter so it defaults to forwards
-        if (position < 0) {
-            clawServo.setDirection(Servo.Direction.REVERSE);
+    public void setClawWrist(double targetPos) {
+        if (targetPos > CLAW_WRIST_MAX) {
+            targetPos = CLAW_WRIST_MAX;
+        } else if (targetPos < CLAW_WRIST_MIN) {
+            targetPos = CLAW_WRIST_MIN;
         }
-        else {
-            clawServo.setDirection(Servo.Direction.FORWARD);
-        }
-        position = Math.abs(position);
-        clawServo.setPosition(position);
+        clawWrist.setPosition(targetPos);
+    }
+
+    public void moveClawWrist(double deltaPos) {
+        double newPos = clawWrist.getPosition() + deltaPos;
+        setClawWrist(newPos);
+    }
+
+    public void setClawWristFromAngle(double angle) {
+        double newPos = angle * TICKS_PER_DEGREE + ZERO_ANGLE_POS;
+        setClawWrist(newPos);
+    }
+
+    public double getCurrentWristPosition() {
+        return clawWrist.getPosition();
     }
 }
