@@ -4,10 +4,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class Claw {
     private final Servo clawWrist;
-    private static double CLAW_WRIST_MIN = 0;
-    private static double CLAW_WRIST_MAX = 0.8;
-    private static double ZERO_ANGLE_POS = 0.1;
-    private static double TICKS_PER_DEGREE = 0.0033333333;
+    private static final double CLAW_WRIST_MIN = 0;
+    private static final double CLAW_WRIST_MAX = 0.8;
+    private static final double ZERO_ANGLE_POS = 0.1;
+    private static final double TICKS_PER_DEGREE = 0.0033333333;
 
     public Claw(Servo clawWrist) {
         this.clawWrist = clawWrist;

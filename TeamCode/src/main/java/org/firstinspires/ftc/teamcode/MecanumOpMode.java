@@ -71,9 +71,6 @@ public class MecanumOpMode extends OpMode
     @Override
     public void loop() {
         // get drive, strafe, and turn values
-//        drive = -gamepad2.left_stick_x;
-//        strafe = gamepad2.left_stick_y;
-//        turn = gamepad2.right_stick_y;
 
         drive = gamepad1.left_stick_y - gamepad2.left_stick_y;
         strafe = gamepad2.left_stick_x - gamepad1.left_stick_x;
@@ -91,11 +88,11 @@ public class MecanumOpMode extends OpMode
 
         // if bumper pressed increase or decrease arm
         if (gamepad2.right_bumper) {
-            bot.arm.moveArm(bot.arm.getCurrentArmPos() + bot.arm.ARM_SPEED);
+            bot.arm.moveArm(bot.arm.getCurrentArmPos() + Arm.ARM_SPEED);
             bot.claw.setClawWristFromAngle(bot.arm.clawAngle());
         }
         else if (gamepad2.left_bumper) {
-            bot.arm.moveArm(bot.arm.getCurrentArmPos() - bot.arm.ARM_SPEED);
+            bot.arm.moveArm(bot.arm.getCurrentArmPos() - Arm.ARM_SPEED);
             bot.claw.setClawWristFromAngle(bot.arm.clawAngle());
         }
         else {

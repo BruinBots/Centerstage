@@ -28,8 +28,7 @@ public class Arm {
     }
 
     private double ticksToDegrees(double ticks) {
-        double angle = (ticks / GEAR_RATIO) * (360/537.7);
-        return angle;
+        return (ticks / GEAR_RATIO) * (360/537.7);
     }
 
     public double armAngle() {
@@ -47,10 +46,6 @@ public class Arm {
         return clawAngle;
     }
 
-    public double degreesToTicks(double degrees) {
-        double ticks = degrees * 360;
-        return ticks;
-    }
     public void moveArm(int targetPos) {
         // if arm pos is greater or less than max/min then set to max/min
         if (targetPos < MIN_ARM_POSITION) {
