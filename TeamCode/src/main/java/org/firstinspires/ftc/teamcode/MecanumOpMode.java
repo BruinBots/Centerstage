@@ -118,14 +118,14 @@ public class MecanumOpMode extends OpMode
 //        bot.drone.loop();
 
         // TODO: intake
-        if (gamepad2.dpad_left && !gp2dpadleft) {
-            if (!bot.inOutTake.isSafeForArm()) {
-                bot.inOutTake.scoopMiddle(); // moves scoop to middle pos so it doesnt snap motor mount in half again
-            } else {
-                bot.claw.closeBothClaw(); // closes both claw holds
-                bot.arm.dropPixelPos(); // moves arm and slide to max
-            }
-        }
+//        if (gamepad2.dpad_left && !gp2dpadleft) {
+//            if (!bot.inOutTake.isSafeForArm()) {
+//                bot.inOutTake.scoopMiddle(); // moves scoop to middle pos so it doesnt snap motor mount in half again
+//            } else {
+//                bot.claw.closeBothClaw(); // closes both claw holds
+//                bot.arm.dropPixelPos(); // moves arm and slide to max
+//            }
+//        }
 
         if (gamepad1.left_trigger > 0.5) {
             bot.inOutTake.intake();
@@ -137,20 +137,20 @@ public class MecanumOpMode extends OpMode
             bot.inOutTake.stopTake();
         }
 
-        if (gamepad1.dpad_up) {
-            bot.claw.openClaw();
-            bot.inOutTake.scoopUp();
-        }
-        else if (gamepad1.dpad_down) {
-            bot.claw.openClaw();
-            bot.inOutTake.scoopDown();
+//        if (gamepad1.dpad_up) {
+//            bot.claw.openClaw();
+//            bot.inOutTake.scoopUp();
+//        }
+//        else if (gamepad1.dpad_down) {
+//            bot.claw.openClaw();
+//            bot.inOutTake.scoopDown();
 
-        } else if (gamepad1.dpad_left) {
-            bot.inOutTake.scoopMiddle();
-        }
+//        } else if (gamepad1.dpad_left) {
+//            bot.inOutTake.scoopMiddle();
+//        }
 
-        droneButtonPressed = gamepad1.y;
-        gp2dpadleft = gamepad2.dpad_left;
+//        droneButtonPressed = gamepad1.y;
+//        gp2dpadleft = gamepad2.dpad_left;
 
         telemetry.addData("arm", bot.arm.getCurrentArmPos());
         telemetry.addData("armAngle", bot.arm.armAngle());

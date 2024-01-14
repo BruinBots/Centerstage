@@ -31,6 +31,9 @@ public class Karen  {
     // subclasses
     public Arm arm;
     public Claw claw;
+    public Drone drone;
+    public Dropper dropper;
+    public InOutTake inOutTake;
 
     // constructor with map
     public Karen(HardwareMap map) {
