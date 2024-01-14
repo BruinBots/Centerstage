@@ -91,16 +91,7 @@ public class MecanumOpMode extends OpMode
 
         bot.moveBotMecanum(drive, turn, strafe,  0.5); // actually move the robot
 
-        // arm & slid
-        if (gamepad2.right_trigger > 0.5) {
-            bot.arm.moveSlide(bot.arm.getCurrentSlidePos() + bot.arm.SLIDE_SPEED);
-        }
-        else if (gamepad2.left_trigger > 0.5) {
-            bot.arm.moveSlide(bot.arm.getCurrentSlidePos() - bot.arm.SLIDE_SPEED);
-        }
-        else {
-//            bot.arm.holdSlidePos();
-        }
+        // arm & slide
 
         if (gamepad2.right_bumper) {
             bot.arm.moveArm(bot.arm.getCurrentArmPos() + bot.arm.ARM_SPEED);
@@ -113,7 +104,6 @@ public class MecanumOpMode extends OpMode
         }
 
         telemetry.addData("arm", bot.arm.getCurrentArmPos());
-        telemetry.addData("slide", bot.arm.getCurrentSlidePos());
 
         // claw
         if (gamepad2.x ) {
@@ -127,7 +117,6 @@ public class MecanumOpMode extends OpMode
         } else if (gamepad2.dpad_down) {
             bot.claw.closeBothClaw();
             bot.arm.moveArm(bot.arm.MIN_ARM_POSITION);
-            bot.arm.moveSlide(bot.arm.MIN_SLIDE_POSITION);
         }
 
         // dropper
@@ -170,7 +159,6 @@ public class MecanumOpMode extends OpMode
         else if (gamepad1.dpad_down) {
             bot.claw.openClaw();
             bot.inOutTake.scoopDown();
-            bot.arm.moveSlide(bot.arm.MIN_SLIDE_POSITION);
 
         } else if (gamepad1.dpad_left) {
             bot.inOutTake.scoopMiddle();
