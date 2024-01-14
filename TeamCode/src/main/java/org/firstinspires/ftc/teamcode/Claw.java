@@ -36,8 +36,4 @@ public class Claw {
         position = Math.abs(position);
         clawServo.setPosition(position);
     }
-
-
-
-
 }
