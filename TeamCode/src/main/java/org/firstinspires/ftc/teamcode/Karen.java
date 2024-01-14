@@ -2,7 +2,9 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public class Karen  {
 
@@ -21,11 +23,14 @@ public class Karen  {
     public DcMotorEx rightOdo;
     public DcMotorEx backOdo;
 
+    Servo clawWristServo;
+
     public final int TICKS_PER_REVOLUTION = 200;
     public final int DEADWHEEL_RADIUS = 2; // cm ??
 
     // subclasses
     public Arm arm;
+    public Claw claw;
 
     // constructor with map
     public Karen(HardwareMap map) {
@@ -44,8 +49,13 @@ public class Karen  {
         armMotor = map.get(DcMotorEx.class, "arm_motor");
         armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         armMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        armMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         arm = new Arm(armMotor);
+
+        // claw
+        clawWristServo = map.get(Servo.class, "claw_wrist_servo");
+        claw = new Claw(clawWristServo);
 
         // odometry deadwheels
         leftOdo = map.get(DcMotorEx.class, "right_front");

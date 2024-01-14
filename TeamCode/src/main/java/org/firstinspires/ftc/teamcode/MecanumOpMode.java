@@ -53,6 +53,7 @@ public class MecanumOpMode extends OpMode
 
         bot = new Karen(hardwareMap);
         telemetry.addData("Status", "Initialized");
+        bot.claw.setClawWrist(0.1);
     }
 
     //
@@ -86,15 +87,26 @@ public class MecanumOpMode extends OpMode
         // if bumper pressed increase or decrease arm
         if (gamepad2.right_bumper) {
             bot.arm.moveArm(bot.arm.getCurrentArmPos() + bot.arm.ARM_SPEED);
+            bot.claw.setClawWristFromAngle(bot.arm.clawAngle());
         }
         else if (gamepad2.left_bumper) {
             bot.arm.moveArm(bot.arm.getCurrentArmPos() - bot.arm.ARM_SPEED);
+            bot.claw.setClawWristFromAngle(bot.arm.clawAngle());
         }
         else {
             bot.arm.holdArmPos();
         }
 
+        if (gamepad2.left_trigger > 0.1) {
+            bot.claw.moveClawWrist(-0.1);
+        } else if (gamepad2.right_trigger > 0.1) {
+            bot.claw.moveClawWrist(0.1);
+        }
+
         telemetry.addData("arm", bot.arm.getCurrentArmPos());
+        telemetry.addData("armAngle", bot.arm.armAngle());
+        telemetry.addData("clawAngle", bot.arm.clawAngle());
+        telemetry.addData("clawPos", bot.claw.getCurrentWristPosition());
 
         try {
             sleep(20);
