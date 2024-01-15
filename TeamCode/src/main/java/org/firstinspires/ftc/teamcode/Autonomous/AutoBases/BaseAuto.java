@@ -182,23 +182,26 @@ public class BaseAuto {
         telemetry.addData("x", aprilVector.getX());
         telemetry.addData("y", aprilVector.getY());
         telemetry.update();
-//        Trajectory aprilTraj = drive.trajectoryBuilder(start2.end().plus(new Pose2d(0, 0, Math.toRadians(blue ? 90 : -90))))
-//                .lineToConstantHeading(new Vector2d(start2.end().getX() + aprilVector.getX(), start2.end().getY() + aprilVector.getY()))
-//                .build();
-//        drive.followTrajectory(aprilTraj);
-        Trajectory aprilTraj = drive.trajectoryBuilder(start2.end().plus(new Pose2d(0, 0, Math.toRadians(blue ? 90 : -90)))).build();
+        Pose2d startEnd = start2.end().plus(new Pose2d(0, 0, Math.toRadians(blue ? 90 : -90)));
+        Trajectory aprilTraj = drive.trajectoryBuilder(startEnd)
+                .lineToConstantHeading(new Vector2d(startEnd.getX() + aprilVector.getX(), startEnd.getY() + aprilVector.getY()))
+                .build();
+        drive.followTrajectory(aprilTraj);
 
         // TODO: place pixel
         // move arm up
+//        bot.inOutTake.scoopMiddle();
+//        sleep(500);
 //        bot.arm.moveArm(Arm.MAX_ARM_POSITION);
 //        sleep(1000);
         // release claw
         // move arm down
+//        bot.arm.moveArm(Arm.MIN_ARM_POSITION);
 
-        Trajectory end = backdropEnd(aprilTraj.end());
-        drive.followTrajectory(end);
+//        Trajectory end = backdropEnd(start2.end().plus(new Pose2d(0, 0, Math.toRadians(blue ? 90 : -90))));
+//        drive.followTrajectory(end);
 
-        return end;
+        return aprilTraj;
     }
 
     public Trajectory backdropStart1(Pose2d startPose) {

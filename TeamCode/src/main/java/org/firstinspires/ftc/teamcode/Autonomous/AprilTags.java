@@ -3,27 +3,20 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import static android.os.SystemClock.sleep;
 
-import java.util.List;
-
-import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-
-import org.firstinspires.ftc.teamcode.Karen;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.Karen;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import java.util.List;
 
 /**
  * This 2023-2024 OpMode illustrates the basics of AprilTag recognition and pose estimation,
@@ -34,54 +27,34 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  */
 public class AprilTags {
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
-    /**
-     * {@link #aprilTag} is the variable to store our instance of the AprilTag processor.
-     */
     private AprilTagProcessor aprilTag;
-    /**
-     * {@link #visionPortal} is the variable to store our instance of the vision portal.
-     */
     private VisionPortal visionPortal;
-    //this variable is the offset for the robot dosen't hit the backboard in inch to how close you whant it to the backboard/ put always if you whant a number put add one
-    private double offSetBackboardX = 5;
-    private double offSetBackboardY = -5;
+    //this variable is the offset for the robot doesn't hit the backboard in inch to how close you want it to the backboard/ put always if you want a number put add one
+    private final double offSetBackboardX = -3;
+    private final double offSetBackboardY = 5;
 
     public Vector2d getTraj(HardwareMap hardwareMap, SampleMecanumDrive drive, int idBackboard) {
         Karen bot = new Karen(hardwareMap);
         initAprilTag(hardwareMap);
         sleep(5000);
-        //The variable that stores the distance that the apritag is from the backboard
+        //The variable that stores the distance that the apriltag is from the backboard
         double apriltagDistance;
-        double y = 36;
-        //the id you whant the robot to go
-        // Wait for the DS start button to be touched.
+        double x = 36;
 
         double apriltagSideWays = alignHorizontal(idBackboard);
 
-
-//        if (apriltagSideWays > 0) {
-//            y = y + apriltagSideWays + offSetBackboardY;
-//
-//            Trajectory traj0b = drive.trajectoryBuilder(startPose, true)
-//                    //put y minus y value like 36-pich y
-//                    .lineToConstantHeading(new Vector2d(36, y))
-//                    .build();
-//            drive.followTrajectory(traj0b);
-//        }
-//        //two is the id that you want to make the robot scan and go to
         apriltagDistance = telemetryAprilTag(idBackboard);
-//        if (apriltagDistance > 0) {
-//
-//            Trajectory traj0a = drive.trajectoryBuilder(startPose, true)
-//                    //put y minus y value like 36-pitch y
-//                    .lineToConstantHeading(new Vector2d(36 - apriltagDistance + offSetBackboardX,y))
-//                    .build();
-//            drive.followTrajectory(traj0a);
-//        }
+        /* If robot is facing right in RoadRunner scheme:
+        AprilTags   RoadRunner  Robot
+        +x          -y          right
+        -x          +y          left
+        +y          +x          forwards
+        -y          -x          backwards
+         */
         if (apriltagSideWays > 0 || apriltagDistance > 0) {
-            y = y + apriltagSideWays + offSetBackboardY;
+            x = x + apriltagSideWays + offSetBackboardX;
             apriltagDistance = telemetryAprilTag(idBackboard);
-            Vector2d offset = new Vector2d(36 - apriltagDistance + offSetBackboardX, y);
+            Vector2d offset = new Vector2d(x, 36 - apriltagDistance + offSetBackboardY);
             visionPortal.close();
             return offset;
         }
