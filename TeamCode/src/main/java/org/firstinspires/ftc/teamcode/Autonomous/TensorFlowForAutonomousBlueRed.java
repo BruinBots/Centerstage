@@ -15,6 +15,8 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /*
@@ -34,13 +36,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
      */
     private TfodProcessor tfodProcessor;
 
-    /**
-     * z
-     * <p>
-     * <p>
-     * <p>
-     * <p>
-     * <p>
+    /**z
      * The variable to store our instance of the vision portal.
      */
     public VisionPortal visionPortal;
@@ -156,15 +152,51 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
 
     }   // end method initTfod()
 
-    /**3d
-     *
-     * r
-     * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.a
+    private void SizeTfod() {
+        List<Recognition> updatedRecognitions = tfodProcessor.getRecognitions();
+        if (updatedRecognitions != null) {
+            Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
+                @Override
+                public int compare(Recognition r1, Recognition r2) {
+                    return (int)((r1.getConfidence()-r2.getConfidence())*100);
+                }
+            });
+            updatedRecognitions = updatedRecognitions.subList(0, 2);
+            Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
+                @Override
+                public int compare(Recognition r1, Recognition r2) {
+                    return (int)(((r1.getHeight() * r1.getWidth()) / (r2.getHeight() * r2.getWidth())) * 100);
+                }
+            });
+            Recognition recognition = updatedRecognitions.get(0);
+        }
+    }
+
+    private void ShapeTfod() {
+        List<Recognition> updatedRecognitions = tfodProcessor.getRecognitions();
+        if (updatedRecognitions != null) {
+//            Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
+//                @Override
+//                public int compare(Recognition r1, Recognition r2) {
+//                    return (int)((r1.getConfidence()-r2.getConfidence())*100);
+//                }
+//            });
+            Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
+                @Override
+                public int compare(Recognition r1, Recognition r2) {
+                    return (int)((Math.abs((r2.getHeight() / r2.getWidth()) - (r2.getWidth() / r2.getHeight())) / Math.abs((r1.getHeight() / r1.getWidth()) - (r1.getWidth() / r1.getHeight())) * 100));
+                }
+            });
+            Recognition recognition = updatedRecognitions.get(0);
+        }
+    }
+
+    /**
+     * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.
      */
     private String telemetryTfod() {
         String direction = "";
         double screenWidth = 2200;//tfodProcessor..getCameraView().getWidth();
-        // was 2200
 
         if (tfodProcessor != null) {
             // Get updated recognition list.
@@ -190,7 +222,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
                         double x = (recognition.getLeft() + recognition.getRight()) / 2;
                         double y = (recognition.getTop() + recognition.getBottom()) / 2;
 
-                        telemetry.addData("", " ");
+                        telemetry.addData(""," ");
                         telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
                         telemetry.addData("- Position", "%.0f / %.0f", x, y);
                         telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
@@ -218,4 +250,4 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
         }
         return direction;
     }
-}   // end cla
+}   // end class
