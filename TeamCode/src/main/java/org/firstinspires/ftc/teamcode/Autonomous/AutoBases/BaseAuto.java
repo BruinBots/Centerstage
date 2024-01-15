@@ -8,9 +8,7 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Arm;
 import org.firstinspires.ftc.teamcode.Autonomous.AprilTags;
-import org.firstinspires.ftc.teamcode.Autonomous.TensorFlowForAutonomousBlue;
 import org.firstinspires.ftc.teamcode.Autonomous.TensorFlowForAutonomousBlueRed;
 import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -234,25 +232,51 @@ public class BaseAuto {
         drive.followTrajectory(enter);
 
         Pose2d endEnter = enter.end();
+        Vector2d vector;
+        Trajectory traj;
 
         switch (side) {
             case "left":
                 telemetry.addData("side", "left");
                 drive.turn(Math.toRadians(90));
                 endEnter = endEnter.plus(new Pose2d(0, 0, Math.toRadians(90)));
+                vector = relativeSpikeLeft2();
+                traj = drive.trajectoryBuilder(endEnter)
+                        .lineToConstantHeading(new Vector2d(endEnter.getX() + vector.getX(), endEnter.getY() + vector.getY()))
+                        .build();
+                drive.followTrajectory(traj);
+                endEnter = traj.end();
                 break;
             case "center":
                 telemetry.addData("side", "center");
+                vector = relativeSpikeCenter2();
+                traj = drive.trajectoryBuilder(endEnter)
+                        .lineToConstantHeading(new Vector2d(endEnter.getX() + vector.getX(),endEnter.getY() + vector.getY()))
+                        .build();
+                drive.followTrajectory(traj);
+                endEnter = traj.end();
                 break;
             case "right":
                 telemetry.addData("side", "right");
                 drive.turn(Math.toRadians(-90));
                 endEnter = endEnter.plus(new Pose2d(0, 0, Math.toRadians(-90)));
+                vector = relativeSpikeRight2();
+                traj = drive.trajectoryBuilder(endEnter)
+                        .lineToConstantHeading(new Vector2d(endEnter.getX() + vector.getX(), endEnter.getY() + vector.getY()))
+                        .build();
+                drive.followTrajectory(traj);
+                endEnter = traj.end();
                 break;
             default:
                 telemetry.addData("side", "default");
                 drive.turn(Math.toRadians(90));
                 endEnter = endEnter.plus(new Pose2d(0, 0, Math.toRadians(90)));
+                vector = relativeSpikeLeft2();
+                traj = drive.trajectoryBuilder(endEnter)
+                        .lineToConstantHeading(new Vector2d(endEnter.getX() + vector.getX(), endEnter.getY() + vector.getY()))
+                        .build();
+                drive.followTrajectory(traj);
+                endEnter = traj.end();
                 break;
         }
 
@@ -269,6 +293,18 @@ public class BaseAuto {
 
     public Trajectory spikeEnter2(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose).build();
+    }
+
+    public Vector2d relativeSpikeLeft2() {
+        return new Vector2d(0, 0);
+    }
+
+    public Vector2d relativeSpikeCenter2() {
+        return new Vector2d(0, 0);
+    }
+
+    public Vector2d relativeSpikeRight2() {
+        return new Vector2d(0, 0);
     }
 
     public Trajectory spikeExit2(Pose2d startPose) {
