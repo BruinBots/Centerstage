@@ -18,6 +18,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
@@ -28,8 +29,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
-@Autonomous(name = "AprilTag", group = "Concept")
-public class AprilTags extends LinearOpMode {
+public class AprilTags {
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
     /**
      * {@link #aprilTag} is the variable to store our instance of the AprilTag processor.
@@ -43,72 +43,52 @@ public class AprilTags extends LinearOpMode {
     private double offSetBackboardX = 5;
     private double offSetBackboardY = -5;
 
-    @Override
-    public void runOpMode() throws InterruptedException {
+    public Vector2d getTraj(HardwareMap hardwareMap, SampleMecanumDrive drive, Pose2d startPose) throws InterruptedException {
         Karen bot = new Karen(hardwareMap);
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Pose2d startPose = new Pose2d(36, 36, Math.toRadians(0));
-        drive.setPoseEstimate(startPose);
-        initAprilTag();
+        initAprilTag(hardwareMap);
         //The variable that stores the distance that the apritag is from the backboard
         double apriltagDistance;
         double y = 36;
         //the id you whant the robot to go
         int idBackboard = 1;
         // Wait for the DS start button to be touched.
-        telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
-        telemetry.addData(">", "Touch Play to start OpMode");
-        telemetry.update();
-        telemetry.addData("before  wait start", "wait");
-        telemetry.update();
-        waitForStart();
-        telemetry.addData("after wait start", "done");
-        telemetry.update();
-        telemetry.addData("before  horizontal start", "wait");
-        telemetry.update();
 
         double apriltagSideWays = alignHorizontal(idBackboard);
 
 
-        telemetry.update();
-        if (apriltagSideWays > 0) {
-            y = y + apriltagSideWays + offSetBackboardY;
-            telemetry.addData("the Y 1:", y);
-
-            Trajectory traj0b = drive.trajectoryBuilder(startPose, true)
-                    //put y minus y value like 36-pich y
-                    .lineToConstantHeading(new Vector2d(36, y))
-                    .build();
-            drive.followTrajectory(traj0b);
-        } else if (apriltagSideWays < 0) {
-            y = y + apriltagSideWays + offSetBackboardY;
-            telemetry.addData("the Y 2:", y);
-
-            Trajectory traj0b = drive.trajectoryBuilder(startPose, true)
-                    //put y minus y value like 36-pich y
-                    .lineToConstantHeading(new Vector2d(36, y))
-                    .build();
-            drive.followTrajectory(traj0b);
-        }
-        //two is the id that you want to make the robot scan and go to
+//        if (apriltagSideWays > 0) {
+//            y = y + apriltagSideWays + offSetBackboardY;
+//
+//            Trajectory traj0b = drive.trajectoryBuilder(startPose, true)
+//                    //put y minus y value like 36-pich y
+//                    .lineToConstantHeading(new Vector2d(36, y))
+//                    .build();
+//            drive.followTrajectory(traj0b);
+//        }
+//        //two is the id that you want to make the robot scan and go to
         apriltagDistance = telemetryAprilTag(idBackboard);
-        if (apriltagDistance > 0) {
-            telemetry.addData("the Y:", y);
-
-            Trajectory traj0a = drive.trajectoryBuilder(startPose, true)
-                    //put y minus y value like 36-pitch y
-                    .lineToConstantHeading(new Vector2d(36 - apriltagDistance + offSetBackboardX,y))
-                    .build();
-            drive.followTrajectory(traj0a);
+//        if (apriltagDistance > 0) {
+//
+//            Trajectory traj0a = drive.trajectoryBuilder(startPose, true)
+//                    //put y minus y value like 36-pitch y
+//                    .lineToConstantHeading(new Vector2d(36 - apriltagDistance + offSetBackboardX,y))
+//                    .build();
+//            drive.followTrajectory(traj0a);
+//        }
+        if (apriltagSideWays > 0 && apriltagDistance > 0) {
+            y = y + apriltagSideWays + offSetBackboardY;
+            apriltagDistance = telemetryAprilTag(idBackboard);
+            Vector2d offset = new Vector2d(36 - apriltagDistance + offSetBackboardX, y);
+            visionPortal.close();
+            return offset;
         }
-        telemetry.addData("after  straight line  start", "done");
-        telemetry.update();
         // Save more CPU resources when camera is no longer needed.
         //\
         visionPortal.close();
+        return new Vector2d(0, 0);
     }   // end method runOpMode(
 
-    private void initAprilTag() {
+    private void initAprilTag(HardwareMap hardwareMap) {
         // Create the AprilTag processor.
         aprilTag = new AprilTagProcessor.Builder()
                 //.setDrawAxes(false)
@@ -164,17 +144,10 @@ public class AprilTags extends LinearOpMode {
     //it gives the distance to the apriltag with the id of the number you gave it
     private double telemetryAprilTag(int id) {
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();
-        telemetry.addData("# AprilTags Detected", currentDetections.size());
         // Step through the list of detections and display info for each one.
         for (AprilTagDetection detection : currentDetections) {
             if (detection.metadata != null && detection.id == id) {
-                telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
-                telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (x,y,z)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
-                telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (pitch, yaw, roll)", detection.ftcPose.pitch, detection.ftcPose.yaw, detection.ftcPose.roll));
                 return detection.ftcPose.range;
-            } else {
-                telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
-                telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
             }
         }
 //        if (currentDetections[0]==null) {
@@ -186,24 +159,11 @@ public class AprilTags extends LinearOpMode {
     // end class
     private double alignHorizontal(int id) {
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();
-        telemetry.addData("# AprilTags Detected", currentDetections.size());
         // Step through the list of detections and display info for each one.
         for (AprilTagDetection detection : currentDetections) {
 
             if (detection.metadata != null && detection.id == id) {
-                telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
-                telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (x,y,z)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
-                telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (pitch, yaw, roll)", detection.ftcPose.pitch, detection.ftcPose.yaw, detection.ftcPose.roll));
-                telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (y)", detection.ftcPose.range * Math.sin(Math.toRadians(detection.ftcPose.bearing)) ));
-//                double horizontal = detection.ftcPose.range * Math.sin(Math.toRadians(detection.ftcPose.bearing));
-//                telemetry.addLine(String.format(" Distance horizontal", horizontal));
-//                    if (detection.ftcPose.x < 0) {
-//                        return -horizontal;
-//                    }
                 return detection.ftcPose.x;
-            } else {
-                telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
-                telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
             }
         }
         return 0;
