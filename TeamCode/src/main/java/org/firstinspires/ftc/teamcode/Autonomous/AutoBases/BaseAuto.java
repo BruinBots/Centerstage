@@ -8,6 +8,7 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Arm;
 import org.firstinspires.ftc.teamcode.Autonomous.AprilTags;
 import org.firstinspires.ftc.teamcode.Autonomous.TensorFlowForAutonomousBlueRed;
 import org.firstinspires.ftc.teamcode.Karen;
@@ -189,6 +190,8 @@ public class BaseAuto {
 
         // TODO: place pixel
         // move arm up
+        bot.arm.moveArm(Arm.MAX_ARM_POSITION);
+        sleep(1000);
         // release claw
         // move arm down
 
