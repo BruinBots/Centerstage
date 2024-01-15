@@ -1,14 +1,12 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Karen;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
@@ -27,7 +25,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 /**
  * This 2023-2024 OpMode illustrates the basics of AprilTag recognition and pose estimation,
  * including Java Builder structures for specifying Vision parameters.
- *
+ * <p>
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
@@ -42,33 +40,52 @@ public class AprilTags {
      */
     private VisionPortal visionPortal;
     //this variable is the offset for the robot dosen't hit the backboard in inch to how close you whant it to the backboard/ put always if you whant a number put add one
-    double offSetBackboardX = 5;
-    double offSetBackboardY = 5;
+    private double offSetBackboardX = 5;
+    private double offSetBackboardY = -5;
 
-    public Trajectory getTraj(HardwareMap hardwareMap, Karen bot, SampleMecanumDrive drive, Pose2d startPose) {
+    public Vector2d getTraj(HardwareMap hardwareMap, SampleMecanumDrive drive, Pose2d startPose) throws InterruptedException {
+        Karen bot = new Karen(hardwareMap);
         initAprilTag(hardwareMap);
         //The variable that stores the distance that the apritag is from the backboard
         double apriltagDistance;
         double y = 36;
         //the id you whant the robot to go
         int idBackboard = 1;
-        //two is the id that you want to make the robot scan and go to
+        // Wait for the DS start button to be touched.
+
+        double apriltagSideWays = alignHorizontal(idBackboard);
+
+
+//        if (apriltagSideWays > 0) {
+//            y = y + apriltagSideWays + offSetBackboardY;
+//
+//            Trajectory traj0b = drive.trajectoryBuilder(startPose, true)
+//                    //put y minus y value like 36-pich y
+//                    .lineToConstantHeading(new Vector2d(36, y))
+//                    .build();
+//            drive.followTrajectory(traj0b);
+//        }
+//        //two is the id that you want to make the robot scan and go to
         apriltagDistance = telemetryAprilTag(idBackboard);
-        if (apriltagDistance > 0) {
-            Trajectory traj = drive.trajectoryBuilder(startPose, true)
-                    //put y minus y value like 36-pitch y
-                    .lineToConstantHeading(new Vector2d(36 - apriltagDistance + offSetBackboardX,y))
-                    .build();
+//        if (apriltagDistance > 0) {
+//
+//            Trajectory traj0a = drive.trajectoryBuilder(startPose, true)
+//                    //put y minus y value like 36-pitch y
+//                    .lineToConstantHeading(new Vector2d(36 - apriltagDistance + offSetBackboardX,y))
+//                    .build();
+//            drive.followTrajectory(traj0a);
+//        }
+        if (apriltagSideWays > 0 && apriltagDistance > 0) {
+            y = y + apriltagSideWays + offSetBackboardY;
+            apriltagDistance = telemetryAprilTag(idBackboard);
+            Vector2d offset = new Vector2d(36 - apriltagDistance + offSetBackboardX, y);
             visionPortal.close();
-            return traj;
+            return offset;
         }
-        else {
-            // Save more CPU resources when camera is no longer needed.
-            //\
-            visionPortal.close();
-            return drive.trajectoryBuilder(startPose, true)
-                    .build();
-        }
+        // Save more CPU resources when camera is no longer needed.
+        //\
+        visionPortal.close();
+        return new Vector2d(0, 0);
     }   // end method runOpMode(
 
     private void initAprilTag(HardwareMap hardwareMap) {
@@ -90,7 +107,7 @@ public class AprilTags {
         VisionPortal.Builder builder = new VisionPortal.Builder();
         // Set the camera (webcam vs. built-in RC phone camera).
         if (USE_WEBCAM) {
-            builder.setCamera(hardwareMap.get(WebcamName.class, "Back Camera"));
+            builder.setCamera(hardwareMap.get(WebcamName.class, "Purple Camera"));
         } else {
             builder.setCamera(BuiltinCameraDirection.BACK);
         }
@@ -133,10 +150,24 @@ public class AprilTags {
                 return detection.ftcPose.range;
             }
         }
+//        if (currentDetections[0]==null) {
+//            telemetry.addLine(String.format("Nothing done ", "no detection"));
+//        }
         return 0;// end for() loop
     }   // end method telemetryAprilTag()u
 
     // end class
+    private double alignHorizontal(int id) {
+        List<AprilTagDetection> currentDetections = aprilTag.getDetections();
+        // Step through the list of detections and display info for each one.
+        for (AprilTagDetection detection : currentDetections) {
+
+            if (detection.metadata != null && detection.id == id) {
+                return detection.ftcPose.x;
+            }
+        }
+        return 0;
+    }
 }
 
 
