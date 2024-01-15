@@ -8,6 +8,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class Karen  {
 
+    // InOutTake
+    public Servo intakeServoLeft;
+    public Servo intakeServoRight;
+    public Servo scoopServo;
 
     // Drive  motors
 
@@ -64,6 +68,12 @@ public class Karen  {
         leftOdo = map.get(DcMotorEx.class, "right_front");
         rightOdo = map.get(DcMotorEx.class, "left_back");
         backOdo = map.get(DcMotorEx.class, "left_front");
+
+        // inouttake
+        intakeServoLeft = map.get(Servo.class, "intake_servo_left");
+        intakeServoRight = map.get(Servo.class, "intake_servo_right");
+        scoopServo = map.get(Servo.class, "scoop_servo");
+        inOutTake = new InOutTake(intakeServoLeft, intakeServoRight, scoopServo);
 
     }
 

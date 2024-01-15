@@ -190,13 +190,14 @@ public class BaseAuto {
 
         // TODO: place pixel
         // move arm up
-//        bot.inOutTake.scoopMiddle();
-//        sleep(500);
+        bot.inOutTake.scoopMiddle();
+        sleep(500);
 //        bot.arm.moveArm(Arm.MAX_ARM_POSITION);
 //        sleep(1000);
         // release claw
         // move arm down
 //        bot.arm.moveArm(Arm.MIN_ARM_POSITION);
+
 
 //        Trajectory end = backdropEnd(start2.end().plus(new Pose2d(0, 0, Math.toRadians(blue ? 90 : -90))));
 //        drive.followTrajectory(end);

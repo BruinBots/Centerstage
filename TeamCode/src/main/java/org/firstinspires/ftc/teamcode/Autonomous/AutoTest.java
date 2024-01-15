@@ -10,8 +10,12 @@ import org.firstinspires.ftc.teamcode.Karen;
 public class AutoTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
+//        Karen bot = new Karen(hardwareMap);
+//        waitForStart();
+//        bot.arm.moveArm(1800);
+//        sleep(5000);
         BlueNearAuto auto = new BlueNearAuto(hardwareMap, telemetry);
         waitForStart();
-        auto.placePixel(BlueNearAuto.startingPosition, "center", true);
+        auto.placePixel(BlueNearAuto.startingPosition, "left", true);
     }
 }

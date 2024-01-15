@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import static android.os.SystemClock.sleep;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -25,13 +26,14 @@ import java.util.List;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
+@Config
 public class AprilTags {
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
     private AprilTagProcessor aprilTag;
     private VisionPortal visionPortal;
     //this variable is the offset for the robot doesn't hit the backboard in inch to how close you want it to the backboard/ put always if you want a number put add one
-    private final double offSetBackboardX = -3;
-    private final double offSetBackboardY = 5;
+    public static double offSetBackboardX = -3;
+    public static double offSetBackboardY = 4;
 
     public Vector2d getTraj(HardwareMap hardwareMap, SampleMecanumDrive drive, int idBackboard) {
         Karen bot = new Karen(hardwareMap);
