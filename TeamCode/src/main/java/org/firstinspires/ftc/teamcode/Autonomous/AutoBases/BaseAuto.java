@@ -154,7 +154,7 @@ public class BaseAuto {
     }
 
     // Place the pixel on the backdrop
-    public Trajectory placePixel(Pose2d startPose, String side) {
+    public Trajectory placePixel(Pose2d startPose, String side, boolean blue) {
         // navigate to backdrop
 
         Trajectory start1 = backdropStart1(startPose);
@@ -162,40 +162,40 @@ public class BaseAuto {
 
         Trajectory start2 = backdropStart2(start1.end());
         drive.followTrajectory(start2);
+        drive.turn(Math.toRadians(blue ? 90 : -90));
 
         AprilTags aprilTags = new AprilTags();
-        Trajectory aprilTraj = aprilTags.getTraj(hardwareMap, bot, drive, start2.end());
-        drive.followTrajectory(aprilTraj);
-
-        Trajectory horizontalTraj;
-
+        Vector2d aprilVector;
         switch (side) {
             case "left":
-                horizontalTraj = drive.trajectoryBuilder(aprilTraj.end())
-                        .lineTo(new Vector2d(aprilTraj.end().getX(), aprilTraj.end().getY() + 2))
-                        .build();
+                aprilVector = aprilTags.getTraj(hardwareMap, drive, 1); // 1 = left, 2 = center, 3 = right
+                break;
+            case "center":
+                aprilVector = aprilTags.getTraj(hardwareMap, drive, 2); // 1 = left, 2 = center, 3 = right
                 break;
             case "right":
-                horizontalTraj = drive.trajectoryBuilder(aprilTraj.end())
-                        .lineTo(new Vector2d(aprilTraj.end().getX(), aprilTraj.end().getY() - 2))
-                        .build();
+                aprilVector = aprilTags.getTraj(hardwareMap, drive, 3); // 1 = left, 2 = center, 3 = right
                 break;
             default:
-                horizontalTraj = drive.trajectoryBuilder(aprilTraj.end())
-                        .build();
-
+                aprilVector = aprilTags.getTraj(hardwareMap, drive, 2); // 1 = left, 2 = center, 3 = right
         }
-
-        drive.followTrajectory(horizontalTraj);
+        telemetry.addData("x", aprilVector.getX());
+        telemetry.addData("y", aprilVector.getY());
+        telemetry.update();
+//        Trajectory aprilTraj = drive.trajectoryBuilder(start2.end().plus(new Pose2d(0, 0, Math.toRadians(blue ? 90 : -90))))
+//                .lineToConstantHeading(new Vector2d(start2.end().getX() + aprilVector.getX(), start2.end().getY() + aprilVector.getY()))
+//                .build();
+//        drive.followTrajectory(aprilTraj);
+        Trajectory aprilTraj = drive.trajectoryBuilder(start2.end().plus(new Pose2d(0, 0, Math.toRadians(blue ? 90 : -90)))).build();
 
         // TODO: place pixel
         // move arm up
-        bot.arm.moveArm(Arm.MAX_ARM_POSITION);
-        sleep(1000);
+//        bot.arm.moveArm(Arm.MAX_ARM_POSITION);
+//        sleep(1000);
         // release claw
         // move arm down
 
-        Trajectory end = backdropEnd(horizontalTraj.end());
+        Trajectory end = backdropEnd(aprilTraj.end());
         drive.followTrajectory(end);
 
         return end;

@@ -57,8 +57,8 @@ public class Karen  {
         arm = new Arm(armMotor);
 
         // claw
-        clawWristServo = map.get(Servo.class, "claw_wrist_servo");
-        claw = new Claw(clawWristServo);
+//        clawWristServo = map.get(Servo.class, "claw_wrist_servo");
+//        claw = new Claw(clawWristServo);
 
         // odometry deadwheels
         leftOdo = map.get(DcMotorEx.class, "right_front");

@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
+
+import static android.os.SystemClock.sleep;
+
 import java.util.List;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -43,14 +46,14 @@ public class AprilTags {
     private double offSetBackboardX = 5;
     private double offSetBackboardY = -5;
 
-    public Vector2d getTraj(HardwareMap hardwareMap, SampleMecanumDrive drive, Pose2d startPose) throws InterruptedException {
+    public Vector2d getTraj(HardwareMap hardwareMap, SampleMecanumDrive drive, int idBackboard) {
         Karen bot = new Karen(hardwareMap);
         initAprilTag(hardwareMap);
+        sleep(5000);
         //The variable that stores the distance that the apritag is from the backboard
         double apriltagDistance;
         double y = 36;
         //the id you whant the robot to go
-        int idBackboard = 1;
         // Wait for the DS start button to be touched.
 
         double apriltagSideWays = alignHorizontal(idBackboard);
@@ -75,7 +78,7 @@ public class AprilTags {
 //                    .build();
 //            drive.followTrajectory(traj0a);
 //        }
-        if (apriltagSideWays > 0 && apriltagDistance > 0) {
+        if (apriltagSideWays > 0 || apriltagDistance > 0) {
             y = y + apriltagSideWays + offSetBackboardY;
             apriltagDistance = telemetryAprilTag(idBackboard);
             Vector2d offset = new Vector2d(36 - apriltagDistance + offSetBackboardX, y);
