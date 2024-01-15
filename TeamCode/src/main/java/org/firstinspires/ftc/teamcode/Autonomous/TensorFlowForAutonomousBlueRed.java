@@ -152,7 +152,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
         visionPortal = builder.build();
 
         // Set confidence threshold for TFOD recognitions, at any time.
-        tfodProcessor.setMinResultConfidence(0.50f);
+        tfodProcessor.setMinResultConfidence(0f);
         // Disable or re-enable the TFOD processor at any time.
         visionPortal.setProcessorEnabled(tfodProcessor, true);
 
