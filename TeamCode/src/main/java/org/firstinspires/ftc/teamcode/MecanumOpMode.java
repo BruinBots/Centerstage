@@ -99,15 +99,23 @@ public class MecanumOpMode extends OpMode
             bot.arm.holdArmPos();
         }
 
-        if (gamepad2.left_trigger > 0.1) {
-            bot.claw.moveClawWrist(-0.1);
-        } else if (gamepad2.right_trigger > 0.1) {
-            bot.claw.moveClawWrist(0.1);
+        if (gamepad2.x) {
+            bot.claw.closeBothClaw();
+        } else if (gamepad2.b) {
+            bot.claw.closeOneClaw();
+        } else if (gamepad2.a) {
+            bot.claw.openBothClaw();
         }
+
+//        if (gamepad2.left_trigger > 0.1) {
+//            bot.claw.moveClawWrist(-0.1);
+//        } else if (gamepad2.right_trigger > 0.1) {
+//            bot.claw.moveClawWrist(0.1);
+//        }
                // dropper
-        if (gamepad2.y) {
-            bot.dropper.dropperUp();
-        }
+//        if (gamepad2.y) {
+//            bot.dropper.dropperUp();
+//        }
 
 
         // drone launch
@@ -127,15 +135,15 @@ public class MecanumOpMode extends OpMode
 //            }
 //        }
 
-        if (gamepad1.left_trigger > 0.5) {
-            bot.inOutTake.intake();
-        }
-        else if (gamepad1.right_trigger > 0.5) {
-            bot.inOutTake.outtake();
-        }
-        else {
-            bot.inOutTake.stopTake();
-        }
+//        if (gamepad1.left_trigger > 0.5) {
+//            bot.inOutTake.intake();
+//        }
+//        else if (gamepad1.right_trigger > 0.5) {
+//            bot.inOutTake.outtake();
+//        }
+//        else {
+//            bot.inOutTake.stopTake();
+//        }
 
 //        if (gamepad1.dpad_up) {
 //            bot.claw.openClaw();
