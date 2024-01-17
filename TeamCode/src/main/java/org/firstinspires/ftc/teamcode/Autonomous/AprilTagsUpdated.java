@@ -1,9 +1,8 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
-
 import static android.os.SystemClock.sleep;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
-import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -11,7 +10,6 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDir
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
@@ -19,52 +17,37 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.List;
 
-/**
- * This 2023-2024 OpMode illustrates the basics of AprilTag recognition and pose estimation,
- * including Java Builder structures for specifying Vision parameters.
- * <p>
- * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
- */
-@Config
-public class AprilTags {
-    private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
-    //this variable is the offset for the robot doesn't hit the backboard in inch to how close you want it to the backboard/ put always if you want a number put add one
-    public static double offSetBackboardX = -3;
-    public static double offSetBackboardY = 5;
+public class AprilTagsUpdated {
+
+    private static final boolean USE_WEBCAM = true;
     private AprilTagProcessor aprilTag;
     private VisionPortal visionPortal;
 
-    public Vector2d getTraj(HardwareMap hardwareMap, SampleMecanumDrive drive, int idBackboard) {
-        Karen bot = new Karen(hardwareMap);
+    private int BackboardX = 24;
+    private int BackboardY = 4;
+
+    private final int robotDesiredDistanceFromBackboard = 3;
+    private final int cameraOffsetFromCenter = 4;
+
+    public Vector2d readAprilTag(HardwareMap hardwareMap, SampleMecanumDrive drive, int idBackboard) {
         initAprilTag(hardwareMap);
-        sleep(5000);
-        //The variable that stores the distance that the apriltag is from the backboard
-        double apriltagDistance;
-        double x = 36;
-
-        double apriltagSideWays = alignHorizontal(idBackboard);
-
-        apriltagDistance = telemetryAprilTag(idBackboard);
-        /* If robot is facing right in RoadRunner scheme:
-        AprilTags   RoadRunner  Robot
-        +x          -y          right
-        -x          +y          left
-        +y          +x          forwards
-        -y          -x          backwards
-         */
-        if (apriltagSideWays > 0 || apriltagDistance > 0) {
-            x = x + apriltagSideWays + offSetBackboardX;
-            apriltagDistance = telemetryAprilTag(idBackboard);
-            Vector2d offset = new Vector2d(x, (36 - apriltagDistance + offSetBackboardY));
-            visionPortal.close();
-            return offset;
-        }
-        // Save more CPU resources when camera is no longer needed.
-        //\
+        sleep(3000);
+        // all these are now in roadrunner coordinate system
+        int apriltagSideways = alignHorizontal(idBackboard);// I would call this apriltagX or apriltagHorizontal
+        int apriltagDistance = getRangeViaAprilTag(idBackboard); // better name
+        int desiredX = apriltagDistance - robotDesiredDistanceFromBackboard;
+        int desiredY = apriltagSideways + cameraOffsetFromCenter - BackboardY;
+        // critical debugging information below
+        // if they are not reasonable numbers something is very wrong
+        telemetry.addData("apriltagSideways = ", apriltagSideways); // should be -4
+        telemetry.addData("apriltagDistance = ", apriltagDistance); // should be 10
+        telemetry.addData("desiredX =", desiredX); // 10 + 24 - 3 = 31
+        telemetry.addData("desiredY =", desiredY); // 0 + 4 + 4 = 8
+        telemetry.update();
         visionPortal.close();
-        return new Vector2d(0, 0);
-    }   // end method runOpMode(
+        Vector2d offset = new Vector2d(desiredX, desiredY); // notice this should be going to -7, 5
+        return offset;
+    }
 
     private void initAprilTag(HardwareMap hardwareMap) {
         // Create the AprilTag processor.
@@ -120,33 +103,28 @@ public class AprilTags {
      * Function to add telemetry about AprilTag detections.
      */
     //it gives the distance to the apriltag with the id of the number you gave it
-    private double telemetryAprilTag(int id) {
+    private int getRangeViaAprilTag(int id) {
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();
         // Step through the list of detections and display info for each one.
         for (AprilTagDetection detection : currentDetections) {
             if (detection.metadata != null && detection.id == id) {
-                return detection.ftcPose.range;
-            }
-        }
-//        if (currentDetections[0]==null) {
-//            telemetry.addLine(String.format("Nothing done ", "no detection"));
-//        }
-        return 0;// end for() loop
-    }   // end method telemetryAprilTag()
-
-    // end class
-    private double alignHorizontal(int id) {
-        List<AprilTagDetection> currentDetections = aprilTag.getDetections();
-        // Step through the list of detections and display info for each one.
-        for (AprilTagDetection detection : currentDetections) {
-
-            if (detection.metadata != null && detection.id == id) {
-                return detection.ftcPose.x;
+                return (int) detection.ftcPose.range;
             }
         }
         return 0;
     }
+
+    private int alignHorizontal(int id) {
+        List<AprilTagDetection> currentDetections = aprilTag.getDetections();
+        // Step through the list of detections and display info for each one.
+        for (AprilTagDetection detection : currentDetections) {
+
+            if (detection.metadata != null && detection.id == id) {
+                return (int) detection.ftcPose.x;
+            }
+        }
+        return 0;
+    }
+
+    // end class
 }
-
-
-
