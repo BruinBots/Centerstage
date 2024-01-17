@@ -99,13 +99,13 @@ public class MecanumOpMode extends OpMode
             bot.arm.holdArmPos();
         }
 
-//        if (gamepad2.x) {
-//            bot.claw.closeBothClaw();
-//        } else if (gamepad2.b) {
-//            bot.claw.closeOneClaw();
-//        } else if (gamepad2.a) {
-//            bot.claw.openBothClaw();
-//        }
+        if (gamepad2.x) {
+            bot.claw.closeBothClaw();
+        } else if (gamepad2.b) {
+            bot.claw.closeLowerClaw();
+        } else if (gamepad2.a) {
+            bot.claw.openBothClaw();
+        }
 
 //        if (gamepad2.left_trigger > 0.1) {
 //            bot.claw.moveClawWrist(-0.1);
