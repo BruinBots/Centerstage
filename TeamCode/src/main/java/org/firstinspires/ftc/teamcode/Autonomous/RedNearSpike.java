@@ -19,7 +19,7 @@ public class RedNearSpike extends LinearOpMode {
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        Pose2d startPose = new Pose2d(0,0, Math.toRadians(0));
+        Pose2d startPose = new Pose2d(12, -60, Math.toRadians(270));
 
         drive.setPoseEstimate(startPose);
 
@@ -28,8 +28,6 @@ public class RedNearSpike extends LinearOpMode {
         sleep(500);
 
         waitForStart();
-
-
 
         tf.visionPortal.resumeStreaming();
 
@@ -46,70 +44,72 @@ public class RedNearSpike extends LinearOpMode {
         tf.visionPortal.close();
 
         telemetry.addData("side", side);
+        sleep(5000);
+        stop();
 
-        Trajectory traj0a = drive.trajectoryBuilder(startPose, true)
-                .lineToConstantHeading(new Vector2d(20, -55))
-                .build();
-
-        Trajectory traj0b;
-
-        switch (side) {
-            case "Left":
-                telemetry.addData("side", "left");
-                traj0b = drive.trajectoryBuilder(traj0a.end())
-                        .lineToConstantHeading(new Vector2d(12 +12, -65+40))
-                        .build();
-                break;
-            case "Center":
-                telemetry.addData("side", "center");
-                traj0b = drive.trajectoryBuilder(traj0a.end())
-                        .lineToConstantHeading(new Vector2d(12, -65+45))
-                        .build();
-                break;
-            case "Right":
-                telemetry.addData("side", "right");
-                traj0b = drive.trajectoryBuilder(traj0a.end())
-                        .lineToConstantHeading(new Vector2d(12+10, -65+40))
-                        .build();
-                break;
-            default:
-                telemetry.addData("side", "default");
-                traj0b = drive.trajectoryBuilder(traj0a.end())
-                        .lineToConstantHeading(new Vector2d(12+10, -65+40))
-                        .build();
-                break;
-        }
-
-//        Trajectory traj0c = drive.trajectoryBuilder(traj0b.end())
-//                .lineTo(new Vector2d(12, -65))
+//        Trajectory traj0a = drive.trajectoryBuilder(startPose, true)
+//                .lineToConstantHeading(new Vector2d(20, -55))
 //                .build();
-
-//        Trajectory traj1 = drive.trajectoryBuilder(startPose, true)
-//                .splineTo(new Vector2d(12, -60), Math.toRadians(90))
-//                .splineTo(new Vector2d(48, -36), Math.toRadians(0))
-//                .build();
-
-//        Trajectory traj2 = drive.trajectoryBuilder(traj0c.end(), true)
-//                .lineTo(new Vector2d(60, -60))
-//                .build();
-
-        if(isStopRequested()) return;
-
-//        bot.startAuto();
-        sleep(2000);
-
-        drive.followTrajectory(traj0a);
-        drive.followTrajectory(traj0b);
-
-
-        sleep(1000);
-
-//        drive.followTrajectory(traj0c);
-
-//        drive.followTrajectory(traj1); // navigate to backboard
-
-//        bot.placePixel();
-
-//        drive.followTrajectory(traj2);
+//
+//        Trajectory traj0b;
+//
+//        switch (side) {
+//            case "Left":
+//                telemetry.addData("side", "left");
+//                traj0b = drive.trajectoryBuilder(traj0a.end())
+//                        .lineToConstantHeading(new Vector2d(12 +12, -65+40))
+//                        .build();
+//                break;
+//            case "Center":
+//                telemetry.addData("side", "center");
+//                traj0b = drive.trajectoryBuilder(traj0a.end())
+//                        .lineToConstantHeading(new Vector2d(12, -65+45))
+//                        .build();
+//                break;
+//            case "Right":
+//                telemetry.addData("side", "right");
+//                traj0b = drive.trajectoryBuilder(traj0a.end())
+//                        .lineToConstantHeading(new Vector2d(12+10, -65+40))
+//                        .build();
+//                break;
+//            default:
+//                telemetry.addData("side", "default");
+//                traj0b = drive.trajectoryBuilder(traj0a.end())
+//                        .lineToConstantHeading(new Vector2d(12+10, -65+40))
+//                        .build();
+//                break;
+//        }
+//
+////        Trajectory traj0c = drive.trajectoryBuilder(traj0b.end())
+////                .lineTo(new Vector2d(12, -65))
+////                .build();
+//
+////        Trajectory traj1 = drive.trajectoryBuilder(startPose, true)
+////                .splineTo(new Vector2d(12, -60), Math.toRadians(90))
+////                .splineTo(new Vector2d(48, -36), Math.toRadians(0))
+////                .build();
+//
+////        Trajectory traj2 = drive.trajectoryBuilder(traj0c.end(), true)
+////                .lineTo(new Vector2d(60, -60))
+////                .build();
+//
+//        if(isStopRequested()) return;
+//
+////        bot.startAuto();
+//        sleep(2000);
+//
+//        drive.followTrajectory(traj0a);
+//        drive.followTrajectory(traj0b);
+//
+//
+//        sleep(1000);
+//
+////        drive.followTrajectory(traj0c);
+//
+////        drive.followTrajectory(traj1); // navigate to backboard
+//
+////        bot.placePixel();
+//
+////        drive.followTrajectory(traj2);
     }
 }

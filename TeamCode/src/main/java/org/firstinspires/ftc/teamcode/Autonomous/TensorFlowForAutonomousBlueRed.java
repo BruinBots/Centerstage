@@ -40,8 +40,8 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
      */
     public VisionPortal visionPortal;
 
-    public static final String TFOD_MODEL_ASSET = "orb1-14-24.tflite"; //for blue, for red use redsphere1.tflite and label the discription as redsphere
-
+    //public static final String TFOD_MODEL_ASSET = "orb1-14-24.tflite"; //for blue, for red use redsphere1.tflite and label the discription as redsphere
+    public static final String TFOD_MODEL_ASSET = "RedSphere1.tflite"; //for blue, for red use redsphere1.tflite and label the discription as redsphere
     //public static final String TFOD_MODEL_FILE = "orb1-14-24.tflite";// change this to redsphere1.tflite for red
     public static final String[] LABELS = {
             "orb"
@@ -57,7 +57,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
 
     public String getSide() {
         sleep(500);
-        Sides = telemetryTfod();
+        Sides = newTelemetryTfod();
         return Sides;
     }
 
@@ -151,18 +151,16 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
 
     }   // end method initTfod()
 
-    private Recognition SizeTfod() {
+    private Recognition blueTfod() {
         List<Recognition> updatedRecognitions = tfodProcessor.getRecognitions();
         if (updatedRecognitions != null) {
             Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
-
                 public int compare(Recognition r1, Recognition r2) {
                     return (int)((r1.getConfidence()-r2.getConfidence())*100);
                 }
             });
             updatedRecognitions = updatedRecognitions.subList(0, 2);
             Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
-
                 public int compare(Recognition r1, Recognition r2) {
                     return (int)(((r1.getHeight() * r1.getWidth()) / (r2.getHeight() * r2.getWidth())) * 100);
                 }
@@ -173,7 +171,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
         return updatedRecognitions.get(0);
     }
 
-    private Recognition ShapeTfod() {
+    private Recognition redTfod() {
         List<Recognition> updatedRecognitions = tfodProcessor.getRecognitions();
         if (updatedRecognitions != null) {
 //            Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
@@ -256,7 +254,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
     }
 
     public String newTelemetryTfod() {
-        Recognition recognition = SizeTfod();
+        Recognition recognition = redTfod();
         String direction = "";
         double screenWidth = 2200;//tfodProcessor..getCameraView().getWidth();
 
