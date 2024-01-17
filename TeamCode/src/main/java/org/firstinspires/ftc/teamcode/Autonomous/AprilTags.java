@@ -31,7 +31,7 @@ public class AprilTags {
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
     //this variable is the offset for the robot doesn't hit the backboard in inch to how close you want it to the backboard/ put always if you want a number put add one
     public static double offSetBackboardX = -3;
-    public static double offSetBackboardY = 4;
+    public static double offSetBackboardY = 5;
     private AprilTagProcessor aprilTag;
     private VisionPortal visionPortal;
 
@@ -56,7 +56,7 @@ public class AprilTags {
         if (apriltagSideWays > 0 || apriltagDistance > 0) {
             x = x + apriltagSideWays + offSetBackboardX;
             apriltagDistance = telemetryAprilTag(idBackboard);
-            Vector2d offset = new Vector2d(x, -(36 - apriltagDistance + offSetBackboardY));
+            Vector2d offset = new Vector2d(x, (36 - apriltagDistance + offSetBackboardY));
             visionPortal.close();
             return offset;
         }
