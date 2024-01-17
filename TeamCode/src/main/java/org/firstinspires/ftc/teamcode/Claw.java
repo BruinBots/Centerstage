@@ -12,8 +12,11 @@ public class Claw {
     private static final double ZERO_ANGLE_POS = 0.1;
     private static final double TICKS_PER_DEGREE = 0.0033333333;
 
-    private static final double CLAW_OPEN_POS = 1;
-    private static final double CLAW_CLOSED_POS = 0;
+    public static final double LOWER_OPEN = 0.27;
+    public static final double LOWER_CLOSED = 0;
+
+    public static final double UPPER_OPEN = 0.73;
+    public static final double UPPER_CLOSED = 1;
 
     public Claw(Servo wrist, Servo firstFinger, Servo secondFinger) {
         this.wrist = wrist;
@@ -40,22 +43,20 @@ public class Claw {
         setClawWrist(newPos);
     }
 
-    public void openOneClaw() {
-        firstFinger.setPosition(CLAW_OPEN_POS);
+    public void openLowerClaw() {
+        firstFinger.setPosition(LOWER_OPEN);
     }
 
-    public void closeOneClaw() {
-        firstFinger.setPosition(CLAW_CLOSED_POS);
+    public void closeLowerClaw() {
+        firstFinger.setPosition(LOWER_CLOSED);
     }
 
-    public void openBothClaw() {
-        firstFinger.setPosition(CLAW_OPEN_POS);
-        secondFinger.setPosition(CLAW_OPEN_POS);
+    public void openUpperClaw() {
+        secondFinger.setPosition(UPPER_OPEN);
     }
 
-    public void closeBothClaw() {
-        firstFinger.setPosition(CLAW_CLOSED_POS);
-        secondFinger.setPosition(CLAW_CLOSED_POS);
+    public void closeUpperClaw() {
+        secondFinger.setPosition(UPPER_CLOSED);
     }
 
     public double getCurrentWristPosition() {
