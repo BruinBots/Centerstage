@@ -173,28 +173,29 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
             // Get the one with the most square
             Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
                 public int compare(Recognition r1, Recognition r2) {
-                    return (int)(((r1.getHeight() * r1.getWidth()) / (r2.getHeight() * r2.getWidth())) * 100);
+                    return (int)(((r1.getHeight() * r1.getWidth()) - (r2.getHeight() * r2.getWidth())));
                 }
             });
-            Recognition recognition = updatedRecognitions.get(0);
-            return recognition;
+            return updatedRecognitions.get(0);
         }
-        return updatedRecognitions.get(0);
+        return tfodProcessor.getRecognitions().get(0);
     }
 
     private Recognition blueTfod() {
         List<Recognition> updatedRecognitions = tfodProcessor.getRecognitions();
         if (updatedRecognitions != null) {
-//            Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
-//                @Override
-//                public int compare(Recognition r1, Recognition r2) {
-//                    return (int)((r1.getConfidence()-r2.getConfidence())*100);
-//                }
-//            });
+            // Sort the confidence from highest to lowest
             Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
-
                 public int compare(Recognition r1, Recognition r2) {
-                    return (int)((Math.abs((r2.getHeight() / r2.getWidth()) - (r2.getWidth() / r2.getHeight())) / Math.abs((r1.getHeight() / r1.getWidth()) - (r1.getWidth() / r1.getHeight())) * 100));
+                    return (int)((r1.getConfidence()-r2.getConfidence())*100);
+                }
+            });
+
+            // Select top 10 highest confidence from the list
+            updatedRecognitions = updatedRecognitions.subList(0, 9);
+            Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
+                public int compare(Recognition r1, Recognition r2) {
+                    return (int)((Math.abs((r2.getHeight() / r2.getWidth()) - (r2.getWidth() / r2.getHeight())) - Math.abs((r1.getHeight() / r1.getWidth()) - (r1.getWidth() / r1.getHeight())) * 100));
                 }
             });
             Recognition recognition = updatedRecognitions.get(0);
@@ -269,6 +270,9 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
         String direction = "";
         double screenWidth = 2200;//tfodProcessor..getCameraView().getWidth();
 
+        if(recognition==null) {
+            return "center";
+        }
         double x = (recognition.getLeft() + recognition.getRight()) / 2;
         double y = (recognition.getTop() + recognition.getBottom()) / 2;
 
