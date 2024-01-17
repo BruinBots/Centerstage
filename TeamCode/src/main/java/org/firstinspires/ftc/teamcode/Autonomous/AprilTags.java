@@ -7,6 +7,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -35,7 +36,7 @@ public class AprilTags {
     private AprilTagProcessor aprilTag;
     private VisionPortal visionPortal;
 
-    public Vector2d getTraj(HardwareMap hardwareMap, SampleMecanumDrive drive, int idBackboard) {
+    public Vector2d getTraj(HardwareMap hardwareMap, SampleMecanumDrive drive, Telemetry telemetry, int idBackboard) {
         Karen bot = new Karen(hardwareMap);
         initAprilTag(hardwareMap);
         sleep(5000);

@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Arm;
 import org.firstinspires.ftc.teamcode.Autonomous.AprilTags;
+import org.firstinspires.ftc.teamcode.Autonomous.AprilTagsUpdated;
 import org.firstinspires.ftc.teamcode.Autonomous.TensorFlowForAutonomousBlueRed;
 import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -164,20 +165,21 @@ public class BaseAuto {
         drive.followTrajectory(start2);
         drive.turn(Math.toRadians(blue ? 90 : -90));
 
-        AprilTags aprilTags = new AprilTags();
+//        AprilTags aprilTags = new AprilTags();
+        AprilTagsUpdated aprilTags = new AprilTagsUpdated();
         Vector2d aprilVector;
         switch (side) {
             case "left":
-                aprilVector = aprilTags.getTraj(hardwareMap, drive, 1); // 1 = left, 2 = center, 3 = right
+                aprilVector = aprilTags.getTraj(hardwareMap, drive, telemetry, 1); // 1 = left, 2 = center, 3 = right
                 break;
             case "center":
-                aprilVector = aprilTags.getTraj(hardwareMap, drive, 2); // 1 = left, 2 = center, 3 = right
+                aprilVector = aprilTags.getTraj(hardwareMap, drive, telemetry, 2); // 1 = left, 2 = center, 3 = right
                 break;
             case "right":
-                aprilVector = aprilTags.getTraj(hardwareMap, drive, 3); // 1 = left, 2 = center, 3 = right
+                aprilVector = aprilTags.getTraj(hardwareMap, drive, telemetry, 3); // 1 = left, 2 = center, 3 = right
                 break;
             default:
-                aprilVector = aprilTags.getTraj(hardwareMap, drive, 2); // 1 = left, 2 = center, 3 = right
+                aprilVector = aprilTags.getTraj(hardwareMap, drive, telemetry, 2); // 1 = left, 2 = center, 3 = right
         }
         telemetry.addData("x", aprilVector.getX());
         telemetry.addData("y", aprilVector.getY());
@@ -190,8 +192,8 @@ public class BaseAuto {
 
         // TODO: place pixel
         // move arm up
-        bot.inOutTake.scoopMiddle();
-        sleep(500);
+//        bot.inOutTake.scoopMiddle();
+//        sleep(500);
         // release claw
         // move arm down
 
