@@ -154,7 +154,7 @@ public class BaseAuto {
     }
 
     // Place the pixel on the backdrop
-    public Trajectory placePixel(Pose2d startPose, String side, boolean blue) {
+    public Trajectory placePixel(Pose2d startPose, String side, boolean blue, boolean finishPixel) {
         // navigate to backdrop
 
         Trajectory start1 = backdropStart1(startPose);
@@ -192,17 +192,21 @@ public class BaseAuto {
         // move arm up
         bot.inOutTake.scoopMiddle();
         sleep(500);
-//        bot.arm.moveArm(Arm.MAX_ARM_POSITION);
-//        sleep(1000);
         // release claw
         // move arm down
-//        bot.arm.moveArm(Arm.MIN_ARM_POSITION);
 
 
-//        Trajectory end = backdropEnd(start2.end().plus(new Pose2d(0, 0, Math.toRadians(blue ? 90 : -90))));
-//        drive.followTrajectory(end);
+        if (finishPixel) {
+            Trajectory end = backdropEnd(aprilTraj.end());
+            drive.followTrajectory(end);
+            return end;
+        }
 
         return aprilTraj;
+    }
+
+    public Trajectory placePixel(Pose2d startPose, String side, boolean blue) {
+        return placePixel(startPose, side, blue, false);
     }
 
     public Trajectory backdropStart1(Pose2d startPose) {

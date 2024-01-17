@@ -13,6 +13,6 @@ public class RedFarFull extends LinearOpMode {
         RedFarAuto auto = new RedFarAuto(hardwareMap, telemetry);
         waitForStart();
         String tfSpike = auto.tfSpike();
-        auto.park(auto.placePixel(auto.spike2(RedFarAuto.startingPosition, tfSpike, true), tfSpike, true));
+        auto.park(auto.placePixel(auto.spike2(RedFarAuto.startingPosition, tfSpike, true), tfSpike, false, true));
     }
 }

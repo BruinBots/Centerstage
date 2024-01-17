@@ -89,21 +89,21 @@ public class BlueFarAuto extends BaseAuto {
     @Override
     public Trajectory backdropStart1(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(24, 60))
+                .lineToConstantHeading(new Vector2d(15, 60))
                 .build();
     }
 
     @Override
     public Trajectory backdropStart2(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .splineTo(new Vector2d(36, 35), Math.toRadians(270))
+                .lineToConstantHeading(new Vector2d(15, 35))
                 .build();
     }
 
     @Override
     public Trajectory backdropEnd(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(36, 35))
+                .lineToConstantHeading(new Vector2d(24, 60))
                 .build();
     }
 }
