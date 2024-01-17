@@ -14,7 +14,7 @@ public class TestingOpMode extends OpMode {
         bot = new Karen(hardwareMap);
         telemetry.addData("Status", "Initialized");
         bot.clawFirstFinger.setPosition(0.0);
-        bot.clawSecondFinger.setPosition(1);
+        bot.clawSecondFinger.setPosition(1.0);
     }
 
     @Override
