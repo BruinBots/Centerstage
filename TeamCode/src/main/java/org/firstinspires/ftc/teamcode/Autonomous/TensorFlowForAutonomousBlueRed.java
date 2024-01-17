@@ -40,17 +40,23 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
      */
     public VisionPortal visionPortal;
 
-    //public static final String TFOD_MODEL_ASSET = "orb1-14-24.tflite"; //for blue, for red use redsphere1.tflite and label the discription as redsphere
-    public static final String TFOD_MODEL_ASSET = "RedSphere1.tflite"; //for blue, for red use redsphere1.tflite and label the discription as redsphere
-    //public static final String TFOD_MODEL_FILE = "orb1-14-24.tflite";// change this to redsphere1.tflite for red
-    public static final String[] LABELS = {
+    public static String TFOD_MODEL_ASSET = "orb1-14-24.tflite"; //default to blue
+    public static String RED_TFOD_MODEL_ASSET = "RedSphere1.tflite"; //for red
+    public static String[] LABELS = {
             "orb"
+    };
+    public static String[] RED_LABELS = {
+            "redsphere"
     };
 
     String Sides = "";
     int xMax = 0;
 
-    public TensorFlowForAutonomousBlueRed(HardwareMap hardwareMap, Telemetry telemetry) {
+    public TensorFlowForAutonomousBlueRed(HardwareMap hardwareMap, Telemetry telemetry, String color) {
+        if (color.equals("red")) {
+            TFOD_MODEL_ASSET = RED_TFOD_MODEL_ASSET;
+            LABELS = RED_LABELS;
+        }
         this.hardwareMap = hardwareMap;
         this.telemetry = telemetry;
     }
