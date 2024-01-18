@@ -159,7 +159,8 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
 
     private Recognition redTfod() {
         List<Recognition> updatedRecognitions = tfodProcessor.getRecognitions();
-        if (updatedRecognitions != null) {
+        telemetry.addData("number of rcognitions: ", updatedRecognitions.size());
+        if (updatedRecognitions != null && updatedRecognitions.size()>0) {
             // Sort the confidence from highest to lowest
             Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
                 public int compare(Recognition r1, Recognition r2) {
@@ -180,7 +181,8 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
 
     private Recognition blueTfod() {
         List<Recognition> updatedRecognitions = tfodProcessor.getRecognitions();
-        if (updatedRecognitions != null) {
+        telemetry.addData("number of rcognitions: ", updatedRecognitions.size());
+        if (updatedRecognitions != null && updatedRecognitions.size()>0) {
             // Sort the confidence from highest to lowest
             Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
                 public int compare(Recognition r1, Recognition r2) {
