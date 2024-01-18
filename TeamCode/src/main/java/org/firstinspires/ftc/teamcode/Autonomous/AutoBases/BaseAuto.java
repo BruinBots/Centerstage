@@ -187,11 +187,13 @@ public class BaseAuto {
         bot.arm.moveArm(1500);
         sleep(3000);
         // release claw
-
+        bot.claw.openBothClaw();
+        sleep(1000);
         // move arm down
         bot.arm.moveArm(50);
         sleep(3000);
         bot.inOutTake.scoopMiddle();
+        sleep(500);
 
 
         if (finishPixel) {
