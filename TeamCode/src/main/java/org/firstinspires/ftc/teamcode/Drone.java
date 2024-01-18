@@ -1,43 +1,72 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Servo;
 
-public class  Drone {
+public class Drone {
+    public Servo droneReleaseServo;
+    public Servo droneRotateServo;
+    public boolean launched = false;
+    public double OPEN_POS = 0;
+    public double CLOSED_POS = 1;
+    public long timeWhenLaunched;
+    public long rotateAndLaunchDelay = 300;
+    public long timeBeforeReset = 1000;
+    public enum launchPoses {open, closed}
+    public double MAX_ROTATE_POS = 0.65;
+    public double MIN_ROTATE_POS = 0.4;
 
-    private DcMotorEx droneMotor;
-    private boolean launchingDrone;
-    private long timeWhenLaunched;
-    private static long motorRunTime = 750; // 500 ms
-    private static double motorPower = 1; // 85% power
-
-    public Drone(DcMotorEx droneMotor) {
-        this.droneMotor = droneMotor;
+    Drone(Servo droneReleaseServo, Servo droneRotateServo) {
+        this.droneReleaseServo = droneReleaseServo;
+        this.droneRotateServo = droneRotateServo;
     }
 
-    public void loop() {
-        if (launchingDrone) {
-            if (elapsedTime() > motorRunTime) {
-                stop();
-            }
+    public void setServoPos(Servo servo, double pos) {
+        servo.setPosition(pos);
+    }
+    public void rotateServo(double pos) {
+        droneRotateServo.setPosition(droneRotateServo.getPosition() + pos);
+    }
+
+    public void setRotateServo(double pos) {
+        droneRotateServo.setPosition(pos);
+    }
+
+    public void launch(launchPoses pose) {
+        if (pose == launchPoses.open) {
+            setServoPos(droneReleaseServo, OPEN_POS);
+        } else if (pose == launchPoses.closed) {
+            setServoPos(droneReleaseServo, CLOSED_POS);
         }
     }
 
-    public void launch() {
-        droneMotor.setPower(motorPower);
-        launchingDrone = true;
+    public void launchWithRotation() {
         timeWhenLaunched = getCurrentTime();
+        launched = true;
+        setRotateServo(0.5);
+    }
+
+    public void resetPoses() {
+        setServoPos(droneRotateServo, MIN_ROTATE_POS);
+        setServoPos(droneReleaseServo, MIN_ROTATE_POS);
+    }
+
+    public void loop() {
+        if (launched && getCurrentTime() > timeWhenLaunched + rotateAndLaunchDelay) {
+            launch(launchPoses.open);
+            if (getCurrentTime() > timeWhenLaunched + rotateAndLaunchDelay + timeBeforeReset) {
+                resetPoses();
+                launched = false;
+            }
+        }
+
+        if (droneRotateServo.getPosition() > MAX_ROTATE_POS) {
+            droneRotateServo.setPosition(MAX_ROTATE_POS);
+        } else if (droneRotateServo.getPosition() < MIN_ROTATE_POS) {
+            droneRotateServo.setPosition(MIN_ROTATE_POS);
+        }
     }
 
     private long getCurrentTime() {
         return System.currentTimeMillis();
-    }
-
-    private long elapsedTime() {
-        return getCurrentTime() - timeWhenLaunched;
-    }
-
-    private void stop() {
-        launchingDrone = false;
-        droneMotor.setPower(0);
     }
 }
