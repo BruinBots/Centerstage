@@ -35,6 +35,10 @@ public class Karen  {
 
     Servo hangerServo;
 
+    Servo intakeServoLeft;
+    Servo intakeServoRight;
+    Servo scoopServo;
+
     public final int TICKS_PER_REVOLUTION = 200;
     public final int DEADWHEEL_RADIUS = 2; // cm ??
 
@@ -90,6 +94,11 @@ public class Karen  {
 
         hangerServo = map.get(Servo.class, "hanger_servo");
         hanger = new Hanger(hangerServo);
+
+        intakeServoLeft = map.get(Servo.class, "intake_servo_left");
+        intakeServoRight = map.get(Servo.class, "intake_servo_right");
+        scoopServo = map.get(Servo.class, "scoop_servo");
+        inOutTake = new InOutTake(intakeServoLeft, intakeServoRight, scoopServo);
     }
 
     private double rampUp(double x) {

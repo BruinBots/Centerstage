@@ -12,33 +12,13 @@ public class Hanger {
     public static final double PRIMED_POS = 0.6;
     public static final double RELEASED_POS = 0;
 
-    public int timeToMoveServo = 100;
-
-    boolean movingHanger;
-    long hangTime;
-
     public Hanger(Servo hangServo) { this.hangServo = hangServo; }
 
-//    public void moveHanger(double power) {
-//        boolean movingHanger = true;
-//        hangTime = getCurrentTime();
-//        hangServo.setPower(power);
-//    }
-
-//    public void loop() {
-//        if (getCurrentTime() > hangTime + timeToMoveServo) {
-//            hangServo.setPower(0);
-//            movingHanger = false;
-//        }
-//    }
-
     public void hangerPlus() {
-//        moveHanger(-0.1);
         hangServo.setPosition(hangServo.getPosition() + 0.01);
     }
 
     public void hangerNegative() {
-//        moveHanger(0.1);
         hangServo.setPosition(hangServo.getPosition() - 0.01);
     }
     
@@ -50,9 +30,5 @@ public class Hanger {
             hangServo.setPosition(RELEASED_POS);
             launched = true;
         }
-    }
-
-    private long getCurrentTime() {
-        return System.currentTimeMillis();
     }
 }
