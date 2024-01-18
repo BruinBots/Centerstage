@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 public class TestingOpMode extends OpMode {
 
     Karen bot;
-
+    // Mini MG-90S
 
     @Override
     public void init() {
