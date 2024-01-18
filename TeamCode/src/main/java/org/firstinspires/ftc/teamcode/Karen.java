@@ -28,6 +28,7 @@ public class Karen  {
     public DcMotorEx backOdo;
 
     Servo clawWristServo;
+    Servo dropperServo;
 
     public final int TICKS_PER_REVOLUTION = 200;
     public final int DEADWHEEL_RADIUS = 2; // cm ??
@@ -74,6 +75,9 @@ public class Karen  {
         intakeServoRight = map.get(Servo.class, "intake_servo_right");
         scoopServo = map.get(Servo.class, "scoop_servo");
         inOutTake = new InOutTake(intakeServoLeft, intakeServoRight, scoopServo);
+
+        // dropper
+        dropperServo = map.get(Servo.class, "dropper_servo");
 
     }
 
