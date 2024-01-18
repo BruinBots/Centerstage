@@ -59,6 +59,16 @@ public class Claw {
         secondFinger.setPosition(UPPER_CLOSED);
     }
 
+    public void openBothClaw() {
+        firstFinger.setPosition(LOWER_OPEN);
+        secondFinger.setPosition(UPPER_OPEN);
+    }
+
+    public void closeBothClaw() {
+        firstFinger.setPosition(LOWER_CLOSED);
+        secondFinger.setPosition(UPPER_CLOSED);
+    }
+
     public double getCurrentWristPosition() {
         return wrist.getPosition();
     }

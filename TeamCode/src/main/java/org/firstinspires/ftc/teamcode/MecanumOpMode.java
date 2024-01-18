@@ -47,6 +47,8 @@ public class MecanumOpMode extends OpMode
     // robot
     Karen bot;
 
+    boolean droneButtonPressed;
+
     //
     @Override
     public void init() {
@@ -99,13 +101,13 @@ public class MecanumOpMode extends OpMode
             bot.arm.holdArmPos();
         }
 
-//        if (gamepad2.x) {
-//            bot.claw.closeBothClaw();
-//        } else if (gamepad2.b) {
-//            bot.claw.closeOneClaw();
-//        } else if (gamepad2.a) {
-//            bot.claw.openBothClaw();
-//        }
+        if (gamepad2.x) {
+            bot.claw.closeBothClaw();
+        } else if (gamepad2.b) {
+            bot.claw.closeLowerClaw();
+        } else if (gamepad2.a) {
+            bot.claw.openBothClaw();
+        }
 
 //        if (gamepad2.left_trigger > 0.1) {
 //            bot.claw.moveClawWrist(-0.1);
@@ -120,10 +122,10 @@ public class MecanumOpMode extends OpMode
 
         // drone launch
 
-//        if (gamepad1.y && !droneButtonPressed) {
-//            bot.drone.launch();
-//        }
-//        bot.drone.loop();
+        if (gamepad2.y && !droneButtonPressed) {
+            bot.drone.launchWithRotation();
+        }
+        bot.drone.loop();
 
         // TODO: intake
 //        if (gamepad2.dpad_left && !gp2dpadleft) {
@@ -157,7 +159,7 @@ public class MecanumOpMode extends OpMode
 //            bot.inOutTake.scoopMiddle();
 //        }
 
-//        droneButtonPressed = gamepad1.y;
+        droneButtonPressed = gamepad2.y;
 //        gp2dpadleft = gamepad2.dpad_left;
 
         telemetry.addData("arm", bot.arm.getCurrentArmPos());
