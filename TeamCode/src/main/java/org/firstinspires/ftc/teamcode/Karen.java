@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -24,8 +25,15 @@ public class Karen  {
     public DcMotorEx backOdo;
 
     Servo clawWristServo;
-    Servo clawFirstFinger;
-    Servo clawSecondFinger;
+    Servo clawLowerFinger;
+    Servo clawUpperFinger;
+
+    Servo dropperServo;
+
+    Servo droneReleaseServo;
+    Servo droneRotateServo;
+
+    Servo hangerServo;
 
     public final int TICKS_PER_REVOLUTION = 200;
     public final int DEADWHEEL_RADIUS = 2; // cm ??
@@ -36,6 +44,7 @@ public class Karen  {
     public Drone drone;
     public Dropper dropper;
     public InOutTake inOutTake;
+    public Hanger hanger;
 
     // constructor with map
     public Karen(HardwareMap map) {
@@ -60,16 +69,27 @@ public class Karen  {
 
         // claw
         clawWristServo = map.get(Servo.class, "claw_wrist_servo");
-        clawFirstFinger = map.get(Servo.class, "claw_first_finger");
-        clawSecondFinger = map.get(Servo.class, "claw_second_finger");
-        clawSecondFinger.setDirection(Servo.Direction.REVERSE);
-        claw = new Claw(clawWristServo, clawFirstFinger, clawSecondFinger);
+        clawLowerFinger = map.get(Servo.class, "claw_lower_finger");
+        clawUpperFinger = map.get(Servo.class, "claw_upper_finger");
+        clawUpperFinger.setDirection(Servo.Direction.REVERSE);
+        claw = new Claw(clawWristServo, clawLowerFinger, clawUpperFinger);
 
         // odometry deadwheels
         leftOdo = map.get(DcMotorEx.class, "right_front");
         rightOdo = map.get(DcMotorEx.class, "left_back");
         backOdo = map.get(DcMotorEx.class, "left_front");
 
+        // dropper
+        dropperServo = map.get(Servo.class, "dropper_servo");
+        dropper = new Dropper(dropperServo);
+
+        // drone
+        droneReleaseServo = map.get(Servo.class, "drone_release_servo");
+        droneRotateServo = map.get(Servo.class, "drone_rotate_servo");
+        drone = new Drone(droneReleaseServo, droneRotateServo);
+
+        hangerServo = map.get(Servo.class, "hanger_servo");
+        hanger = new Hanger(hangerServo);
     }
 
     private double rampUp(double x) {

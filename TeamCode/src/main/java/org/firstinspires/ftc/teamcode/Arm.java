@@ -11,8 +11,8 @@ public class Arm {
     // declare constants
     public static int MAX_ARM_POSITION = 2100;
     public static int MIN_ARM_POSITION = 0;
-    public static int ARM_SPEED = 50;
-    public static double ARM_POWER = 0.7; // the default power supplied to the arm when being used
+    public static int ARM_SPEED = 30;
+    public static double ARM_POWER = 0.4; // the default power supplied to the arm when being used
     public static double OFFSET_ANGLE = 38.4;
     public static double GEAR_RATIO = 6.6862745;
 
@@ -22,7 +22,7 @@ public class Arm {
     }
 
     public void holdArmPos() {
-        armMotor.setPower(1);
+        armMotor.setPower(0);
     }
 
     private double ticksToDegrees(double ticks) {

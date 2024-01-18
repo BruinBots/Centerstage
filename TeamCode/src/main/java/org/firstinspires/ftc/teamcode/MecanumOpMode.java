@@ -48,6 +48,7 @@ public class MecanumOpMode extends OpMode
     Karen bot;
 
     boolean droneButtonPressed;
+    boolean gp2dpadleft;
 
     //
     @Override
@@ -56,6 +57,9 @@ public class MecanumOpMode extends OpMode
         bot = new Karen(hardwareMap);
         telemetry.addData("Status", "Initialized");
         bot.claw.setClawWrist(0.1);
+        bot.claw.closeBothClaw();
+        bot.drone.resetPoses();
+        bot.hanger.hangServo.setPosition(bot.hanger.PRIMED_POS);
     }
 
     //
@@ -104,7 +108,7 @@ public class MecanumOpMode extends OpMode
         if (gamepad2.x) {
             bot.claw.closeBothClaw();
         } else if (gamepad2.b) {
-            bot.claw.closeLowerClaw();
+            bot.claw.openLowerClaw();
         } else if (gamepad2.a) {
             bot.claw.openBothClaw();
         }
@@ -115,10 +119,16 @@ public class MecanumOpMode extends OpMode
 //            bot.claw.moveClawWrist(0.1);
 //        }
                // dropper
-//        if (gamepad2.y) {
-//            bot.dropper.dropperUp();
-//        }
+        if (gamepad2.dpad_up) {
+            bot.dropper.dropperUp();
+        } else if (gamepad2.dpad_down) {
+            bot.dropper.dropperDown();
+        }
 
+        if (gamepad2.dpad_left && !gp2dpadleft) {
+            bot.hanger.hang();
+        }
+//        bot.hanger.loop();
 
         // drone launch
 
@@ -160,14 +170,16 @@ public class MecanumOpMode extends OpMode
 //        }
 
         droneButtonPressed = gamepad2.y;
-//        gp2dpadleft = gamepad2.dpad_left;
+        gp2dpadleft = gamepad2.dpad_left;
 
         telemetry.addData("arm", bot.arm.getCurrentArmPos());
         telemetry.addData("armAngle", bot.arm.armAngle());
         telemetry.addData("clawAngle", bot.arm.clawAngle());
         telemetry.addData("clawPos", bot.claw.getCurrentWristPosition());
-        telemetry.addData("one claw finger", bot.clawFirstFinger.getPosition());
-        telemetry.addData("two claw finger", bot.clawSecondFinger.getPosition());
+        telemetry.addData("one claw finger", bot.clawLowerFinger.getPosition());
+        telemetry.addData("two claw finger", bot.clawUpperFinger.getPosition());
+        telemetry.addData("hang servo", bot.hanger.hangServo.getPosition());
+        telemetry.addData("dropper servo", bot.dropper.dropperServo.getPosition());
 
         try {
             sleep(20);

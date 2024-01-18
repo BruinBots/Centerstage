@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class Dropper {
 
-    private final Servo dropperServo;
+    public final Servo dropperServo;
 
     public static final double DROPPER_UP_POS = 0.2; // 0-1 this is counterclockwise from down, when facing the servo face
     public static final double DROPPER_DOWN_POS = 0.95;

@@ -46,8 +46,8 @@ public class Drone {
     }
 
     public void resetPoses() {
-        setServoPos(droneRotateServo, MIN_ROTATE_POS);
-        setServoPos(droneReleaseServo, MIN_ROTATE_POS);
+        setServoPos(droneRotateServo, MAX_ROTATE_POS);
+        setServoPos(droneReleaseServo, CLOSED_POS);
     }
 
     public void loop() {
