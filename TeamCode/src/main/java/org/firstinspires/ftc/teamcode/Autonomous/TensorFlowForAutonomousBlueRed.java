@@ -198,10 +198,9 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
                     return (int)((Math.abs((r2.getHeight() / r2.getWidth()) - (r2.getWidth() / r2.getHeight())) - Math.abs((r1.getHeight() / r1.getWidth()) - (r1.getWidth() / r1.getHeight())) * 100));
                 }
             });
-            Recognition recognition = updatedRecognitions.get(0);
-            return recognition;
+            return updatedRecognitions.get(0);
         }
-        return updatedRecognitions.get(0);
+        return tfodProcessor.getRecognitions().get(0);
     }
 
     /**
@@ -223,15 +222,12 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
                     double orb_min_area=150;
                     // this is the min or max possable area for the bounding box of the tfod orb
                     double orb_max_area=200;
-
-
                     double area = recognition.getWidth() * recognition.getHeight();
                     if (area <= orb_max_area) {// Check if the recognized object is the one you are looking for.
                         telemetry.addData("getLabel(): ", recognition.getLabel());
                     }if (area >= orb_min_area) {
                         telemetry.addData("getLabel(): ", recognition.getLabel());
                     }
-
                     if (recognition.getLabel().equals(LABELS[0]) || recognition.getLabel().equals(LABELS[1])) {
                         double x = (recognition.getLeft() + recognition.getRight()) / 2;
                         double y = (recognition.getTop() + recognition.getBottom()) / 2;

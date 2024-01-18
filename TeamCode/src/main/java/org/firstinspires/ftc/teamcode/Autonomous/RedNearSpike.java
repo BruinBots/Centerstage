@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 @Autonomous(name = "RedNearSpike", group = "Autonomous: Testing")
 public class RedNearSpike extends LinearOpMode {
-private final String TEAM_PROP_COLOR="blue";
+private final String TEAM_PROP_COLOR="red";
     @Override
     public void runOpMode() throws InterruptedException {
 

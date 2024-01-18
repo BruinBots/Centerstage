@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 @Autonomous(name = "RedNearBackdrop", group = "Autonomous: Testing")
 public class RedNearBackdrop extends LinearOpMode {
-
+    private final String TEAM_PROP_COLOR="red";
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -23,7 +23,7 @@ public class RedNearBackdrop extends LinearOpMode {
 
         drive.setPoseEstimate(startPose);
 
-        TensorFlowForAutonomousBlueRed tf = new TensorFlowForAutonomousBlueRed(hardwareMap, telemetry);
+        TensorFlowForAutonomousBlueRed tf = new TensorFlowForAutonomousBlueRed(hardwareMap, telemetry,TEAM_PROP_COLOR);
         tf.initTfod();
         sleep(500);
 
