@@ -118,7 +118,7 @@ public class AprilTagsAutonomous {
                 telemetry.addData("range", detection.ftcPose.range);
                 telemetry.addData("bearing", detection.ftcPose.bearing);
                 telemetry.addData("elevation", detection.ftcPose.elevation);
-                return new Vector2d(detection.ftcPose.y + offSetBackboardX, detection.ftcPose.x + offSetBackboardY);
+                return new Vector2d(detection.ftcPose.y + offSetBackboardX, -(detection.ftcPose.x + offSetBackboardY));
             }
         }
         return new Vector2d(0, 0);
