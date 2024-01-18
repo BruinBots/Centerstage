@@ -182,10 +182,16 @@ public class BaseAuto {
 
         // TODO: place pixel
         // move arm up
-//        bot.inOutTake.scoopMiddle();
-//        sleep(500);
+        bot.inOutTake.scoopHalfDown();
+        sleep(750);
+        bot.arm.moveArm(1500);
+        sleep(3000);
         // release claw
+
         // move arm down
+        bot.arm.moveArm(50);
+        sleep(3000);
+        bot.inOutTake.scoopMiddle();
 
 
         if (finishPixel) {
