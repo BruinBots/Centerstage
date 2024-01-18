@@ -167,9 +167,6 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
                 }
             });
 
-            // Select top 3 highest confidence from the list
-            updatedRecognitions = updatedRecognitions.subList(0, 2);
-
             // Get the one with the most square
             Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
                 public int compare(Recognition r1, Recognition r2) {
@@ -191,8 +188,6 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
                 }
             });
 
-            // Select top 10 highest confidence from the list
-            updatedRecognitions = updatedRecognitions.subList(0, 9);
             Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
                 public int compare(Recognition r1, Recognition r2) {
                     return (int)((Math.abs((r2.getHeight() / r2.getWidth()) - (r2.getWidth() / r2.getHeight())) - Math.abs((r1.getHeight() / r1.getWidth()) - (r1.getWidth() / r1.getHeight())) * 100));
