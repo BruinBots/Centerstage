@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
+
 import static android.os.SystemClock.sleep;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -12,6 +12,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDir
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
@@ -20,36 +21,19 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import java.util.List;
 
 @Config
-public class AprilTagsUpdated {
-
-    private static final boolean USE_WEBCAM = true;
+public class AprilTagsAutonomous {
+    private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
+    //this variable is the offset for the robot doesn't hit the backboard in inch to how close you want it to the backboard/ put always if you want a number put add one
+    public static double offSetBackboardX = -3;
+    public static double offSetBackboardY = 5;
     private AprilTagProcessor aprilTag;
     private VisionPortal visionPortal;
 
-    public static int BackboardX = 36;
-    public static int BackboardY = 4;
-
-    public static int robotDesiredDistanceFromBackboard = 3;
-    public static int cameraOffsetFromCenter = 4;
-
-    public Vector2d getTraj(HardwareMap hardwareMap, SampleMecanumDrive drive, Telemetry telemetry, int idBackboard) {
+    public Vector2d getOffset(HardwareMap hardwareMap, Telemetry telemetry, int idBackboard) {
         initAprilTag(hardwareMap);
-        sleep(3000);
-        // all these are now in roadrunner coordinate system
-        int apriltagSideways = alignHorizontal(idBackboard);// I would call this apriltagX or apriltagHorizontal
-        int apriltagDistance = getRangeViaAprilTag(idBackboard); // better name
-        int desiredX = apriltagDistance - robotDesiredDistanceFromBackboard;
-        int desiredY = apriltagSideways + cameraOffsetFromCenter - BackboardY;
-        // critical debugging information below
-        // if they are not reasonable numbers something is very wrong
-        telemetry.addData("apriltagSideways = ", apriltagSideways); // should be -4
-        telemetry.addData("apriltagDistance = ", apriltagDistance); // should be 10
-        telemetry.addData("desiredX =", desiredX); // 10 + 24 - 3 = 31
-        telemetry.addData("desiredY =", desiredY); // 0 + 4 + 4 = 8
-        telemetry.update();
-        sleep(5000);
+        sleep(2500);
+        Vector2d offset = getAprilTagPose(telemetry, idBackboard);
         visionPortal.close();
-        Vector2d offset = new Vector2d(desiredX, desiredY); // notice this should be going to -7, 5
         return offset;
     }
 
@@ -107,28 +91,36 @@ public class AprilTagsUpdated {
      * Function to add telemetry about AprilTag detections.
      */
     //it gives the distance to the apriltag with the id of the number you gave it
-    private int getRangeViaAprilTag(int id) {
+    private double telemetryAprilTag(int id) {
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();
         // Step through the list of detections and display info for each one.
         for (AprilTagDetection detection : currentDetections) {
             if (detection.metadata != null && detection.id == id) {
-                return (int) detection.ftcPose.range;
+                return detection.ftcPose.range;
             }
         }
-        return 0;
+//        if (currentDetections[0]==null) {
+//            telemetry.addLine(String.format("Nothing done ", "no detection"));
+//        }
+        return 0;// end for() loop
     }
 
-    private int alignHorizontal(int id) {
-        List<AprilTagDetection> currentDetections = aprilTag.getDetections();
-        // Step through the list of detections and display info for each one.
-        for (AprilTagDetection detection : currentDetections) {
-
+    private Vector2d getAprilTagPose(Telemetry telemetry, int id) {
+        List<AprilTagDetection> detections = aprilTag.getDetections();
+        for (AprilTagDetection detection: detections) {
             if (detection.metadata != null && detection.id == id) {
-                return (int) detection.ftcPose.x;
+                telemetry.addData("x", detection.ftcPose.x);
+                telemetry.addData("y", detection.ftcPose.y);
+                telemetry.addData("z", detection.ftcPose.z);
+                telemetry.addData("roll", detection.ftcPose.roll);
+                telemetry.addData("pitch", detection.ftcPose.pitch);
+                telemetry.addData("yaw", detection.ftcPose.yaw);
+                telemetry.addData("range", detection.ftcPose.range);
+                telemetry.addData("bearing", detection.ftcPose.bearing);
+                telemetry.addData("elevation", detection.ftcPose.elevation);
+                return new Vector2d(detection.ftcPose.y + offSetBackboardX, detection.ftcPose.x + offSetBackboardY);
             }
         }
-        return 0;
+        return new Vector2d(0, 0);
     }
-
-    // end class
 }

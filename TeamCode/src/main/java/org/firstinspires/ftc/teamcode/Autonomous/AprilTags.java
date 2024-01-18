@@ -36,6 +36,14 @@ public class AprilTags {
     private AprilTagProcessor aprilTag;
     private VisionPortal visionPortal;
 
+    public int getDistance(HardwareMap hardwareMap, int idBackboard) {
+        initAprilTag(hardwareMap);
+        sleep(2500);
+        int distance = (int)telemetryAprilTag(idBackboard);
+        visionPortal.close();
+        return distance;
+    }
+
     public Vector2d getTraj(HardwareMap hardwareMap, SampleMecanumDrive drive, Telemetry telemetry, int idBackboard) {
         Karen bot = new Karen(hardwareMap);
         initAprilTag(hardwareMap);

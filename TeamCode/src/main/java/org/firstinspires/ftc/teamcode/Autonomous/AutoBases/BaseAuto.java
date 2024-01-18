@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Arm;
 import org.firstinspires.ftc.teamcode.Autonomous.AprilTags;
+import org.firstinspires.ftc.teamcode.Autonomous.AprilTagsAutonomous;
 import org.firstinspires.ftc.teamcode.Autonomous.AprilTagsUpdated;
 import org.firstinspires.ftc.teamcode.Autonomous.TensorFlowForAutonomousBlueRed;
 import org.firstinspires.ftc.teamcode.Karen;
@@ -155,7 +156,7 @@ public class BaseAuto {
     }
 
     // Place the pixel on the backdrop
-    public Trajectory placePixel(Pose2d startPose, String side, boolean blue, boolean finishPixel) {
+    public Trajectory placePixel(Pose2d startPose, int aprilId, boolean blue, boolean finishPixel) {
         // navigate to backdrop
 
         Trajectory start1 = backdropStart1(startPose);
@@ -165,25 +166,14 @@ public class BaseAuto {
         drive.followTrajectory(start2);
         drive.turn(Math.toRadians(blue ? 90 : -90));
 
+        AprilTagsAutonomous aprilTags = new AprilTagsAutonomous();
 //        AprilTags aprilTags = new AprilTags();
-        AprilTagsUpdated aprilTags = new AprilTagsUpdated();
-        Vector2d aprilVector;
-        switch (side) {
-            case "left":
-                aprilVector = aprilTags.getTraj(hardwareMap, drive, telemetry, 1); // 1 = left, 2 = center, 3 = right
-                break;
-            case "center":
-                aprilVector = aprilTags.getTraj(hardwareMap, drive, telemetry, 2); // 1 = left, 2 = center, 3 = right
-                break;
-            case "right":
-                aprilVector = aprilTags.getTraj(hardwareMap, drive, telemetry, 3); // 1 = left, 2 = center, 3 = right
-                break;
-            default:
-                aprilVector = aprilTags.getTraj(hardwareMap, drive, telemetry, 2); // 1 = left, 2 = center, 3 = right
-        }
+//        AprilTagsUpdated aprilTags = new AprilTagsUpdated();
+        Vector2d aprilVector = aprilTags.getOffset(hardwareMap, telemetry, aprilId);
         telemetry.addData("x", aprilVector.getX());
         telemetry.addData("y", aprilVector.getY());
         telemetry.update();
+        sleep(5000);
         Pose2d startEnd = start2.end().plus(new Pose2d(0, 0, Math.toRadians(blue ? 90 : -90)));
         Trajectory aprilTraj = drive.trajectoryBuilder(startEnd)
                 .lineToConstantHeading(new Vector2d(startEnd.getX() + aprilVector.getX(), startEnd.getY() + aprilVector.getY()))
@@ -207,8 +197,12 @@ public class BaseAuto {
         return aprilTraj;
     }
 
+    public Trajectory placePixel(Pose2d startPose, int aprilId, boolean blue) {
+        return placePixel(startPose, aprilId, blue, false);
+    }
+
     public Trajectory placePixel(Pose2d startPose, String side, boolean blue) {
-        return placePixel(startPose, side, blue, false);
+        return placePixel(startPose, 2, blue, false);
     }
 
     public Trajectory backdropStart1(Pose2d startPose) {
