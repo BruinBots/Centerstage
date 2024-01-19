@@ -31,16 +31,18 @@ public class Karen  {
     public DcMotorEx rightOdo;
     public DcMotorEx backOdo;
 
-    public Servo clawWristServo;
+    Servo clawWristServo;
     Servo clawLowerFinger;
     Servo clawUpperFinger;
 
-    public Servo dropperServo;
+    Servo dropperServo;
 
     Servo droneReleaseServo;
     Servo droneRotateServo;
 
     Servo hangerServo;
+
+
 
     public final int TICKS_PER_REVOLUTION = 200;
     public final int DEADWHEEL_RADIUS = 2; // cm ??
@@ -65,19 +67,7 @@ public class Karen  {
         leftFrontMotor.setDirection(DcMotorEx.Direction.REVERSE);
         leftBackMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
-        // claw
-        clawWristServo = map.get(Servo.class, "claw_wrist_servo");
-        clawLowerFinger = map.get(Servo.class, "claw_lower_finger");
-        clawUpperFinger = map.get(Servo.class, "claw_upper_finger");
-        clawUpperFinger.setDirection(Servo.Direction.REVERSE);
-        claw = new Claw(clawWristServo, clawLowerFinger, clawUpperFinger);
-
-        // odometry deadwheels
-        leftOdo = map.get(DcMotorEx.class, "right_front");
-        rightOdo = map.get(DcMotorEx.class, "left_back");
-        backOdo = map.get(DcMotorEx.class, "left_front");
-
-        // inouttake
+        // pixel intake - must be declared before arm and linear slide
         intakeServoLeft = map.get(Servo.class, "intake_servo_left");
         intakeServoRight = map.get(Servo.class, "intake_servo_right");
         scoopServo = map.get(Servo.class, "scoop_servo");
@@ -87,9 +77,21 @@ public class Karen  {
         armMotor = map.get(DcMotorEx.class, "arm_motor");
         armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         armMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        armMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-
+        armMotor.setDirection(DcMotorEx.Direction.REVERSE);
         arm = new Arm(armMotor);
+
+        // claw
+        clawWristServo = map.get(Servo.class, "claw_wrist_servo");
+        clawLowerFinger = map.get(Servo.class, "claw_lower_finger");
+        clawUpperFinger = map.get(Servo.class, "claw_upper_finger");
+        clawUpperFinger.setDirection(Servo.Direction.REVERSE);
+        claw = new Claw(clawWristServo, clawLowerFinger, clawUpperFinger);
+
+        // odometry deadwheels
+        leftOdo = map.get(DcMotorEx.class, "left_front");
+        rightOdo = map.get(DcMotorEx.class, "right_odo");
+        backOdo = map.get(DcMotorEx.class, "left_back");
+
 
         // dropper
         dropperServo = map.get(Servo.class, "dropper_servo");
@@ -102,6 +104,11 @@ public class Karen  {
 
         hangerServo = map.get(Servo.class, "hanger_servo");
         hanger = new Hanger(hangerServo);
+
+        intakeServoLeft = map.get(Servo.class, "intake_servo_left");
+        intakeServoRight = map.get(Servo.class, "intake_servo_right");
+        scoopServo = map.get(Servo.class, "scoop_servo");
+        inOutTake = new InOutTake(intakeServoLeft, intakeServoRight, scoopServo);
     }
 
     private double rampUp(double x) {
@@ -155,6 +162,7 @@ public class Karen  {
         rightBackMotor.setPower(0);
 
         // stop slide and arm motors
+        slideMotor.setPower(0);
         armMotor.setPower(0);
     }
     // ----- ALGORITHMS -----

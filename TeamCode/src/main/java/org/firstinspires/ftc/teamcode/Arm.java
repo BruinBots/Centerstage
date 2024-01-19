@@ -10,13 +10,13 @@ public class Arm {
 
     // declare constants
     public static int MAX_ARM_POSITION = 3000;
-    public static int PLACING_ARM_POSITION = 2700;
+    public static int PLACING_ARM_POSITION = 2300;
     public static int STRAIGHT_ARM_POSITION = 1720;
     public static int MIN_ARM_POSITION = 0;
-    public static int ARM_SPEED = 50;
-    public static double ARM_POWER = 1; // the default power supplied to the arm when being used
+    public static int ARM_SPEED = 30;
+    public static double ARM_POWER = 0.5; // the default power supplied to the arm when being used
     public static double OFFSET_ANGLE = 38.4;
-    public static double GEAR_RATIO = 9.12;
+    public static double GEAR_RATIO = 9.1;
 
     private boolean bypass;
 
@@ -48,42 +48,30 @@ public class Arm {
         return clawAngle;
     }
 
-    public void moveArm(int position, boolean safety) {
-        moveArm(position, safety, ARM_POWER);
-    }
-
-    public void moveArm(int targetPos, boolean safety, double power) {
-        if (Claw.lower == Claw.Status.CLOSED && Claw.upper == Claw.Status.CLOSED) {
-            if (safety) {
-                if (!(InOutTake.scoopServo.getPosition() > InOutTake.SCOOP_MIDDLE_POS + 0.001)) {
-                    bypass = true;
-                } else {
-                    bypass = false;
-                    return;
-                }
-            } else {
+    public void moveArm(int targetPos, boolean safety) {
+        if (safety) {
+            if (!(InOutTake.scoopServo.getPosition() > InOutTake.SCOOP_MIDDLE_POS + 0.001)) {
                 bypass = true;
-            }
-            if (bypass) {
-                // if arm pos is greater or less than max/min then set to max/min
-                if (targetPos < MIN_ARM_POSITION) {
-                    targetPos = MIN_ARM_POSITION;
-                } else if (targetPos > MAX_ARM_POSITION) {
-                    targetPos = MAX_ARM_POSITION;
-                }
-
-                armMotor.setPower(power);
-                armMotor.setTargetPosition(targetPos);
-                armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                Claw.setClawWristFromAngle(Arm.clawAngle());
+            } else {
+                bypass = false;
+                return;
             }
         } else {
-            Claw.closeBothClaw();
+            bypass = true;
         }
-    }
+        if (bypass) {
+            // if arm pos is greater or less than max/min then set to max/min
+            if (targetPos < MIN_ARM_POSITION) {
+                targetPos = MIN_ARM_POSITION;
+            } else if (targetPos > MAX_ARM_POSITION) {
+                targetPos = MAX_ARM_POSITION;
+            }
 
-    public void moveArm(int position, double power) {
-        moveArm(position, true, power);
+            armMotor.setPower(ARM_POWER);
+            armMotor.setTargetPosition(targetPos);
+            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Claw.setClawWristFromAngle(Arm.clawAngle());
+        }
     }
 
     public void goMax() {
