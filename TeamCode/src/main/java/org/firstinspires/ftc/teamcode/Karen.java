@@ -37,12 +37,6 @@ public class Karen  {
 
     public Servo dropperServo;
 
-    public Servo clawWristServo;
-    Servo clawLowerFinger;
-    Servo clawUpperFinger;
-
-    Servo dropperServo;
-
     Servo droneReleaseServo;
     Servo droneRotateServo;
 

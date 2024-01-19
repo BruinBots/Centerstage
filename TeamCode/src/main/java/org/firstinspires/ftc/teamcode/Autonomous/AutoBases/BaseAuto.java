@@ -177,7 +177,7 @@ public class BaseAuto {
         drive.followTrajectory(aprilTraj);
 
         // TODO: place pixel
-        bot.inOutTake.scoopHalfDown();
+        bot.inOutTake.scoopMiddle();
         sleep(500);
         bot.claw.closeBothClaw();
         sleep(500);
