@@ -73,7 +73,7 @@ public class BlueFarAuto extends BaseAuto {
 
     @Override
     public Vector2d relativeSpikeCenter2() {
-        return new Vector2d(0, -10);
+        return new Vector2d(0, -6);
     }
 
     @Override
