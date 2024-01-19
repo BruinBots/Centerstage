@@ -39,7 +39,7 @@ public class AprilTags {
     public int getDistance(HardwareMap hardwareMap, int idBackboard) {
         initAprilTag(hardwareMap);
         sleep(2500);
-        int distance = (int) telemetryAprilTag(idBackboard);
+        int distance = (int)telemetryAprilTag(idBackboard);
         visionPortal.close();
         return distance;
     }

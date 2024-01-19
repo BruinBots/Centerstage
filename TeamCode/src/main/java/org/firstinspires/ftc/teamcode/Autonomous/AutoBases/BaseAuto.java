@@ -181,19 +181,22 @@ public class BaseAuto {
         drive.followTrajectory(aprilTraj);
 
         // TODO: place pixel
-        // move arm up
         bot.inOutTake.scoopHalfDown();
-        sleep(750);
-        bot.arm.moveArm(1500);
-        sleep(3000);
-        // release claw
-        bot.claw.openBothClaw();
-        sleep(1000);
-        // move arm down
-        bot.arm.moveArm(50);
-        sleep(3000);
-        bot.inOutTake.scoopMiddle();
         sleep(500);
+        bot.claw.closeBothClaw();
+        sleep(500);
+        bot.arm.moveArm(2780, 0.5); // 2560
+        sleep(500);
+        bot.claw.setClawWrist(0.266);
+        sleep(500);
+        sleep(2500);
+        bot.claw.openBothClaw();
+        sleep(500);
+        bot.arm.moveArm(0, 0.3);
+        sleep(1000);
+        bot.claw.setClawWrist(0.1);
+        sleep(1000);
+        sleep(3000);
 
 
         if (finishPixel) {
@@ -242,6 +245,7 @@ public class BaseAuto {
      */
     public Pose2d spike2(Pose2d startPose, String side, boolean finishSpike) {
 
+        bot.dropper.open();
         Trajectory enter = spikeEnter2(startPose);
 
         drive.followTrajectory(enter);
@@ -296,6 +300,7 @@ public class BaseAuto {
         }
 
         // TODO: release the pixel
+        bot.dropper.closed();
 
         if (finishSpike) {
             Trajectory exit = spikeExit2(endEnter);
@@ -325,4 +330,5 @@ public class BaseAuto {
     public Trajectory spikeExit2(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose).build();
     }
+    //endregion
 }
