@@ -245,6 +245,8 @@ public class BaseAuto {
      */
     public Pose2d spike2(Pose2d startPose, String side, boolean finishSpike) {
 
+        bot.dropper.dropperDown();
+
         Trajectory enter = spikeEnter2(startPose);
 
         drive.followTrajectory(enter);
@@ -299,6 +301,7 @@ public class BaseAuto {
         }
 
         // TODO: release the pixel
+        bot.dropper.dropperUp();
 
         if (finishSpike) {
             Trajectory exit = spikeExit2(endEnter);
