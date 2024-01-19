@@ -60,7 +60,11 @@ public class Arm {
         armMotor.setPower(power);
         armMotor.setTargetPosition(targetPos);
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Claw.setClawWristFromAngle(Arm.clawAngle());
+        Claw.setClawWristFromAngle(clawAngle());
+    }
+
+    public void moveArm(int targetPos) {
+        moveArm(targetPos, ARM_POWER);
     }
 
     public void safeMoveArm(int targetPos, double power) {
@@ -69,16 +73,20 @@ public class Arm {
         }
     }
 
+    public void safeMoveArm(int targetPos) {
+        safeMoveArm(targetPos, ARM_POWER);
+    }
+
     public void goMax() {
-        moveArm(PLACING_ARM_POSITION, true);
+        moveArm(PLACING_ARM_POSITION);
     }
 
     public void goStraight() {
-        moveArm(STRAIGHT_ARM_POSITION, true);
+        moveArm(STRAIGHT_ARM_POSITION);
     }
 
     public void goDown() {
-        moveArm(MIN_ARM_POSITION, true);
+        moveArm(MIN_ARM_POSITION);
     }
 
     public int getCurrentArmPos() { return armMotor.getCurrentPosition(); }
