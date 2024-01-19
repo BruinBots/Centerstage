@@ -75,6 +75,7 @@ public class Karen  {
         armMotor = map.get(DcMotorEx.class, "arm_motor");
         armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         armMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        armMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         arm = new Arm(armMotor);
 
