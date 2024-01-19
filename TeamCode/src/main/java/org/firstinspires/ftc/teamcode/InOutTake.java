@@ -31,12 +31,12 @@ public class InOutTake {
     private final Servo inServoLeft;
     private final Servo inServoRight;
     // scoop servo is standard servo to move pixel between intake and claw
-    private final Servo scoopServo;
+    private static Servo scoopServo;
 
     public InOutTake(Servo inServoLeft, Servo inServoRight, Servo scoopServo) {
         this.inServoLeft = inServoLeft;
         this.inServoRight = inServoRight;
-        this.scoopServo = scoopServo;
+        InOutTake.scoopServo = scoopServo;
     }
 
     // suck pixels in
@@ -77,7 +77,7 @@ public class InOutTake {
 
     public void scoopHalfDown() { scoopServo.setPosition(SCOOP_HALF_DOWN_POS); }
 
-    public boolean isSafeForArm() {
+    public static boolean isSafeForArm() {
         return (scoopServo.getPosition() <= SCOOP_MIDDLE_POS + 0.05);
     }
 }
