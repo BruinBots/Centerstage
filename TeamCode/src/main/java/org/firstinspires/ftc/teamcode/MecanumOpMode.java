@@ -1,3 +1,4 @@
+
 /* Copyright (c) 2017 FIRST. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -47,13 +48,31 @@ public class MecanumOpMode extends OpMode
     // robot
     Karen bot;
 
-    //
+    boolean hanging;
+    boolean gp1dpadup;
+    boolean gp1dpadleft;
+    boolean gp1dpaddown;
+    boolean gp1y;
+    boolean gp1a;
+
+    boolean gp2dpadleft;
+    boolean gp2dpadright;
+    boolean gp2dpaddown;
+    boolean gp2b;
+    boolean gp2y;
+    boolean gp2a;
+
+
     @Override
     public void init() {
-
         bot = new Karen(hardwareMap);
         telemetry.addData("Status", "Initialized");
         bot.claw.setClawWrist(0.1);
+        bot.claw.closeBothClaw();
+        bot.drone.resetPoses();
+        bot.hanger.hangServo.setPosition(bot.hanger.PRIMED_POS);
+        bot.dropper.closed();
+        bot.inOutTake.scoopMiddle();
     }
 
     //
@@ -86,76 +105,106 @@ public class MecanumOpMode extends OpMode
 
         bot.moveBotMecanum(drive, turn, strafe,  0.5); // actually move the robot
 
-        // if bumper pressed increase or decrease arm
+        // GAMEPAD 1 (ANNA)
+
+        // intake
+        if (gamepad1.left_trigger > 0.2) {
+            bot.inOutTake.intake();
+        } else if (gamepad1.right_trigger > 0.2) {
+            bot.inOutTake.outtake();
+        } else {
+            bot.inOutTake.stopTake();
+        }
+
+        // dropper
+        if (gamepad1.a && !gp1a) {
+            bot.dropper.toggle();
+        }
+
+        // flipper
+        if (gamepad1.dpad_up && !gp1dpadup) {
+            bot.inOutTake.scoopUp();
+        } else if (gamepad1.dpad_left && !gp1dpadleft) {
+            bot.inOutTake.scoopMiddle();
+        } else if (gamepad1.dpad_down && !gp1dpaddown) {
+            bot.inOutTake.scoopDown();
+        }
+
+        // drone launcher
+        if (gamepad1.y && !gp1y) {
+            bot.drone.launchWithRotation();
+        }
+        bot.drone.loop();
+
+
+        // GAMEPAD 2 (ENRIQUE)
+
+        // arm
         if (gamepad2.right_bumper) {
-            bot.arm.moveArm(bot.arm.getCurrentArmPos() + Arm.ARM_SPEED);
-            bot.claw.setClawWristFromAngle(bot.arm.clawAngle());
+            if (bot.hanger.launched) {
+                bot.arm.safeMoveArm(bot.arm.getCurrentArmPos() + Arm.ARM_SPEED);
+            } else {
+                bot.arm.safeMoveArm(bot.arm.getCurrentArmPos() + Arm.ARM_SPEED);
+            }
         }
         else if (gamepad2.left_bumper) {
-            bot.arm.moveArm(bot.arm.getCurrentArmPos() - Arm.ARM_SPEED);
-            bot.claw.setClawWristFromAngle(bot.arm.clawAngle());
+            if (bot.hanger.launched) {
+                bot.arm.safeMoveArm(bot.arm.getCurrentArmPos() - Arm.ARM_SPEED);
+            } else {
+                bot.arm.safeMoveArm(bot.arm.getCurrentArmPos() - Arm.ARM_SPEED);
+            }
+        } else if (gamepad2.dpad_left) {
+            bot.arm.safeMoveArm(Arm.MAX_ARM_POSITION);
+        } else if (gamepad2.dpad_right) {
+            bot.arm.safeMoveArm(1720);
+        } else if (gamepad2.dpad_down) {
+            bot.arm.safeMoveArm(0);
         }
         else {
             bot.arm.holdArmPos();
         }
 
-        if (gamepad2.left_trigger > 0.1) {
-            bot.claw.moveClawWrist(-0.1);
-        } else if (gamepad2.right_trigger > 0.1) {
-            bot.claw.moveClawWrist(0.1);
-        }
-        // dropper
-        if (gamepad2.y) {
-            bot.dropper.dropperUp();
-        }
-
-
-        // drone launch
-
-//        if (gamepad1.y && !droneButtonPressed) {
-//            bot.drone.launch();
-//        }
-//        bot.drone.loop();
-
-        // TODO: intake
-//        if (gamepad2.dpad_left && !gp2dpadleft) {
-//            if (!bot.inOutTake.isSafeForArm()) {
-//                bot.inOutTake.scoopMiddle(); // moves scoop to middle pos so it doesnt snap motor mount in half again
-//            } else {
-//                bot.claw.closeBothClaw(); // closes both claw holds
-//                bot.arm.dropPixelPos(); // moves arm and slide to max
-//            }
-//        }
-
-        if (gamepad1.left_trigger > 0.5) {
-            bot.inOutTake.intake();
-        }
-        else if (gamepad1.right_trigger > 0.5) {
-            bot.inOutTake.outtake();
-        }
-        else {
-            bot.inOutTake.stopTake();
+        // claw
+        if (gamepad2.b && !gp2b) {
+            bot.claw.closeBothClaw();
+        } else if (gamepad2.y && !gp2y) {
+            bot.claw.closeLowerClaw();
+            bot.claw.openUpperClaw();
+        } else if (gamepad2.a && !gp2a) {
+            bot.claw.openBothClaw();
         }
 
-//        if (gamepad1.dpad_up) {
-//            bot.claw.openClaw();
-//            bot.inOutTake.scoopUp();
-//        }
-//        else if (gamepad1.dpad_down) {
-//            bot.claw.openClaw();
-//            bot.inOutTake.scoopDown();
+        // hang
+        if (gamepad2.left_stick_button && gamepad2.right_stick_button && !hanging) {
+            hanging = true;
+            bot.hanger.hang();
+        }
 
-//        } else if (gamepad1.dpad_left) {
-//            bot.inOutTake.scoopMiddle();
-//        }
-
-//        droneButtonPressed = gamepad1.y;
-//        gp2dpadleft = gamepad2.dpad_left;
+        if (!gamepad2.left_stick_button && !gamepad2.right_stick_button) {
+            hanging = false;
+        }
 
         telemetry.addData("arm", bot.arm.getCurrentArmPos());
         telemetry.addData("armAngle", bot.arm.armAngle());
         telemetry.addData("clawAngle", bot.arm.clawAngle());
         telemetry.addData("clawPos", bot.claw.getCurrentWristPosition());
+        telemetry.addData("one claw finger", bot.clawLowerFinger.getPosition());
+        telemetry.addData("two claw finger", bot.clawUpperFinger.getPosition());
+        telemetry.addData("hang servo", bot.hanger.hangServo.getPosition());
+        telemetry.addData("dropper servo", bot.dropper.dropperServo.getPosition());
+
+        gp1dpadup = gamepad1.dpad_up;
+        gp1dpadleft = gamepad1.dpad_left;
+        gp1dpaddown = gamepad1.dpad_down;
+        gp1y = gamepad1.y;
+        gp1a = gamepad1.a;
+
+        gp2dpadleft = gamepad2.dpad_left;
+        gp2dpadright = gamepad2.dpad_right;
+        gp2dpaddown = gamepad2.dpad_down;
+        gp2b = gamepad2.b;
+        gp2y = gamepad2.y;
+        gp2a = gamepad2.a;
 
         try {
             sleep(20);

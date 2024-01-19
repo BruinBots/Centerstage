@@ -58,8 +58,20 @@ public class Arm {
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
+    public void safeMoveArm(int targetPos, double power) {
+        if (InOutTake.isSafeForArm()) {
+            moveArm(targetPos, power);
+        }
+    }
+
     public void moveArm(int targetPos) {
         moveArm(targetPos, ARM_POWER);
+    }
+
+    public void safeMoveArm(int targetPos) {
+        if (InOutTake.isSafeForArm()) {
+            moveArm(targetPos);
+        }
     }
 
     public int getCurrentArmPos() { return armMotor.getCurrentPosition(); }
