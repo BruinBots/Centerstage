@@ -6,15 +6,19 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 public class Arm {
 
     // declare  motors
-    private final DcMotorEx armMotor;
+    private static DcMotorEx armMotor;
 
     // declare constants
     public static int MAX_ARM_POSITION = 3000;
+    public static int PLACING_ARM_POSITION = 1900;
+    public static int STRAIGHT_ARM_POSITION = 1268;
     public static int MIN_ARM_POSITION = 0;
-    public static int ARM_SPEED = 50;
-    public static double ARM_POWER = 0.7; // this is for autonomous safety testing; not final value; use above value
-    public static double OFFSET_ANGLE = 44.2;
-    public static double GEAR_RATIO = 9.12;
+    public static int ARM_SPEED = 30;
+    public static double ARM_POWER = 0.5; // the default power supplied to the arm when being used
+    public static double OFFSET_ANGLE = 38.4;
+    public static double GEAR_RATIO = 9.1;
+
+    private boolean bypass;
 
     // note: inOutTake must be initialized before calling this constructor
     public Arm (DcMotorEx armMotor) {
@@ -22,7 +26,7 @@ public class Arm {
     }
 
     public void holdArmPos() {
-        armMotor.setPower(1);
+        armMotor.setPower(0);
     }
 
     private double ticksToDegrees(double ticks) {
@@ -56,6 +60,7 @@ public class Arm {
         armMotor.setPower(power);
         armMotor.setTargetPosition(targetPos);
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        Claw.setClawWristFromAngle(Arm.clawAngle());
     }
 
     public void safeMoveArm(int targetPos, double power) {
@@ -64,14 +69,16 @@ public class Arm {
         }
     }
 
-    public void moveArm(int targetPos) {
-        moveArm(targetPos, ARM_POWER);
+    public void goMax() {
+        moveArm(PLACING_ARM_POSITION, true);
     }
 
-    public void safeMoveArm(int targetPos) {
-        if (InOutTake.isSafeForArm()) {
-            moveArm(targetPos);
-        }
+    public void goStraight() {
+        moveArm(STRAIGHT_ARM_POSITION, true);
+    }
+
+    public void goDown() {
+        moveArm(MIN_ARM_POSITION, true);
     }
 
     public int getCurrentArmPos() { return armMotor.getCurrentPosition(); }
