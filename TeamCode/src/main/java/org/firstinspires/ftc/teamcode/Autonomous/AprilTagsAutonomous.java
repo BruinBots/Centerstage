@@ -113,7 +113,7 @@ public class AprilTagsAutonomous {
 
     private Vector2d getAprilTagPose(Telemetry telemetry, int id) {
         List<AprilTagDetection> detections = aprilTag.getDetections();
-        for (AprilTagDetection detection: detections) {
+        for (AprilTagDetection detection : detections) {
             if (detection.metadata != null && detection.id == id) {
                 telemetry.addData("x", detection.ftcPose.x);
                 telemetry.addData("y", detection.ftcPose.y);

@@ -12,8 +12,7 @@ public class Arm {
     public static int MAX_ARM_POSITION = 3000;
     public static int MIN_ARM_POSITION = 0;
     public static int ARM_SPEED = 50;
-//    public static double ARM_POWER = 0.7; // the default power supplied to the arm when being used
-    public static double ARM_POWER = 0.2; // this is for autonomous safety testing; not final value; use above value
+    public static double ARM_POWER = 0.7; // this is for autonomous safety testing; not final value; use above value
     public static double OFFSET_ANGLE = 44.2;
     public static double GEAR_RATIO = 9.12;
 
@@ -62,7 +61,6 @@ public class Arm {
     public void moveArm(int targetPos) {
         moveArm(targetPos, ARM_POWER);
     }
-
 
     public int getCurrentArmPos() { return armMotor.getCurrentPosition(); }
 }

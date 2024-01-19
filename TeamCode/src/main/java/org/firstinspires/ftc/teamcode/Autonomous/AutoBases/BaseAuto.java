@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.Autonomous.AprilTagsUpdated;
 import org.firstinspires.ftc.teamcode.Autonomous.TensorFlowForAutonomousBlueRed;
 import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public class BaseAuto {
 
@@ -23,8 +24,7 @@ public class BaseAuto {
     private Telemetry telemetry;
     public SampleMecanumDrive drive;
     private Karen bot;
-
-    // every child class of BaseAuto will declare this startingPosition
+    private final String TEAM_PROP_COLOR="red"; // default to red
 
     public BaseAuto(HardwareMap hardwareMap, Telemetry telemetry, Pose2d startingPosition) {
 
@@ -49,7 +49,7 @@ public class BaseAuto {
      */
     public String tfSpike() {
 
-        TensorFlowForAutonomousBlueRed tf = new TensorFlowForAutonomousBlueRed(hardwareMap, telemetry);
+        TensorFlowForAutonomousBlueRed tf = new TensorFlowForAutonomousBlueRed(hardwareMap, telemetry,TEAM_PROP_COLOR);
         tf.initTfod();
         sleep(500);
 
@@ -58,7 +58,7 @@ public class BaseAuto {
         int i = 0;
         String side = "none";
         while (side.equals("none") && i < 2) {
-            side = tf.getSide();
+            side = tf.getSide(TEAM_PROP_COLOR);
             telemetry.addData("A-side", side);
             telemetry.update();
             i++;
@@ -245,8 +245,7 @@ public class BaseAuto {
      */
     public Pose2d spike2(Pose2d startPose, String side, boolean finishSpike) {
 
-        bot.dropper.dropperDown();
-
+        bot.dropper.open();
         Trajectory enter = spikeEnter2(startPose);
 
         drive.followTrajectory(enter);
@@ -301,7 +300,7 @@ public class BaseAuto {
         }
 
         // TODO: release the pixel
-        bot.dropper.dropperUp();
+        bot.dropper.closed();
 
         if (finishSpike) {
             Trajectory exit = spikeExit2(endEnter);
@@ -331,7 +330,5 @@ public class BaseAuto {
     public Trajectory spikeExit2(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose).build();
     }
-
     //endregion
-
 }

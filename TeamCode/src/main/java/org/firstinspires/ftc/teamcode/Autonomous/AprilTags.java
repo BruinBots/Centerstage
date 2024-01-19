@@ -156,6 +156,3 @@ public class AprilTags {
         return 0;
     }
 }
-
-
-
