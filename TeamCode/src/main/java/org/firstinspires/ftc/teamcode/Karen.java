@@ -83,6 +83,7 @@ public class Karen  {
 
         // dropper
         dropperServo = map.get(Servo.class, "dropper_servo");
+        dropper = new Dropper(dropperServo);
 
     }
 
