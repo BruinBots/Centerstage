@@ -34,7 +34,7 @@ private final String TEAM_PROP_COLOR="red";
         int i = 0;
         String side = "none";
         while (side.equals("none") && i < 10) {
-            side = tf.getSide();
+            side = tf.getSide(TEAM_PROP_COLOR);
             telemetry.addData("A-side", side);
             telemetry.update();
             i ++;
