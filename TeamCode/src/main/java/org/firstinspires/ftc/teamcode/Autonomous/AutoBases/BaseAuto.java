@@ -158,11 +158,11 @@ public class BaseAuto {
         // lift up the slide\
 
         // open the claw to release the pixels onto the backdrop
-        bot.claw.openClaw();
+        //bot.claw.openClaw();
         sleep(500);
 
         // close the claw after releasing the pixels
-        bot.claw.closeBothClaw();
+        //bot.claw.closeBothClaw();
         sleep(100);
 
         // retract the slide
