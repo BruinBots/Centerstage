@@ -168,8 +168,6 @@ public class BaseAuto {
         drive.turn(Math.toRadians(blue ? -90 : 90));
 
         AprilTagsAutonomous aprilTags = new AprilTagsAutonomous();
-//        AprilTags aprilTags = new AprilTags();
-//        AprilTagsUpdated aprilTags = new AprilTagsUpdated();
         Vector2d aprilVector = aprilTags.getOffset(hardwareMap, telemetry, aprilId);
         telemetry.addData("x", aprilVector.getX());
         telemetry.addData("y", aprilVector.getY());

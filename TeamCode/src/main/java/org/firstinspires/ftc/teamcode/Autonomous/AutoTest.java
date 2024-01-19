@@ -16,8 +16,6 @@ public class AutoTest extends LinearOpMode {
 
     public static int aprilId = 2;
 
-    private AprilTagsAutonomous aprilTags;
-
     @Override
     public void runOpMode() throws InterruptedException {
 //        Karen bot = new Karen(hardwareMap);
@@ -25,20 +23,6 @@ public class AutoTest extends LinearOpMode {
         BlueNearAuto auto = new BlueNearAuto(hardwareMap, telemetry);
         waitForStart();
         auto.placePixel(BlueNearAuto.startingPosition, aprilId, true);
-//        auto.spike2(BlueNearAuto.startingPosition, "center", false);
-
+        auto.spike2(BlueNearAuto.startingPosition, auto.tfSpike(true), false);
     }
-
-//    @Override
-//    public void init() {
-//        aprilTags = new AprilTagsAutonomous();
-//    }
-//
-//    @Override
-//    public void loop() {
-//        Vector2d aprilVector = aprilTags.getOffset(hardwareMap, telemetry, aprilId);
-//        telemetry.addData("x", aprilVector.getX());
-//        telemetry.addData("y", aprilVector.getY());
-//        telemetry.update();
-//    }
 }

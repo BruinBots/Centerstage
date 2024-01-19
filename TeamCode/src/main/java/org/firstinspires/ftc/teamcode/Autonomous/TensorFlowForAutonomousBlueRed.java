@@ -66,6 +66,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
         else {
             side = redTelemetryTfod();
         }
+        side = telemetryTfod();
         return side;
     }
 
