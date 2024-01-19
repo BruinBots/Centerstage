@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import org.firstinspires.ftc.teamcode.Arm;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoBases.BlueNearAuto;
 import org.firstinspires.ftc.teamcode.Karen;
 
@@ -19,18 +20,22 @@ public class AutoTest extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-//        Karen bot = new Karen(hardwareMap);
-//        waitForStart();
-//        bot.inOutTake.scoopMiddle();
-//        sleep(500);
-//        bot.arm.moveArm(1800);
-//        sleep(2500);
-//        // TODO: open claw
-//        bot.arm.moveArm(50);
-//        sleep(2500);
-        BlueNearAuto auto = new BlueNearAuto(hardwareMap, telemetry);
+        Karen bot = new Karen(hardwareMap);
         waitForStart();
-        auto.placePixel(BlueNearAuto.startingPosition, aprilId, true);
+        bot.inOutTake.scoopHalfDown();
+        sleep(1000);
+        bot.arm.moveArm(Arm.MAX_ARM_POSITION);
+        sleep(2500);
+        bot.claw.setClawWrist(0.4);
+        sleep(1000);
+        // TODO: open claw
+        bot.claw.openBothClaw();
+        sleep(1000);
+        bot.arm.moveArm(0, 0.2);
+        sleep(2500);
+//        BlueNearAuto auto = new BlueNearAuto(hardwareMap, telemetry);
+//        waitForStart();
+//        auto.placePixel(BlueNearAuto.startingPosition, aprilId, true);
 
     }
 
