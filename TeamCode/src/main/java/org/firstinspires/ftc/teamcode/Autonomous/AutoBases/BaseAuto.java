@@ -1,63 +1,64 @@
-package org.firstinspires.ftc.teamcode.Autonomous.AutoBases;
+/* Copyright (c) 2017 FIRST. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted (subject to the limitations in the disclaimer below) provided that
+ * the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this list
+ * of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of FIRST nor the names of its contributors may be used to endorse or
+ * promote products derived from this software without specific prior written permission.
+ *
+ * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
+ * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
-import static android.os.SystemClock.sleep;
+package org.firstinspires.ftc.teamcode;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Arm;
-import org.firstinspires.ftc.teamcode.Autonomous.TensorFlowForAutonomousBlue;
-import org.firstinspires.ftc.teamcode.Autonomous.TensorFlowForAutonomousBlueRed;
-import org.firstinspires.ftc.teamcode.Karen;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import static java.lang.Thread.sleep;
 
-public class BaseAuto {
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-    // initializa class variables
-    public HardwareMap hardwareMap;
-    public Telemetry telemetry;
-    public SampleMecanumDrive drive;
+@TeleOp(name="Basic: Mecanum TeleOp", group="Iterative Opmode")
+public class MecanumOpMode extends OpMode
+{
+
+    // drive values
+    double drive = 0.0;
+    double turn = 0.0;
+    double strafe = 0.0;
+
+    // robot
     Karen bot;
 
-    // every child class of BaseAuto will declare this startingPosition
+    //
+    @Override
+    public void init() {
 
-    public BaseAuto(HardwareMap hardwareMap, Telemetry telemetry, Pose2d startingPosition) {
-
-        // assign class variables
-        this.hardwareMap = hardwareMap;
-        this.telemetry = telemetry;
-
-        // create bot from hardwareMap
         bot = new Karen(hardwareMap);
-
-        // create SampleMecanumDrive from hardwareMap and set the startingPosition
-        drive = new SampleMecanumDrive(hardwareMap);
-        drive.setPoseEstimate(startingPosition);
+        telemetry.addData("Status", "Initialized");
+        bot.claw.setClawWrist(0.1);
     }
 
-    public String tfSpike() {
-
-        TensorFlowForAutonomousBlueRed tf = new TensorFlowForAutonomousBlueRed(hardwareMap, telemetry);
-        tf.initTfod();
-        sleep(500);
-
-        tf.visionPortal.resumeStreaming();
-
-        int i = 0;
-        String side = "none";
-        while (side.equals("none") && i < 2) {
-            side = tf.getSide();
-            telemetry.addData("A-side", side);
-            telemetry.update();
-            i++;
-            sleep(20);
-        }
-
-        tf.visionPortal.close();
-
-        return side;
+    //
+    @Override
+    public void init_loop() {
     }
 
     // place the pixel by the spike mark on given side
@@ -105,57 +106,53 @@ public class BaseAuto {
         return traj0b;
     }
 
-    // will be run before doing spike placement
-    public Trajectory spikeStart(Pose2d startPose) {
-        return drive.trajectoryBuilder(startPose).build();
-    }
+    //
+    @Override
+    public void loop() {
+        // get drive, strafe, and turn values
 
-    public Trajectory spikeLeft(Pose2d startPose) {
-        return drive.trajectoryBuilder(startPose).build();
-    }
+        drive = gamepad1.left_stick_y - gamepad2.left_stick_y;
+        strafe = gamepad2.left_stick_x - gamepad1.left_stick_x;
+        turn= gamepad1.right_stick_x + gamepad2.right_stick_x;
 
-    public Trajectory spikeCenter(Pose2d startPose) {
-        return drive.trajectoryBuilder(startPose).build();
-    }
+        if (drive > 1) { drive = 1; }
+        if (strafe > 1) { strafe = 1; }
+        if (turn > 1) { turn = 1; }
 
-    public Trajectory spikeRight(Pose2d startPose) {
-        return drive.trajectoryBuilder(startPose).build();
-    }
+        strafe = Math.copySign(Math.pow(strafe, 2), strafe);
+        drive = Math.copySign(Math.pow(drive, 2), drive);
+        turn = Math.copySign(Math.pow(turn, 2), turn);
 
-    // will be run after doing spike placement
-    public Trajectory spikeEnd(Pose2d startPose) {
-        return drive.trajectoryBuilder(startPose).build();
-    }
+        bot.moveBotMecanum(drive, turn, strafe,  0.5); // actually move the robot
 
-    // park the bot in the corner by the backdrop
-    public Trajectory park(Pose2d startPose) {
+        // if bumper pressed increase or decrease arm
+        if (gamepad2.right_bumper) {
+            bot.arm.moveArm(bot.arm.getCurrentArmPos() + Arm.ARM_SPEED);
+            bot.claw.setClawWristFromAngle(bot.arm.clawAngle());
+        }
+        else if (gamepad2.left_bumper) {
+            bot.arm.moveArm(bot.arm.getCurrentArmPos() - Arm.ARM_SPEED);
+            bot.claw.setClawWristFromAngle(bot.arm.clawAngle());
+        }
+        else {
+            bot.arm.holdArmPos();
+        }
 
-        Trajectory traj2 = parkTraj(startPose);
-
-        drive.followTrajectory(traj2);
-
-        return traj2;
-    }
-
-    public Trajectory parkTraj(Pose2d startPose) {
-        return drive.trajectoryBuilder(startPose).build();
-    }
-
-    // Place the pixel on the backdrop
-    public Trajectory placePixel(Pose2d startPose) {
-        // TODO: navigate to backdrop
-        Trajectory startTraj = backdropStart(startPose);
-        drive.followTrajectory(startTraj);
-
-        // EXTREMELY IMPORTANT; STUFF WILL BREAK WITHOUT THIS
-        bot.inOutTake.scoopMiddle();
-        sleep(250);
+        if (gamepad2.left_trigger > 0.1) {
+            bot.claw.moveClawWrist(-0.1);
+        } else if (gamepad2.right_trigger > 0.1) {
+            bot.claw.moveClawWrist(0.1);
+        }
+        // dropper
+        if (gamepad2.y) {
+            bot.dropper.dropperUp();
+        }
 
         // lift up the arm
         bot.arm.moveArm(Arm.MAX_ARM_POSITION, true);
         sleep(250);
 
-        // lift up the slide\
+        // drone launch
 
         // open the claw to release the pixels onto the backdrop
         bot.claw.openLowerClaw();
@@ -165,28 +162,34 @@ public class BaseAuto {
         bot.claw.closeLowerClaw();
         sleep(100);
 
-        // retract the slide
+        if (gamepad1.left_trigger > 0.5) {
+            bot.inOutTake.intake();
+        }
+        else if (gamepad1.right_trigger > 0.5) {
+            bot.inOutTake.outtake();
+        }
+        else {
+            bot.inOutTake.stopTake();
+        }
 
         // retract the arm
         bot.arm.moveArm(Arm.MIN_ARM_POSITION, true);
         sleep(250);
 
-        // TODO: may need to back up to let the pixels fall down
+        telemetry.addData("arm", bot.arm.getCurrentArmPos());
+        telemetry.addData("armAngle", bot.arm.armAngle());
+        telemetry.addData("clawAngle", bot.arm.clawAngle());
+        telemetry.addData("clawPos", bot.claw.getCurrentWristPosition());
 
-        // TODO: return to position for parking
-        Trajectory endTraj = backdropEnd(startTraj.end());
-        drive.followTrajectory(endTraj);
-
-        return endTraj;
+        try {
+            sleep(20);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    // this is run before pixel placing
-    public Trajectory backdropStart(Pose2d startPose) {
-        return drive.trajectoryBuilder(startPose).build();
-    }
-
-    // this is run after pixel placing
-    public Trajectory backdropEnd(Pose2d startPose) {
-        return drive.trajectoryBuilder(startPose).build();
+    @Override
+    public void stop() {
+        bot.stop(); // stop all motors
     }
 }
