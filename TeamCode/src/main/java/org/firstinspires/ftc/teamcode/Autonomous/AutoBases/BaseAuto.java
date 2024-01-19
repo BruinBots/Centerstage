@@ -24,7 +24,6 @@ public class BaseAuto {
     private Telemetry telemetry;
     public SampleMecanumDrive drive;
     private Karen bot;
-    private final String TEAM_PROP_COLOR="red"; // default to red
 
     public BaseAuto(HardwareMap hardwareMap, Telemetry telemetry, Pose2d startingPosition) {
 
@@ -47,9 +46,9 @@ public class BaseAuto {
     - "center"
     - "right"
      */
-    public String tfSpike() {
+    public String tfSpike(boolean blue) {
 
-        TensorFlowForAutonomousBlueRed tf = new TensorFlowForAutonomousBlueRed(hardwareMap, telemetry,TEAM_PROP_COLOR);
+        TensorFlowForAutonomousBlueRed tf = new TensorFlowForAutonomousBlueRed(hardwareMap, telemetry, blue ? "blue" : "red");
         tf.initTfod();
         sleep(500);
 
@@ -58,7 +57,7 @@ public class BaseAuto {
         int i = 0;
         String side = "none";
         while (side.equals("none") && i < 2) {
-            side = tf.getSide(TEAM_PROP_COLOR);
+            side = tf.getSide(blue);
             telemetry.addData("A-side", side);
             telemetry.update();
             i++;
@@ -181,7 +180,7 @@ public class BaseAuto {
         drive.followTrajectory(aprilTraj);
 
         // TODO: place pixel
-        bot.inOutTake.scoopHalfDown();
+        bot.inOutTake.scoopMiddle();
         sleep(500);
         bot.claw.closeBothClaw();
         sleep(500);

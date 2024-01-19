@@ -12,7 +12,7 @@ public class RedFarFull extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         RedFarAuto auto = new RedFarAuto(hardwareMap, telemetry);
         waitForStart();
-        String tfSpike = auto.tfSpike();
+        String tfSpike = auto.tfSpike(false);
         auto.park(auto.placePixel(auto.spike2(RedFarAuto.startingPosition, tfSpike, true), 2, false, true));
     }
 }

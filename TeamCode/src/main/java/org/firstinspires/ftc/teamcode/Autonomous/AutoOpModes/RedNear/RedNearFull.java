@@ -12,7 +12,7 @@ public class RedNearFull extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         RedNearAuto auto = new RedNearAuto(hardwareMap, telemetry);
         waitForStart();
-        String tfSpike = auto.tfSpike();
+        String tfSpike = auto.tfSpike(false);
         auto.park(auto.placePixel(auto.spike2(RedNearAuto.startingPosition, tfSpike, true), 2, false, true));
     }
 }

@@ -11,6 +11,6 @@ public class RedFarSpikePark extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         RedFarAuto auto = new RedFarAuto(hardwareMap, telemetry);
         waitForStart();
-        auto.park(auto.spike2(RedFarAuto.startingPosition, auto.tfSpike(), true));
+        auto.park(auto.spike2(RedFarAuto.startingPosition, auto.tfSpike(false), true));
     }
 }
