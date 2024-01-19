@@ -159,7 +159,8 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
 
     private Recognition redTfod() {
         List<Recognition> updatedRecognitions = tfodProcessor.getRecognitions();
-        telemetry.addData("number of rcognitions: ", updatedRecognitions.size());
+        telemetry.addData("updated recognitions: ", updatedRecognitions);
+        telemetry.addData("number of recognitions: ", updatedRecognitions.size());
         if (updatedRecognitions != null && updatedRecognitions.size()>0) {
             // Sort the confidence from highest to lowest
             Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
@@ -176,12 +177,13 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
             });
             return updatedRecognitions.get(0);
         }
-        return tfodProcessor.getRecognitions().get(0);
+        return null;
     }
 
     private Recognition blueTfod() {
         List<Recognition> updatedRecognitions = tfodProcessor.getRecognitions();
-        telemetry.addData("number of rcognitions: ", updatedRecognitions.size());
+        telemetry.addData("updated recognitions: ", updatedRecognitions);
+        telemetry.addData("number of recognitions: ", updatedRecognitions.size());
         if (updatedRecognitions != null && updatedRecognitions.size()>0) {
             // Sort the confidence from highest to lowest
             Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
@@ -197,7 +199,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
             });
             return updatedRecognitions.get(0);
         }
-        return tfodProcessor.getRecognitions().get(0);
+        return null;
     }
 
     /**
@@ -264,6 +266,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
         double screenWidth = 2200;//tfodProcessor..getCameraView().getWidth();
 
         if(recognition==null) {
+            telemetry.addData("recognition is null", "default center");
             return "center";
         }
         double x = (recognition.getLeft() + recognition.getRight()) / 2;
