@@ -9,7 +9,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class BlueNearAuto extends BaseAuto {
 
-    public static Pose2d startingPosition = new Pose2d(12, 60, Math.toRadians(90));
+    public static Pose2d startingPosition = new Pose2d(12, 60, Math.toRadians(270));
 
     public BlueNearAuto(HardwareMap hardwareMap, Telemetry telemetry) {
         super(hardwareMap, telemetry, startingPosition);
@@ -97,7 +97,7 @@ public class BlueNearAuto extends BaseAuto {
     @Override
     public Trajectory backdropStart2(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(32, 35))
+                .lineToConstantHeading(new Vector2d(38, 35))
                 .build();
     }
 

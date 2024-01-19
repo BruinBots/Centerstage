@@ -44,6 +44,9 @@ public class BaseAuto {
      */
     public String tfSpike(boolean blue) {
 
+        bot.inOutTake.scoopDown();
+        sleep(750);
+
         TensorFlowForAutonomousBlueRed tf = new TensorFlowForAutonomousBlueRed(hardwareMap, telemetry, blue ? "blue" : "red");
         tf.initTfod();
         sleep(500);
@@ -61,6 +64,9 @@ public class BaseAuto {
         }
 
         tf.visionPortal.close();
+
+        bot.inOutTake.scoopHalfDown();
+        sleep(750);
 
         return side;
     }
@@ -159,7 +165,7 @@ public class BaseAuto {
 
         Trajectory start2 = backdropStart2(start1.end());
         drive.followTrajectory(start2);
-        drive.turn(Math.toRadians(blue ? 90 : -90));
+        drive.turn(Math.toRadians(blue ? -90 : 90));
 
         AprilTagsAutonomous aprilTags = new AprilTagsAutonomous();
 //        AprilTags aprilTags = new AprilTags();
@@ -169,14 +175,14 @@ public class BaseAuto {
         telemetry.addData("y", aprilVector.getY());
         telemetry.update();
         sleep(5000);
-        Pose2d startEnd = start2.end().plus(new Pose2d(0, 0, Math.toRadians(blue ? 90 : -90)));
+        Pose2d startEnd = start2.end().plus(new Pose2d(0, 0, Math.toRadians(blue ? -90 : 90)));
         Trajectory aprilTraj = drive.trajectoryBuilder(startEnd)
                 .lineToConstantHeading(new Vector2d(startEnd.getX() + aprilVector.getX(), startEnd.getY() + aprilVector.getY()))
                 .build();
         drive.followTrajectory(aprilTraj);
 
         // TODO: place pixel
-        bot.inOutTake.scoopMiddle();
+        bot.inOutTake.scoopHalfDown();
         sleep(500);
         bot.claw.closeBothClaw();
         sleep(500);
@@ -184,7 +190,7 @@ public class BaseAuto {
         sleep(500);
         bot.claw.setClawWrist(0.266);
         sleep(500);
-        sleep(2500);
+        sleep(3500);
         bot.claw.openBothClaw();
         sleep(500);
         bot.arm.moveArm(0, 0.3);

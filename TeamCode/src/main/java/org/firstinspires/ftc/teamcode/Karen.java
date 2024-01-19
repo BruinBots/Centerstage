@@ -65,15 +65,6 @@ public class Karen  {
         leftFrontMotor.setDirection(DcMotorEx.Direction.REVERSE);
         leftBackMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
-
-        // arm
-        armMotor = map.get(DcMotorEx.class, "arm_motor");
-        armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        armMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        armMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        arm = new Arm(armMotor);
-
         // claw
         clawWristServo = map.get(Servo.class, "claw_wrist_servo");
         clawLowerFinger = map.get(Servo.class, "claw_lower_finger");
@@ -100,23 +91,10 @@ public class Karen  {
 
         arm = new Arm(armMotor);
 
-        // claw
-        clawWristServo = map.get(Servo.class, "claw_wrist_servo");
-        clawLowerFinger = map.get(Servo.class, "claw_lower_finger");
-        clawUpperFinger = map.get(Servo.class, "claw_upper_finger");
-        clawUpperFinger.setDirection(Servo.Direction.REVERSE);
-        claw = new Claw(clawWristServo, clawLowerFinger, clawUpperFinger);
-
         // odometry deadwheels
         leftOdo = map.get(DcMotorEx.class, "left_front");
         rightOdo = map.get(DcMotorEx.class, "right_odo");
         backOdo = map.get(DcMotorEx.class, "left_back");
-
-        // claw
-        clawWristServo = map.get(Servo.class, "claw_wrist_servo");
-        clawUpperFinger = map.get(Servo.class, "claw_upper_finger");
-        clawLowerFinger = map.get(Servo.class, "claw_upper_finger");
-        claw = new Claw(clawWristServo,clawLowerFinger,clawUpperFinger);
 
         // dropper
         dropperServo = map.get(Servo.class, "dropper_servo");
@@ -129,11 +107,6 @@ public class Karen  {
 
         hangerServo = map.get(Servo.class, "hanger_servo");
         hanger = new Hanger(hangerServo);
-
-        intakeServoLeft = map.get(Servo.class, "intake_servo_left");
-        intakeServoRight = map.get(Servo.class, "intake_servo_right");
-        scoopServo = map.get(Servo.class, "scoop_servo");
-        inOutTake = new InOutTake(intakeServoLeft, intakeServoRight, scoopServo);
     }
 
     private double rampUp(double x) {

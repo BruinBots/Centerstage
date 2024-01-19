@@ -34,7 +34,7 @@ public class AprilTagsAutonomous {
 
     public Vector2d getOffset(HardwareMap hardwareMap, Telemetry telemetry, int idBackboard) {
         initAprilTag(hardwareMap);
-        sleep(2500);
+        sleep(1000);
         Vector2d offset = getAprilTagPose(telemetry, idBackboard);
         visionPortal.close();
         return offset;

@@ -24,7 +24,7 @@ public class InOutTake {
     // 0        TBD     1
     // down     up      too far up
     public static final double SCOOP_DOWN_POS = 0.02; // this should work, untested
-    public static final double SCOOP_MIDDLE_POS = 0.3;
+    public static final double SCOOP_MIDDLE_POS = 0.25;
     public static final double SCOOP_HALF_DOWN_POS = 0.09;
     public static final double SCOOP_UP_POS = 0.4; // no idea if this works, untested
     // inServo's are continuous rotation servos, rotate backwards of each other to in/out-take the pixel

@@ -24,8 +24,8 @@ public class AutoTest extends LinearOpMode {
 //        waitForStart();
         BlueNearAuto auto = new BlueNearAuto(hardwareMap, telemetry);
         waitForStart();
-//        auto.placePixel(BlueNearAuto.startingPosition, aprilId, true);
-        auto.spike2(BlueNearAuto.startingPosition, "center", false);
+        auto.placePixel(BlueNearAuto.startingPosition, aprilId, true);
+//        auto.spike2(BlueNearAuto.startingPosition, "center", false);
 
     }
 
