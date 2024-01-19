@@ -1,8 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-
-import static android.os.SystemClock.sleep;
-
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -11,6 +8,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class Karen  {
 
+    // InOutTake
+    public Servo intakeServoLeft;
+    public Servo intakeServoRight;
+    public Servo scoopServo;
 
     // Drive  motors
 
@@ -19,13 +20,6 @@ public class Karen  {
     public DcMotorEx leftBackMotor;
     public DcMotorEx rightBackMotor;
 
-    // intake motors
-    public Servo intakeServoLeft;
-    public Servo intakeServoRight;
-    public Servo scoopServo;
-
-    // arm and slide motors
-    public DcMotorEx slideMotor;
     public DcMotorEx armMotor;
 
     // odometry wheels
@@ -33,25 +27,21 @@ public class Karen  {
     public DcMotorEx rightOdo;
     public DcMotorEx backOdo;
 
-    // claw motor
     public Servo clawWristServo;
-    public Servo clawServo1;
+    Servo clawLowerFinger;
+    Servo clawUpperFinger;
 
-    // drone launch motor
-    public DcMotorEx droneMotor;
-
-    // dropper servo
     public Servo dropperServo;
 
     public final int TICKS_PER_REVOLUTION = 200;
     public final int DEADWHEEL_RADIUS = 2; // cm ??
 
     // subclasses
-    public InOutTake inOutTake;
-    public Claw claw;
     public Arm arm;
+    public Claw claw;
     public Drone drone;
     public Dropper dropper;
+    public InOutTake inOutTake;
 
     // constructor with map
     public Karen(HardwareMap map) {
@@ -65,31 +55,37 @@ public class Karen  {
         leftFrontMotor.setDirection(DcMotorEx.Direction.REVERSE);
         leftBackMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
-        // pixel intake - must be declared before arm and linear slide
+
+        // arm
+        armMotor = map.get(DcMotorEx.class, "arm_motor");
+        armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        armMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        armMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        arm = new Arm(armMotor);
+
+        // claw
+        clawWristServo = map.get(Servo.class, "claw_wrist_servo");
+        clawLowerFinger = map.get(Servo.class, "claw_lower_finger");
+        clawUpperFinger = map.get(Servo.class, "claw_upper_finger");
+        clawUpperFinger.setDirection(Servo.Direction.REVERSE);
+        claw = new Claw(clawWristServo, clawLowerFinger, clawUpperFinger);
+
+        // odometry deadwheels
+        leftOdo = map.get(DcMotorEx.class, "right_front");
+        rightOdo = map.get(DcMotorEx.class, "left_back");
+        backOdo = map.get(DcMotorEx.class, "left_front");
+
+        // inouttake
         intakeServoLeft = map.get(Servo.class, "intake_servo_left");
         intakeServoRight = map.get(Servo.class, "intake_servo_right");
         scoopServo = map.get(Servo.class, "scoop_servo");
         inOutTake = new InOutTake(intakeServoLeft, intakeServoRight, scoopServo);
 
-        // arm and linear slide - pixel intake must be initialized first
-        armMotor = map.get(DcMotorEx.class, "arm_motor");
-        armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        armMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-
-        arm = new Arm(armMotor);
-
-        // odometry deadwheels
-        leftOdo = map.get(DcMotorEx.class, "left_front");
-        rightOdo = map.get(DcMotorEx.class, "right_odo");
-        backOdo = map.get(DcMotorEx.class, "left_back");
-
-        // claw
-        clawServo1 = map.get(Servo.class, "claw_servo1");
-        claw = new Claw(clawServo1);
-
         // dropper
         dropperServo = map.get(Servo.class, "dropper_servo");
         dropper = new Dropper(dropperServo);
+
     }
 
     private double rampUp(double x) {
@@ -143,7 +139,6 @@ public class Karen  {
         rightBackMotor.setPower(0);
 
         // stop slide and arm motors
-        slideMotor.setPower(0);
         armMotor.setPower(0);
     }
 

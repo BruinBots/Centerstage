@@ -11,6 +11,6 @@ public class BlueNearSpikePark extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         BlueNearAuto auto = new BlueNearAuto(hardwareMap, telemetry);
         waitForStart();
-        auto.park(auto.spike(BlueNearAuto.startingPosition, auto.tfSpike(), true).end());
+        auto.park(auto.spike2(BlueNearAuto.startingPosition, auto.tfSpike(), true));
     }
 }

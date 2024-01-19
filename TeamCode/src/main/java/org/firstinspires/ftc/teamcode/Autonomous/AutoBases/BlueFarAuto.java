@@ -9,7 +9,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class BlueFarAuto extends BaseAuto {
 
-    public static Pose2d startingPosition = new Pose2d(-36, 65, Math.toRadians(90));
+    public static Pose2d startingPosition = new Pose2d(-36, 60, Math.toRadians(90));
 
     public BlueFarAuto(HardwareMap hardwareMap, Telemetry telemetry) {
         super(hardwareMap, telemetry, startingPosition);
@@ -54,6 +54,56 @@ public class BlueFarAuto extends BaseAuto {
     public Trajectory parkTraj(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
                 .lineTo(new Vector2d(60, 60))
+                .build();
+    }
+
+    @Override
+    public Trajectory spikeEnter2(Pose2d startPose) {
+        return drive.trajectoryBuilder(startPose)
+                .lineToConstantHeading(new Vector2d(-36, 34))
+                .build();
+    }
+
+    @Override
+    public Trajectory spikeExit2(Pose2d startPose) {
+        return drive.trajectoryBuilder(startPose)
+                .lineToConstantHeading(new Vector2d(startingPosition.getX(), startingPosition.getY()))
+                .build();
+    }
+
+    @Override
+    public Vector2d relativeSpikeCenter2() {
+        return new Vector2d(0, -10);
+    }
+
+    @Override
+    public Vector2d relativeSpikeLeft2() {
+        return new Vector2d(10, 0);
+    }
+
+    @Override
+    public Vector2d relativeSpikeRight2() {
+        return new Vector2d(-10, 0);
+    }
+
+    @Override
+    public Trajectory backdropStart1(Pose2d startPose) {
+        return drive.trajectoryBuilder(startPose)
+                .lineToConstantHeading(new Vector2d(15, 60))
+                .build();
+    }
+
+    @Override
+    public Trajectory backdropStart2(Pose2d startPose) {
+        return drive.trajectoryBuilder(startPose)
+                .lineToConstantHeading(new Vector2d(32, 35))
+                .build();
+    }
+
+    @Override
+    public Trajectory backdropEnd(Pose2d startPose) {
+        return drive.trajectoryBuilder(startPose)
+                .lineToConstantHeading(new Vector2d(24, 60))
                 .build();
     }
 }

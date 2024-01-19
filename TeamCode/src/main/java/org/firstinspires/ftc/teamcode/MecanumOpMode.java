@@ -25,7 +25,7 @@
  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  */
+ */
 
 package org.firstinspires.ftc.teamcode;
 
@@ -104,7 +104,7 @@ public class MecanumOpMode extends OpMode
         } else if (gamepad2.right_trigger > 0.1) {
             bot.claw.moveClawWrist(0.1);
         }
-               // dropper
+        // dropper
         if (gamepad2.y) {
             bot.dropper.dropperUp();
         }
