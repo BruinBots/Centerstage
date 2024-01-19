@@ -114,7 +114,7 @@ public class ConceptAprilTag extends LinearOpMode {
             //.setDrawTagOutline(true)
             //.setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
             //.setTagLibrary(AprilTagGameDatabase.getCenterStageTagLibrary())
-            //.setOutputUnits(DistanceUnit.INCH, AngleUnit.DEGREES)
+            .setOutputUnits(DistanceUnit.INCH, AngleUnit.DEGREES)
 
             // == CAMERA CALIBRATION ==
             // If you do not manually specify calibration parameters, the SDK will attempt
