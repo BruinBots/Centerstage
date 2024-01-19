@@ -61,10 +61,49 @@ public class MecanumOpMode extends OpMode
     public void init_loop() {
     }
 
-    //
-    @Override
-    public void start() {
-        //bot.arm.moveArm(Arm.MIN_ARM_POSITION);
+    // place the pixel by the spike mark on given side
+    public Trajectory spike(Pose2d startPose, String side, boolean finishSpike) {
+
+        // ensure the pixel is securely in the dropper
+        bot.dropper.closed();
+        sleep(250);
+
+        Trajectory traj0a = spikeStart(startPose);
+        Trajectory traj0b;
+
+        switch (side) {
+            case "left":
+                telemetry.addData("side", "left");
+                traj0b = spikeLeft(traj0a.end());
+                break;
+            case "center":
+                telemetry.addData("side", "center");
+                traj0b = spikeCenter(traj0a.end());
+                break;
+            case "right":
+                telemetry.addData("side", "right");
+                traj0b = spikeRight(traj0a.end());
+                break;
+            default:
+                telemetry.addData("side", "default");
+                traj0b = spikeLeft(traj0a.end());
+                break;
+        }
+
+        Trajectory traj0c = spikeEnd(traj0b.end());
+
+        drive.followTrajectory(traj0a); // move to the spikeStart position to ensure no crashing during navigation
+        drive.followTrajectory(traj0b); // move to the spike mark
+
+        bot.dropper.open(); // release the pixel
+        sleep(250);
+
+        if (finishSpike) {
+            drive.followTrajectory(traj0c); // if finishing spike, return to spikeEnd position to prepare for parking/pixel placing
+            return traj0c;
+        }
+
+        return traj0b;
     }
 
     //
@@ -109,23 +148,19 @@ public class MecanumOpMode extends OpMode
             bot.dropper.dropperUp();
         }
 
+        // lift up the arm
+        bot.arm.moveArm(Arm.MAX_ARM_POSITION, true);
+        sleep(250);
 
         // drone launch
 
-//        if (gamepad1.y && !droneButtonPressed) {
-//            bot.drone.launch();
-//        }
-//        bot.drone.loop();
+        // open the claw to release the pixels onto the backdrop
+        bot.claw.openLowerClaw();
+        sleep(500);
 
-        // TODO: intake
-//        if (gamepad2.dpad_left && !gp2dpadleft) {
-//            if (!bot.inOutTake.isSafeForArm()) {
-//                bot.inOutTake.scoopMiddle(); // moves scoop to middle pos so it doesnt snap motor mount in half again
-//            } else {
-//                bot.claw.closeBothClaw(); // closes both claw holds
-//                bot.arm.dropPixelPos(); // moves arm and slide to max
-//            }
-//        }
+        // close the claw after releasing the pixels
+        bot.claw.closeLowerClaw();
+        sleep(100);
 
         if (gamepad1.left_trigger > 0.5) {
             bot.inOutTake.intake();
@@ -137,20 +172,9 @@ public class MecanumOpMode extends OpMode
             bot.inOutTake.stopTake();
         }
 
-//        if (gamepad1.dpad_up) {
-//            bot.claw.openClaw();
-//            bot.inOutTake.scoopUp();
-//        }
-//        else if (gamepad1.dpad_down) {
-//            bot.claw.openClaw();
-//            bot.inOutTake.scoopDown();
-
-//        } else if (gamepad1.dpad_left) {
-//            bot.inOutTake.scoopMiddle();
-//        }
-
-//        droneButtonPressed = gamepad1.y;
-//        gp2dpadleft = gamepad2.dpad_left;
+        // retract the arm
+        bot.arm.moveArm(Arm.MIN_ARM_POSITION, true);
+        sleep(250);
 
         telemetry.addData("arm", bot.arm.getCurrentArmPos());
         telemetry.addData("armAngle", bot.arm.armAngle());

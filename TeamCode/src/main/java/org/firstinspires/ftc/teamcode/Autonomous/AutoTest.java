@@ -13,7 +13,7 @@ public class AutoTest extends LinearOpMode {
 
         Karen bot = new Karen(hardwareMap);
 
-        bot.dropper.dropperUp();
+        bot.dropper.open();
 
         sleep(2000);
     }

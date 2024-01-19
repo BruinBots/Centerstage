@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-
-import static android.os.SystemClock.sleep;
-
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -33,15 +31,20 @@ public class Karen  {
     public DcMotorEx rightOdo;
     public DcMotorEx backOdo;
 
-    // claw motor
-    public Servo clawWristServo;
-    public Servo clawServo1;
+    Servo clawWristServo;
+    Servo clawLowerFinger;
+    Servo clawUpperFinger;
 
-    // drone launch motor
-    public DcMotorEx droneMotor;
+    Servo dropperServo;
 
-    // dropper servo
-    public Servo dropperServo;
+    Servo droneReleaseServo;
+    Servo droneRotateServo;
+
+    Servo hangerServo;
+
+    Servo intakeServoLeft;
+    Servo intakeServoRight;
+    Servo scoopServo;
 
     public final int TICKS_PER_REVOLUTION = 200;
     public final int DEADWHEEL_RADIUS = 2; // cm ??
@@ -52,6 +55,8 @@ public class Karen  {
     public Arm arm;
     public Drone drone;
     public Dropper dropper;
+    public InOutTake inOutTake;
+    public Hanger hanger;
 
     // constructor with map
     public Karen(HardwareMap map) {
@@ -78,6 +83,13 @@ public class Karen  {
 
         arm = new Arm(armMotor);
 
+        // claw
+        clawWristServo = map.get(Servo.class, "claw_wrist_servo");
+        clawLowerFinger = map.get(Servo.class, "claw_lower_finger");
+        clawUpperFinger = map.get(Servo.class, "claw_upper_finger");
+        clawUpperFinger.setDirection(Servo.Direction.REVERSE);
+        claw = new Claw(clawWristServo, clawLowerFinger, clawUpperFinger);
+
         // odometry deadwheels
         leftOdo = map.get(DcMotorEx.class, "left_front");
         rightOdo = map.get(DcMotorEx.class, "right_odo");
@@ -90,6 +102,19 @@ public class Karen  {
         // dropper
         dropperServo = map.get(Servo.class, "dropper_servo");
         dropper = new Dropper(dropperServo);
+
+        // drone
+        droneReleaseServo = map.get(Servo.class, "drone_release_servo");
+        droneRotateServo = map.get(Servo.class, "drone_rotate_servo");
+        drone = new Drone(droneReleaseServo, droneRotateServo);
+
+        hangerServo = map.get(Servo.class, "hanger_servo");
+        hanger = new Hanger(hangerServo);
+
+        intakeServoLeft = map.get(Servo.class, "intake_servo_left");
+        intakeServoRight = map.get(Servo.class, "intake_servo_right");
+        scoopServo = map.get(Servo.class, "scoop_servo");
+        inOutTake = new InOutTake(intakeServoLeft, intakeServoRight, scoopServo);
     }
 
     private double rampUp(double x) {
@@ -146,7 +171,5 @@ public class Karen  {
         slideMotor.setPower(0);
         armMotor.setPower(0);
     }
-
     // ----- ALGORITHMS -----
-
 }
