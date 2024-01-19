@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Autonomous.AutoBases;
 
 
 import static java.lang.Thread.sleep;
@@ -35,8 +35,11 @@ import static java.lang.Thread.sleep;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.Arm;
+import org.firstinspires.ftc.teamcode.Karen;
+
 @TeleOp(name="Basic: Mecanum TeleOp", group="Iterative Opmode")
-public class MecanumOpMode extends OpMode
+public class BaseAuto extends OpMode
 {
 
     // drive values
