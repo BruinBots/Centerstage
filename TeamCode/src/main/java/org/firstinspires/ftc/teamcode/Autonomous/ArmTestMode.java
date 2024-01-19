@@ -26,7 +26,7 @@ public class ArmTestMode extends LinearOpMode {
         waitForStart();
 
         if (position > 0 && position <= Arm.MAX_ARM_POSITION) {
-            bot.arm.moveArm(position);
+            bot.arm.moveArm(position, true);
             telemetry.addData("moving", "yes");
         }
         else {

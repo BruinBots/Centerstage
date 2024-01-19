@@ -49,7 +49,7 @@ public class BaseAuto {
      */
     public String tfSpike() {
 
-        TensorFlowForAutonomousBlueRed tf = new TensorFlowForAutonomousBlueRed(hardwareMap, telemetry);
+        TensorFlowForAutonomousBlueRed tf = new TensorFlowForAutonomousBlueRed(hardwareMap, telemetry, "blue");
         tf.initTfod();
         sleep(500);
 
@@ -58,7 +58,7 @@ public class BaseAuto {
         int i = 0;
         String side = "none";
         while (side.equals("none") && i < 2) {
-            side = tf.getSide();
+            side = tf.getSide("blue");
             telemetry.addData("A-side", side);
             telemetry.update();
             i++;
@@ -74,7 +74,7 @@ public class BaseAuto {
     public Trajectory spike(Pose2d startPose, String side, boolean finishSpike) {
 
         // ensure the pixel is securely in the dropper
-        bot.dropper.dropperDown();
+        bot.dropper.closed();
         sleep(250);
 
         Trajectory traj0a = spikeStart(startPose);
@@ -104,7 +104,7 @@ public class BaseAuto {
         drive.followTrajectory(traj0a); // move to the spikeStart position to ensure no crashing during navigation
         drive.followTrajectory(traj0b); // move to the spike mark
 
-        bot.dropper.dropperUp(); // release the pixel
+        bot.dropper.open(); // release the pixel
         sleep(250);
 
         if (finishSpike) {
@@ -181,18 +181,18 @@ public class BaseAuto {
         drive.followTrajectory(aprilTraj);
 
         // TODO: place pixel
-        bot.inOutTake.scoopHalfDown();
+        bot.inOutTake.scoopMiddle();
         sleep(500);
         bot.claw.closeBothClaw();
         sleep(500);
-        bot.arm.moveArm(2780, 0.5); // 2560
+        bot.arm.moveArm(2780, true); // 2560
         sleep(500);
         bot.claw.setClawWrist(0.266);
         sleep(500);
         sleep(2500);
         bot.claw.openBothClaw();
         sleep(500);
-        bot.arm.moveArm(0, 0.3);
+        bot.arm.moveArm(0, true);
         sleep(1000);
         bot.claw.setClawWrist(0.1);
         sleep(1000);
@@ -245,7 +245,7 @@ public class BaseAuto {
      */
     public Pose2d spike2(Pose2d startPose, String side, boolean finishSpike) {
 
-        bot.dropper.dropperDown();
+        bot.dropper.closed();
 
         Trajectory enter = spikeEnter2(startPose);
 
@@ -301,7 +301,7 @@ public class BaseAuto {
         }
 
         // TODO: release the pixel
-        bot.dropper.dropperUp();
+        bot.dropper.open();
 
         if (finishSpike) {
             Trajectory exit = spikeExit2(endEnter);

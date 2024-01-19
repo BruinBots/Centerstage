@@ -31,7 +31,7 @@ public class Karen  {
     public DcMotorEx rightOdo;
     public DcMotorEx backOdo;
 
-    Servo clawWristServo;
+    public Servo clawWristServo;
     Servo clawLowerFinger;
     Servo clawUpperFinger;
 
@@ -42,10 +42,6 @@ public class Karen  {
 
     Servo hangerServo;
 
-    Servo intakeServoLeft;
-    Servo intakeServoRight;
-    Servo scoopServo;
-
     public final int TICKS_PER_REVOLUTION = 200;
     public final int DEADWHEEL_RADIUS = 2; // cm ??
 
@@ -55,7 +51,6 @@ public class Karen  {
     public Arm arm;
     public Drone drone;
     public Dropper dropper;
-    public InOutTake inOutTake;
     public Hanger hanger;
 
     // constructor with map
@@ -96,8 +91,10 @@ public class Karen  {
         backOdo = map.get(DcMotorEx.class, "left_back");
 
         // claw
-        clawServo1 = map.get(Servo.class, "claw_servo1");
-        claw = new Claw(clawServo1);
+        clawWristServo = map.get(Servo.class, "claw_wrist_servo");
+        clawUpperFinger = map.get(Servo.class, "claw_upper_finger");
+        clawLowerFinger = map.get(Servo.class, "claw_upper_finger");
+        claw = new Claw(clawWristServo,clawLowerFinger,clawUpperFinger);
 
         // dropper
         dropperServo = map.get(Servo.class, "dropper_servo");
