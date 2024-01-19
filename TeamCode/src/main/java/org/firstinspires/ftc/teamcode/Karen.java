@@ -27,8 +27,11 @@ public class Karen  {
     public DcMotorEx rightOdo;
     public DcMotorEx backOdo;
 
-    Servo clawWristServo;
-    Servo dropperServo;
+    public Servo clawWristServo;
+    Servo clawLowerFinger;
+    Servo clawUpperFinger;
+
+    public Servo dropperServo;
 
     public final int TICKS_PER_REVOLUTION = 200;
     public final int DEADWHEEL_RADIUS = 2; // cm ??
@@ -62,8 +65,10 @@ public class Karen  {
         arm = new Arm(armMotor);
 
         // claw
-//        clawWristServo = map.get(Servo.class, "claw_wrist_servo");
-//        claw = new Claw(clawWristServo);
+        clawWristServo = map.get(Servo.class, "claw_wrist_servo");
+        clawLowerFinger = map.get(Servo.class, "claw_lower_finger");
+        clawUpperFinger = map.get(Servo.class, "claw_upper_finger");
+        claw = new Claw(clawWristServo, clawLowerFinger, clawUpperFinger);
 
         // odometry deadwheels
         leftOdo = map.get(DcMotorEx.class, "right_front");
