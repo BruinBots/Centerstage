@@ -1,11 +1,8 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
-import static android.os.SystemClock.sleep;
-
 import android.util.Size;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -49,11 +46,11 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
             "redsphere"
     };
 
-    String Sides = "";
+    String side = "";
     int xMax = 0;
 
     public TensorFlowForAutonomousBlueRed(HardwareMap hardwareMap, Telemetry telemetry, String color) {
-        if (color.equals("red")) {
+        if (color.toLowerCase().equals("red")) {
             TFOD_MODEL_ASSET = RED_TFOD_MODEL_ASSET;
             LABELS = RED_LABELS;
         }
@@ -61,10 +58,14 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
         this.telemetry = telemetry;
     }
 
-    public String getSide() {
+    public String getSide(String color) {
         sleep(500);
-        Sides = newTelemetryTfod();
-        return Sides;
+        if (color.toLowerCase().equals("red")) {
+            side = redTelemetryTfod();
+        } else {
+            side = blueTelemetryTfod();
+        }
+        return side;
     }
 
     @Override
@@ -206,39 +207,61 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
      * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.
      */
     private String telemetryTfod() {
-        String direction = "";
+        String direction = "center";
         double screenWidth = 2200;//tfodProcessor..getCameraView().getWidth();
 
         if (tfodProcessor != null) {
             // Get updated recognition list.
             List<Recognition> updatedRecognitions = tfodProcessor.getRecognitions();
+
+            // Sort recognitions
+            telemetry.addData("updated recognitions: ", updatedRecognitions);
+            telemetry.addData("number of recognitions: ", updatedRecognitions.size());
+            if (updatedRecognitions != null && updatedRecognitions.size()>0) {
+                // Sort the confidence from highest to lowest
+                Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
+                    public int compare(Recognition r1, Recognition r2) {
+                        return (int)((r1.getConfidence()-r2.getConfidence())*100);
+                    }
+                });
+
+                // Get the one with the most square
+                Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
+                    public int compare(Recognition r1, Recognition r2) {
+                        return (int)(((r1.getHeight() * r1.getWidth()) - (r2.getHeight() * r2.getWidth())));
+                    }
+                });
+            }
+
             if (updatedRecognitions != null) {
                 telemetry.addData("# Objects Detected", updatedRecognitions.size());
 
                 telemetry.addData("LABELS 0: ", LABELS[0]);
                 telemetry.addData("LABELS 1: ", LABELS[1]);
-                for (Recognition recognition : updatedRecognitions) {
+                for (int i=0; i<=4; i++) {
+                    // Verify area of team prop.
                     double orb_min_area=150;
                     // this is the min or max possable area for the bounding box of the tfod orb
                     double orb_max_area=200;
-                    double area = recognition.getWidth() * recognition.getHeight();
+                    double area = updatedRecognitions.get(i).getWidth() * updatedRecognitions.get(i).getHeight();
                     if (area <= orb_max_area) {// Check if the recognized object is the one you are looking for.
-                        telemetry.addData("getLabel(): ", recognition.getLabel());
-                    }if (area >= orb_min_area) {
-                        telemetry.addData("getLabel(): ", recognition.getLabel());
+                        telemetry.addData("getLabel(): ", updatedRecognitions.get(i).getLabel());
+                    }if (area > orb_min_area) {
+                        telemetry.addData("getLabel(): ", updatedRecognitions.get(i).getLabel());
                     }
-                    if (recognition.getLabel().equals(LABELS[0]) || recognition.getLabel().equals(LABELS[1])) {
-                        double x = (recognition.getLeft() + recognition.getRight()) / 2;
-                        double y = (recognition.getTop() + recognition.getBottom()) / 2;
+
+                    if (updatedRecognitions.get(i).getLabel().equals(LABELS[0])) {
+                        double x = (updatedRecognitions.get(i).getLeft() + updatedRecognitions.get(i).getRight()) / 2;
+                        double y = (updatedRecognitions.get(i).getTop() + updatedRecognitions.get(i).getBottom()) / 2;
 
                         telemetry.addData(""," ");
-                        telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
+                        telemetry.addData("Image", "%s (%.0f %% Conf.)", updatedRecognitions.get(i).getLabel(), updatedRecognitions.get(i).getConfidence() * 100);
                         telemetry.addData("- Position", "%.0f / %.0f", x, y);
-                        telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
+                        telemetry.addData("- Size", "%.0f x %.0f", updatedRecognitions.get(i).getWidth(), updatedRecognitions.get(i).getHeight());
 
                         // Implement logic to determine object position (left, center, right).
-                        double objectX = recognition.getLeft();
-                        double objectWidth = recognition.getWidth();
+                        double objectX = updatedRecognitions.get(i).getLeft();
+                        double objectWidth = updatedRecognitions.get(i).getWidth();
                         double objectCenterX = objectX + objectWidth / 2.0;
 
                         if (objectCenterX < screenWidth / 3.0) {
@@ -260,14 +283,52 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
         return direction;
     }
 
-    public String newTelemetryTfod() {
+    public String redTelemetryTfod() {
         Recognition recognition = redTfod();
-        String direction = "";
-        double screenWidth = 2200;//tfodProcessor..getCameraView().getWidth();
+        String direction = "center";
+        double screenWidth = 2200;//tfodProcessor.getCameraView().getWidth();
 
         if(recognition==null) {
             telemetry.addData("recognition is null", "default center");
-            return "center";
+            return direction;
+        }
+        double x = (recognition.getLeft() + recognition.getRight()) / 2;
+        double y = (recognition.getTop() + recognition.getBottom()) / 2;
+
+        telemetry.addData(""," ");
+        telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
+        telemetry.addData("- Position", "%.0f / %.0f", x, y);
+        telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
+
+        // Implement logic to determine object position (left, center, right).
+        double objectX = recognition.getLeft();
+        double objectWidth = recognition.getWidth();
+        double objectCenterX = objectX + objectWidth / 2.0;
+
+        if (objectCenterX < screenWidth / 3.0) {
+            telemetry.addData("Position", "Left");
+            direction = "left";
+        } else if (objectCenterX < 2 * screenWidth / 3.0) {
+            telemetry.addData("Position", "Center");
+            direction = "center";
+        } else {
+            telemetry.addData("Position", "Right");
+            direction = "right";
+        }
+        telemetry.addData("Object Center X", objectCenterX);
+        telemetry.update();
+        return direction;
+    }
+
+
+    private String blueTelemetryTfod() {
+        Recognition recognition = blueTfod();
+        String direction = "center";
+        double screenWidth = 2200;//tfodProcessor.getCameraView().getWidth();
+
+        if(recognition==null) {
+            telemetry.addData("recognition is null", "default center");
+            return direction;
         }
         double x = (recognition.getLeft() + recognition.getRight()) / 2;
         double y = (recognition.getTop() + recognition.getBottom()) / 2;
