@@ -1,3 +1,4 @@
+
 /* Copyright (c) 2017 FIRST. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -140,10 +141,18 @@ public class MecanumOpMode extends OpMode
 
         // arm
         if (gamepad2.right_bumper) {
-            bot.arm.moveArm(bot.arm.getCurrentArmPos() + Arm.ARM_SPEED);
+            if (bot.hanger.launched) {
+                bot.arm.moveArm(bot.arm.getCurrentArmPos() + Arm.ARM_SPEED, false);
+            } else {
+                bot.arm.moveArm(bot.arm.getCurrentArmPos() + Arm.ARM_SPEED, true);
+            }
         }
         else if (gamepad2.left_bumper) {
-            bot.arm.moveArm(bot.arm.getCurrentArmPos() - Arm.ARM_SPEED);
+            if (bot.hanger.launched) {
+                bot.arm.moveArm(bot.arm.getCurrentArmPos() - Arm.ARM_SPEED, false);
+            } else {
+                bot.arm.moveArm(bot.arm.getCurrentArmPos() - Arm.ARM_SPEED, true);
+            }
         } else if (gamepad2.dpad_left) {
             bot.arm.goMax();
         } else if (gamepad2.dpad_right) {

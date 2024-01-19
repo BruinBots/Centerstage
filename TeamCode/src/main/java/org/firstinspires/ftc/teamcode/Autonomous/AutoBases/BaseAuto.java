@@ -152,7 +152,7 @@ public class BaseAuto {
         sleep(250);
 
         // lift up the arm
-        bot.arm.moveArm(Arm.MAX_ARM_POSITION);
+        bot.arm.moveArm(Arm.MAX_ARM_POSITION, true);
         sleep(250);
 
         // lift up the slide\
@@ -168,7 +168,7 @@ public class BaseAuto {
         // retract the slide
 
         // retract the arm
-        bot.arm.moveArm(Arm.MIN_ARM_POSITION);
+        bot.arm.moveArm(Arm.MIN_ARM_POSITION, true);
         sleep(250);
 
         // TODO: may need to back up to let the pixels fall down

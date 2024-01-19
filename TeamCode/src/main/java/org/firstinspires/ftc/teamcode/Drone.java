@@ -9,7 +9,7 @@ public class Drone {
     public double OPEN_POS = 0;
     public double CLOSED_POS = 1;
     public long timeWhenLaunched;
-    public long rotateAndLaunchDelay = 300;
+    public long rotateAndLaunchDelay = 400;
     public long timeBeforeReset = 1000;
     public enum launchPoses {open, closed}
     public double MAX_ROTATE_POS = 0.65;
