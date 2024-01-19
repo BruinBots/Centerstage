@@ -8,14 +8,10 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Arm;
-import org.firstinspires.ftc.teamcode.Autonomous.AprilTags;
 import org.firstinspires.ftc.teamcode.Autonomous.AprilTagsAutonomous;
-import org.firstinspires.ftc.teamcode.Autonomous.AprilTagsUpdated;
 import org.firstinspires.ftc.teamcode.Autonomous.TensorFlowForAutonomousBlueRed;
 import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import com.qualcomm.robotcore.hardware.Servo;
 
 public class BaseAuto {
 
@@ -74,7 +70,7 @@ public class BaseAuto {
     public Trajectory spike(Pose2d startPose, String side, boolean finishSpike) {
 
         // ensure the pixel is securely in the dropper
-        bot.dropper.dropperDown();
+        bot.dropper.open();
         sleep(250);
 
         Trajectory traj0a = spikeStart(startPose);
@@ -104,7 +100,7 @@ public class BaseAuto {
         drive.followTrajectory(traj0a); // move to the spikeStart position to ensure no crashing during navigation
         drive.followTrajectory(traj0b); // move to the spike mark
 
-        bot.dropper.dropperUp(); // release the pixel
+        bot.dropper.closed(); // release the pixel
         sleep(250);
 
         if (finishSpike) {

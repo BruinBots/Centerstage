@@ -28,12 +28,4 @@ public class Dropper {
             open();
         }
     }
-
-    public void dropperDown() {
-        dropperServo.setPosition(DROPPER_DOWN_POS);
-    }
-
-    public void dropperUp() {
-        dropperServo.setPosition(DROPPER_UP_POS);
-    }
 }

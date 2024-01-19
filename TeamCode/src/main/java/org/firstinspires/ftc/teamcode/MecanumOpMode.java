@@ -106,7 +106,7 @@ public class MecanumOpMode extends OpMode
         }
         // dropper
         if (gamepad2.y) {
-            bot.dropper.dropperUp();
+            bot.dropper.closed();
         }
 
 
