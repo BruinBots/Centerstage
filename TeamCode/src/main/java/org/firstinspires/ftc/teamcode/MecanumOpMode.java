@@ -111,6 +111,8 @@ public class MecanumOpMode extends OpMode
             bot.inOutTake.intake();
         } else if (gamepad1.right_trigger > 0.2) {
             bot.inOutTake.outtake();
+        } else {
+            bot.inOutTake.stopTake();
         }
 
         // dropper
@@ -139,22 +141,18 @@ public class MecanumOpMode extends OpMode
         // arm
         if (gamepad2.right_bumper) {
             bot.arm.moveArm(bot.arm.getCurrentArmPos() + Arm.ARM_SPEED);
-            bot.claw.setClawWristFromAngle(bot.arm.clawAngle());
         }
         else if (gamepad2.left_bumper) {
             bot.arm.moveArm(bot.arm.getCurrentArmPos() - Arm.ARM_SPEED);
-            bot.claw.setClawWristFromAngle(bot.arm.clawAngle());
+        } else if (gamepad2.dpad_left) {
+            bot.arm.goMax();
+        } else if (gamepad2.dpad_right) {
+            bot.arm.goStraight();
+        } else if (gamepad2.dpad_down) {
+            bot.arm.goDown();
         }
         else {
             bot.arm.holdArmPos();
-        }
-
-        if (gamepad2.dpad_left && !gp2dpadleft) {
-            bot.arm.goMax();
-        } else if (gamepad2.dpad_right && !gp2dpadright) {
-            bot.arm.goStraight();
-        } else if (gamepad2.dpad_down && !gp2dpaddown) {
-            bot.arm.goDown();
         }
 
         // claw
@@ -162,6 +160,7 @@ public class MecanumOpMode extends OpMode
             bot.claw.closeBothClaw();
         } else if (gamepad2.y && !gp2y) {
             bot.claw.closeLowerClaw();
+            bot.claw.openUpperClaw();
         } else if (gamepad2.a && !gp2a) {
             bot.claw.openBothClaw();
         }

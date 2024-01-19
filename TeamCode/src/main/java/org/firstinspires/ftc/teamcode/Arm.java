@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 public class Arm {
 
     // declare  motors
-    private final DcMotorEx armMotor;
+    private static DcMotorEx armMotor;
 
     // declare constants
     public static int MAX_ARM_POSITION = 2100;
@@ -27,17 +27,17 @@ public class Arm {
         armMotor.setPower(0);
     }
 
-    private double ticksToDegrees(double ticks) {
+    private static double ticksToDegrees(double ticks) {
         return (ticks / GEAR_RATIO) * (360/537.7);
     }
 
-    public double armAngle() {
+    public static double armAngle() {
         double ticks = armMotor.getCurrentPosition();
         double degrees = ticksToDegrees(ticks);
         return degrees - OFFSET_ANGLE;
     }
 
-    public double clawAngle() {
+    public static double clawAngle() {
         double armAngle = armAngle();
         double clawAngle = 0;
         if (armAngle > 120) {
@@ -47,17 +47,19 @@ public class Arm {
     }
 
     public void moveArm(int targetPos) {
-        // if arm pos is greater or less than max/min then set to max/min
-        if (targetPos < MIN_ARM_POSITION) {
-            targetPos = MIN_ARM_POSITION;
-        }
-        else if (targetPos > MAX_ARM_POSITION) {
-            targetPos = MAX_ARM_POSITION;
-        }
+        if (!(InOutTake.scoopServo.getPosition() > InOutTake.SCOOP_MIDDLE_POS + 0.001)) {
+            // if arm pos is greater or less than max/min then set to max/min
+            if (targetPos < MIN_ARM_POSITION) {
+                targetPos = MIN_ARM_POSITION;
+            } else if (targetPos > MAX_ARM_POSITION) {
+                targetPos = MAX_ARM_POSITION;
+            }
 
-        armMotor.setPower(ARM_POWER);
-        armMotor.setTargetPosition(targetPos);
-        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            armMotor.setPower(ARM_POWER);
+            armMotor.setTargetPosition(targetPos);
+            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Claw.setClawWristFromAngle(Arm.clawAngle());
+        }
     }
 
     public void goMax() {

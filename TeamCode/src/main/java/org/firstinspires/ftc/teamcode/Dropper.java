@@ -7,7 +7,7 @@ public class Dropper {
     public final Servo dropperServo;
 
     public static final double DROPPER_CLOSED_POS = 0.2; // 0-1 this is counterclockwise from down, when facing the servo face
-    public static final double DROPPER_OPEN_POS = 0.95;
+    public static final double DROPPER_OPEN_POS = 0;
     boolean dropped;
 
     public Dropper (Servo dropperServo) { this.dropperServo = dropperServo; }

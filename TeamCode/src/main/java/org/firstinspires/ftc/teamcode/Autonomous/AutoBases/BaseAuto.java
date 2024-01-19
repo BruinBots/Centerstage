@@ -64,7 +64,7 @@ public class BaseAuto {
     public Trajectory spike(Pose2d startPose, String side, boolean finishSpike) {
 
         // ensure the pixel is securely in the dropper
-        bot.dropper.dropperDown();
+        bot.dropper.closed();
         sleep(250);
 
         Trajectory traj0a = spikeStart(startPose);
@@ -94,7 +94,7 @@ public class BaseAuto {
         drive.followTrajectory(traj0a); // move to the spikeStart position to ensure no crashing during navigation
         drive.followTrajectory(traj0b); // move to the spike mark
 
-        bot.dropper.dropperUp(); // release the pixel
+        bot.dropper.open(); // release the pixel
         sleep(250);
 
         if (finishSpike) {
