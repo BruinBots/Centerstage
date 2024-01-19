@@ -6,19 +6,16 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 public class Arm {
 
     // declare  motors
-    private static DcMotorEx armMotor;
+    private final DcMotorEx armMotor;
 
     // declare constants
-    public static int MAX_ARM_POSITION = 21000;
-    public static int PLACING_ARM_POSITION = 1900;
-    public static int STRAIGHT_ARM_POSITION = 1268;
+    public static int MAX_ARM_POSITION = 3000;
     public static int MIN_ARM_POSITION = 0;
-    public static int ARM_SPEED = 6000;
-    public static double ARM_POWER = 1; // the default power supplied to the arm when being used
-    public static double OFFSET_ANGLE = 38.4;
-    public static double GEAR_RATIO = 6.6862745;
-
-    private boolean bypass;
+    public static int ARM_SPEED = 50;
+    //    public static double ARM_POWER = 0.7; // the default power supplied to the arm when being used
+    public static double ARM_POWER = 0.2; // this is for autonomous safety testing; not final value; use above value
+    public static double OFFSET_ANGLE = 44.2;
+    public static double GEAR_RATIO = 9.12;
 
     // note: inOutTake must be initialized before calling this constructor
     public Arm (DcMotorEx armMotor) {
@@ -26,20 +23,20 @@ public class Arm {
     }
 
     public void holdArmPos() {
-        armMotor.setPower(0);
+        armMotor.setPower(1);
     }
 
-    private static double ticksToDegrees(double ticks) {
-        return (ticks / GEAR_RATIO) * (360/5281.1); // 537.7 old motor
+    private double ticksToDegrees(double ticks) {
+        return (ticks / GEAR_RATIO) * (360/537.7);
     }
 
-    public static double armAngle() {
+    public double armAngle() {
         double ticks = armMotor.getCurrentPosition();
         double degrees = ticksToDegrees(ticks);
         return degrees - OFFSET_ANGLE;
     }
 
-    public static double clawAngle() {
+    public double clawAngle() {
         double armAngle = armAngle();
         double clawAngle = 0;
         if (armAngle > 120) {
@@ -48,43 +45,24 @@ public class Arm {
         return clawAngle;
     }
 
-    public void moveArm(int targetPos, boolean safety) {
-        if (safety) {
-            if (!(InOutTake.scoopServo.getPosition() > InOutTake.SCOOP_MIDDLE_POS + 0.001)) {
-                bypass = true;
-            } else {
-                bypass = false;
-                return;
-            }
-        } else {
-            bypass = true;
+    public void moveArm(int targetPos, double power) {
+        // if arm pos is greater or less than max/min then set to max/min
+        if (targetPos < MIN_ARM_POSITION) {
+            targetPos = MIN_ARM_POSITION;
         }
-        if (bypass) {
-            // if arm pos is greater or less than max/min then set to max/min
-            if (targetPos < MIN_ARM_POSITION) {
-                targetPos = MIN_ARM_POSITION;
-            } else if (targetPos > MAX_ARM_POSITION) {
-                targetPos = MAX_ARM_POSITION;
-            }
-
-            armMotor.setPower(ARM_POWER);
-            armMotor.setTargetPosition(targetPos);
-            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            Claw.setClawWristFromAngle(Arm.clawAngle());
+        else if (targetPos > MAX_ARM_POSITION) {
+            targetPos = MAX_ARM_POSITION;
         }
+
+        armMotor.setPower(power);
+        armMotor.setTargetPosition(targetPos);
+        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
-    public void goMax() {
-        moveArm(PLACING_ARM_POSITION, true);
+    public void moveArm(int targetPos) {
+        moveArm(targetPos, ARM_POWER);
     }
 
-    public void goStraight() {
-        moveArm(STRAIGHT_ARM_POSITION, true);
-    }
-
-    public void goDown() {
-        moveArm(MIN_ARM_POSITION, true);
-    }
 
     public int getCurrentArmPos() { return armMotor.getCurrentPosition(); }
 }
