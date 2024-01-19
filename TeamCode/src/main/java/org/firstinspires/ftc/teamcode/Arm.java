@@ -9,11 +9,11 @@ public class Arm {
     private static DcMotorEx armMotor;
 
     // declare constants
-    public static int MAX_ARM_POSITION = 2100;
+    public static int MAX_ARM_POSITION = 21000;
     public static int PLACING_ARM_POSITION = 1900;
     public static int STRAIGHT_ARM_POSITION = 1268;
     public static int MIN_ARM_POSITION = 0;
-    public static int ARM_SPEED = 60;
+    public static int ARM_SPEED = 6000;
     public static double ARM_POWER = 1; // the default power supplied to the arm when being used
     public static double OFFSET_ANGLE = 38.4;
     public static double GEAR_RATIO = 6.6862745;
