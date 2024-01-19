@@ -170,7 +170,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
                 }
             });
 
-            // Get the one with the most square
+            // Get the one with the larger area.
             Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
                 public int compare(Recognition r1, Recognition r2) {
                     return (int)(((r1.getHeight() * r1.getWidth()) - (r2.getHeight() * r2.getWidth())));
@@ -193,6 +193,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
                 }
             });
 
+            // Get the one with the most square shape
             Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
                 public int compare(Recognition r1, Recognition r2) {
                     return (int)((Math.abs((r2.getHeight() / r2.getWidth()) - (r2.getWidth() / r2.getHeight())) - Math.abs((r1.getHeight() / r1.getWidth()) - (r1.getWidth() / r1.getHeight())) * 100));
@@ -225,7 +226,14 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
                     }
                 });
 
-                // Get the one with the most square
+                // Get the one with the most square shape
+                Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
+                    public int compare(Recognition r1, Recognition r2) {
+                        return (int)((Math.abs((r2.getHeight() / r2.getWidth()) - (r2.getWidth() / r2.getHeight())) - Math.abs((r1.getHeight() / r1.getWidth()) - (r1.getWidth() / r1.getHeight())) * 100));
+                    }
+                });
+
+                // Get the one with the larger area
                 Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
                     public int compare(Recognition r1, Recognition r2) {
                         return (int)(((r1.getHeight() * r1.getWidth()) - (r2.getHeight() * r2.getWidth())));
