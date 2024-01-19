@@ -25,14 +25,16 @@ public class AutoTest extends LinearOpMode {
         bot.inOutTake.scoopHalfDown();
         sleep(1000);
         bot.arm.moveArm(Arm.MAX_ARM_POSITION);
-        sleep(2500);
+        sleep(5000);
         bot.claw.setClawWrist(0.4);
         sleep(1000);
         // TODO: open claw
         bot.claw.openBothClaw();
         sleep(1000);
-        bot.arm.moveArm(0, 0.2);
-        sleep(2500);
+        bot.claw.setClawWrist(0.1);
+        sleep(1000);
+        bot.arm.moveArm(0, 0.1);
+        sleep(10000);
 //        BlueNearAuto auto = new BlueNearAuto(hardwareMap, telemetry);
 //        waitForStart();
 //        auto.placePixel(BlueNearAuto.startingPosition, aprilId, true);
