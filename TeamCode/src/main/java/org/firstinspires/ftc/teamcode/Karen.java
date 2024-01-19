@@ -68,6 +68,7 @@ public class Karen  {
         clawWristServo = map.get(Servo.class, "claw_wrist_servo");
         clawLowerFinger = map.get(Servo.class, "claw_lower_finger");
         clawUpperFinger = map.get(Servo.class, "claw_upper_finger");
+        clawUpperFinger.setDirection(Servo.Direction.REVERSE);
         claw = new Claw(clawWristServo, clawLowerFinger, clawUpperFinger);
 
         // odometry deadwheels

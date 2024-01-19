@@ -14,30 +14,17 @@ import org.firstinspires.ftc.teamcode.Karen;
 @Autonomous(name="AutoTest", group="Autonomous: Testing")
 public class AutoTest extends LinearOpMode {
 
-    public static int aprilId = 1;
+    public static int aprilId = 2;
 
     private AprilTagsAutonomous aprilTags;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        Karen bot = new Karen(hardwareMap);
-        waitForStart();
-        bot.inOutTake.scoopHalfDown();
-        sleep(1000);
-        bot.arm.moveArm(Arm.MAX_ARM_POSITION);
-        sleep(5000);
-        bot.claw.setClawWrist(0.4);
-        sleep(1000);
-        // TODO: open claw
-        bot.claw.openBothClaw();
-        sleep(1000);
-        bot.claw.setClawWrist(0.1);
-        sleep(1000);
-        bot.arm.moveArm(0, 0.1);
-        sleep(10000);
-//        BlueNearAuto auto = new BlueNearAuto(hardwareMap, telemetry);
+//        Karen bot = new Karen(hardwareMap);
 //        waitForStart();
-//        auto.placePixel(BlueNearAuto.startingPosition, aprilId, true);
+        BlueNearAuto auto = new BlueNearAuto(hardwareMap, telemetry);
+        waitForStart();
+        auto.placePixel(BlueNearAuto.startingPosition, aprilId, true);
 
     }
 

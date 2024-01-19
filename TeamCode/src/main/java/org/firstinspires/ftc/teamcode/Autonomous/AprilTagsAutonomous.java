@@ -27,8 +27,8 @@ import java.util.List;
 public class AprilTagsAutonomous {
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
     //this variable is the offset for the robot doesn't hit the backboard in inch to how close you want it to the backboard/ put always if you want a number put add one
-    public static double offSetBackboardX = -9;
-    public static double offSetBackboardY = 4;
+    public static double offSetBackboardX = -7.5;
+    public static double offSetBackboardY = 2;
     private AprilTagProcessor aprilTag;
     private VisionPortal visionPortal;
 
