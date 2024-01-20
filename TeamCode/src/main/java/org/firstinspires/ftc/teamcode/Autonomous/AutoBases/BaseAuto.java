@@ -198,7 +198,7 @@ public class BaseAuto {
 
         }
         Trajectory backTraj = drive.trajectoryBuilder(start2.end())
-                .lineToConstantHeading(new Vector2d(48, 35 + offset))
+                .lineToConstantHeading(new Vector2d(48 - 8, 35 + offset))
                         .build();
         drive.followTrajectory(backTraj);
 
