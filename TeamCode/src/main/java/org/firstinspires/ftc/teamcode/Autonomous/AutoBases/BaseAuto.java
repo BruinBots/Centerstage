@@ -201,7 +201,7 @@ public class BaseAuto {
         }
         Trajectory backTraj = drive.trajectoryBuilder(start2.end())
                 .lineToConstantHeading(new Vector2d(48 - 8, 35 + offset))
-                        .build();
+                .build();
         drive.followTrajectory(backTraj);
 
         // TODO: place pixel
@@ -231,7 +231,6 @@ public class BaseAuto {
 
         return backTraj;
     }
-<<<<<<< HEAD
 
 //    public Trajectory placePixel(Pose2d startPose, int aprilId, boolean blue) {
 //        return placePixel(startPose, aprilId, blue, false);
@@ -251,11 +250,6 @@ public class BaseAuto {
                 break;
         }
         return placePixel(startPose, side, blue);
-=======
-
-    public Trajectory placePixel(Pose2d startPose, String side, boolean blue) {
-        return placePixel(startPose, side, blue, false);
->>>>>>> CS100-autonomous-develop
     }
 
     public Trajectory backdropStart1(Pose2d startPose) {
