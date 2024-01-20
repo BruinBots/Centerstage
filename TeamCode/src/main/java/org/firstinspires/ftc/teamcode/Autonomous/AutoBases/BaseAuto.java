@@ -231,6 +231,7 @@ public class BaseAuto {
 
         return backTraj;
     }
+<<<<<<< HEAD
 
 //    public Trajectory placePixel(Pose2d startPose, int aprilId, boolean blue) {
 //        return placePixel(startPose, aprilId, blue, false);
@@ -250,6 +251,11 @@ public class BaseAuto {
                 break;
         }
         return placePixel(startPose, side, blue);
+=======
+
+    public Trajectory placePixel(Pose2d startPose, String side, boolean blue) {
+        return placePixel(startPose, side, blue, false);
+>>>>>>> CS100-autonomous-develop
     }
 
     public Trajectory backdropStart1(Pose2d startPose) {
