@@ -15,28 +15,17 @@ import org.firstinspires.ftc.teamcode.Karen;
 @Autonomous(name="AutoTest", group="Autonomous: Testing")
 public class AutoTest extends LinearOpMode {
 
-    public static int aprilId = 2;
 
     @Override
     public void runOpMode() throws InterruptedException {
-//        Karen bot = new Karen(hardwareMap);
-//        waitForStart();
-        BlueNearAuto auto = new BlueNearAuto(hardwareMap, telemetry);
+        BlueFarAuto auto = new BlueFarAuto(hardwareMap, telemetry);
         waitForStart();
-      //  auto.spike2(BlueNearAuto.startingPosition, auto.tfSpike(true), false);
-        auto.placePixel(BlueNearAuto.startingPosition, aprilId, true);
-    }
 
-//    @Override
-//    public void init() {
-//        aprilTags = new AprilTagsAutonomous();
-//    }
-//
-//    @Override
-//    public void loop() {
-//        Vector2d aprilVector = aprilTags.getOffset(hardwareMap, telemetry, aprilId);
-//        telemetry.addData("x", aprilVector.getX());
-//        telemetry.addData("y", aprilVector.getY());
-//        telemetry.update();
-//    }
+
+//        aprilTags.visionPortal.close();
+
+        auto.placePixel(BlueFarAuto.startingPosition, "center", true);
+//        auto.spike2(BlueFarAuto.startingPosition, auto.tfSpike(true),  false);
+
+    }
 }
