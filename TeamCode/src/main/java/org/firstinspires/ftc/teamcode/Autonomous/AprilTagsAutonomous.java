@@ -119,15 +119,8 @@ public class AprilTagsAutonomous {
                 telemetry.addData("range", detection.ftcPose.range);
                 telemetry.addData("bearing", detection.ftcPose.bearing);
                 telemetry.addData("elevation", detection.ftcPose.elevation);
-<<<<<<< HEAD
-
-              //  public static double offSetBackboardX = -7.5;
-                //public static double offSetBackboardY = 2;
-//                return new Vector2d(detection.ftcPose.range + offSetBackboardY, -detection.ftcPose.x + offSetBackboardX);
-                return new Vector2d(detection.ftcPose.x + offSetBackboardY, detection.ftcPose.range*Math.cos(Math.toRadians(detection.ftcPose.bearing))+offSetBackboardX);
-=======
+//                return new Vector2d(detection.ftcPose.x + offSetBackboardY, detection.ftcPose.range*Math.cos(Math.toRadians(detection.ftcPose.bearing))+offSetBackboardX);
                 return new Vector2d(detection.ftcPose.range + offSetBackboardX, -detection.ftcPose.x + offSetBackboardY);
->>>>>>> CS100-autonomous-develop
             }
         }
         return new Vector2d(0, 0);
