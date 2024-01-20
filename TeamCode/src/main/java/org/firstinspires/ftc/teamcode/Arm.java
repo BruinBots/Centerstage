@@ -14,9 +14,9 @@ public class Arm {
     public static int STRAIGHT_ARM_POSITION = 1720;
     public static int MIN_ARM_POSITION = 0;
     public static int ARM_SPEED = 50;
-    public static double ARM_POWER = 1; // the default power supplied to the arm when being used
+    public static double ARM_POWER = 0.5; // the default power supplied to the arm when being used
     public static double OFFSET_ANGLE = 38.4;
-    public static double GEAR_RATIO = 9.12;
+    public static double GEAR_RATIO = 9.1;
 
     private boolean bypass;
 
@@ -48,11 +48,7 @@ public class Arm {
         return clawAngle;
     }
 
-    public void moveArm(int position, boolean safety) {
-        moveArm(position, safety, ARM_POWER);
-    }
-
-    public void moveArm(int targetPos, boolean safety, double power) {
+    public void moveArm(int targetPos, boolean safety) {
         if (Claw.lower == Claw.Status.CLOSED && Claw.upper == Claw.Status.CLOSED) {
             if (safety) {
                 if (!(InOutTake.scoopServo.getPosition() > InOutTake.SCOOP_MIDDLE_POS + 0.001)) {
@@ -72,18 +68,12 @@ public class Arm {
                     targetPos = MAX_ARM_POSITION;
                 }
 
-                armMotor.setPower(power);
+                armMotor.setPower(ARM_POWER);
                 armMotor.setTargetPosition(targetPos);
                 armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 Claw.setClawWristFromAngle(Arm.clawAngle());
             }
-        } else {
-            Claw.closeBothClaw();
         }
-    }
-
-    public void moveArm(int position, double power) {
-        moveArm(position, true, power);
     }
 
     public void goMax() {
