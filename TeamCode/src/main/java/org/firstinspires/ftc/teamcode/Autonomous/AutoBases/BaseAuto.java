@@ -8,8 +8,6 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Autonomous.AprilTagsAutonomous;
-import org.firstinspires.ftc.teamcode.Autonomous.TensorFlowForAutonomousBlueRed;
 import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
@@ -44,29 +42,31 @@ public class BaseAuto {
      */
     public String tfSpike(boolean blue) {
 
-        bot.scoopServo.setPosition(0);
-        sleep(1000);
+//        bot.scoopServo.setPosition(0);
+//        sleep(1000);
+//
+//        TensorFlowForAutonomousBlueRed tf = new TensorFlowForAutonomousBlueRed(hardwareMap, telemetry, blue ? "blue" : "red");
+//        tf.initTfod();
+//        sleep(3000);
+//
+//        tf.visionPortal.resumeStreaming();
+//
+//        int i = 0;
+//        String side = "none";
+//        while (side.equals("none") && i < 2) {
+//            side = tf.getSide(blue);
+//            telemetry.addData("A-side", side);
+//            telemetry.update();
+//            i++;
+//            sleep(20);
+//        }
+//
+//        tf.visionPortal.close();
+//
+//        bot.inOutTake.scoopMiddle();
+//        sleep(750);
 
-        TensorFlowForAutonomousBlueRed tf = new TensorFlowForAutonomousBlueRed(hardwareMap, telemetry, blue ? "blue" : "red");
-        tf.initTfod();
-        sleep(3000);
-
-        tf.visionPortal.resumeStreaming();
-
-        int i = 0;
-        String side = "none";
-        while (side.equals("none") && i < 2) {
-            side = tf.getSide(blue);
-            telemetry.addData("A-side", side);
-            telemetry.update();
-            i++;
-            sleep(20);
-        }
-
-        tf.visionPortal.close();
-
-        bot.inOutTake.scoopMiddle();
-        sleep(750);
+        String side = "center";
 
         return side;
     }
