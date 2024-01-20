@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Autonomous.AprilTagsAutonomous;
+import org.firstinspires.ftc.teamcode.Autonomous.TensorFlowForAutonomousBlueRed;
 import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
@@ -172,14 +173,14 @@ public class BaseAuto {
 
 
 //        AprilTagsAutonomous aprilTags = new AprilTagsAutonomous();
-////        AprilTags aprilTags = new AprilTags();
-////        AprilTagsUpdated aprilTags = new AprilTagsUpdated();
+//        AprilTags aprilTags = new AprilTags();
+//        AprilTagsUpdated aprilTags = new AprilTagsUpdated();
 //        Vector2d aprilVector = aprilTags.getOffset(hardwareMap, telemetry, aprilId);
 //        telemetry.addData("x", aprilVector.getX());
 //        telemetry.addData("y", aprilVector.getY());
 //        telemetry.update();
 //        sleep(5000);
-//
+
 //        Trajectory aprilTraj = drive.trajectoryBuilder(startEnd)
 //                .lineToConstantHeading(new Vector2d(startEnd.getX() + aprilVector.getX(), startEnd.getY() + aprilVector.getY()))
 //                .build();
@@ -236,19 +237,18 @@ public class BaseAuto {
 //    }
 
     public Trajectory placePixel(Pose2d startPose, String side, boolean blue) {
-//        int aprilId;
-//        switch (side) {
-//            case "left":
-//                aprilId = 1;
-//                break;
-//            case "right":
-//                aprilId = 3;
-//                break;
-//            default:
-//                aprilId = 2;
-//                break;
-//
-//        }
+        int aprilId;
+        switch (side) {
+            case "left":
+                aprilId = 1;
+                break;
+            case "right":
+                aprilId = 3;
+                break;
+            default:
+                aprilId = 2;
+                break;
+        }
         return placePixel(startPose, side, blue);
     }
 

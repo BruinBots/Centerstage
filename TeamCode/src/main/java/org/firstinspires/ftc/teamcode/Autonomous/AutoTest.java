@@ -18,12 +18,6 @@ public class AutoTest extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-//        Karen bot = new Karen(hardwareMap);
-//        waitForStart();
-//        aprilTags = new AprilTagsAutonomous();
-//        aprilTags.initAprilTag(hardwareMap);
-
-//        BlueNearAuto auto = new BlueNearAuto(hardwareMap, telemetry);
         BlueFarAuto auto = new BlueFarAuto(hardwareMap, telemetry);
         waitForStart();
 
