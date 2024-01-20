@@ -10,10 +10,10 @@ public class Arm {
 
     // declare constants
     public static int MAX_ARM_POSITION = 3000;
-    public static int PLACING_ARM_POSITION = 2300;
+    public static int PLACING_ARM_POSITION = 2700;
     public static int STRAIGHT_ARM_POSITION = 1720;
     public static int MIN_ARM_POSITION = 0;
-    public static int ARM_SPEED = 30;
+    public static int ARM_SPEED = 50;
     public static double ARM_POWER = 0.5; // the default power supplied to the arm when being used
     public static double OFFSET_ANGLE = 38.4;
     public static double GEAR_RATIO = 9.1;
