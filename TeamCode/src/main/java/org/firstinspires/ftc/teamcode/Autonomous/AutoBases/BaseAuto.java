@@ -44,12 +44,12 @@ public class BaseAuto {
      */
     public String tfSpike(boolean blue) {
 
-        bot.inOutTake.scoopDown();
-        sleep(750);
+        bot.scoopServo.setPosition(0);
+        sleep(1000);
 
         TensorFlowForAutonomousBlueRed tf = new TensorFlowForAutonomousBlueRed(hardwareMap, telemetry, blue ? "blue" : "red");
         tf.initTfod();
-        sleep(500);
+        sleep(3000);
 
         tf.visionPortal.resumeStreaming();
 
@@ -65,7 +65,7 @@ public class BaseAuto {
 
         tf.visionPortal.close();
 
-        bot.inOutTake.scoopHalfDown();
+        bot.inOutTake.scoopMiddle();
         sleep(750);
 
         return side;
@@ -256,8 +256,8 @@ public class BaseAuto {
         switch (side) {
             case "left":
                 telemetry.addData("side", "left");
-                drive.turn(Math.toRadians(90));
-                endEnter = endEnter.plus(new Pose2d(0, 0, Math.toRadians(90)));
+//                drive.turn(Math.toRadians(90));
+//                endEnter = endEnter.plus(new Pose2d(0, 0, Math.toRadians(90)));
                 vector = relativeSpikeLeft2();
                 traj = drive.trajectoryBuilder(endEnter)
                         .lineToConstantHeading(new Vector2d(endEnter.getX() + vector.getX(), endEnter.getY() + vector.getY()))
@@ -276,8 +276,8 @@ public class BaseAuto {
                 break;
             case "right":
                 telemetry.addData("side", "right");
-                drive.turn(Math.toRadians(-90));
-                endEnter = endEnter.plus(new Pose2d(0, 0, Math.toRadians(-90)));
+//                drive.turn(Math.toRadians(-90));
+//                endEnter = endEnter.plus(new Pose2d(0, 0, Math.toRadians(-90)));
                 vector = relativeSpikeRight2();
                 traj = drive.trajectoryBuilder(endEnter)
                         .lineToConstantHeading(new Vector2d(endEnter.getX() + vector.getX(), endEnter.getY() + vector.getY()))
@@ -287,8 +287,8 @@ public class BaseAuto {
                 break;
             default:
                 telemetry.addData("side", "default");
-                drive.turn(Math.toRadians(90));
-                endEnter = endEnter.plus(new Pose2d(0, 0, Math.toRadians(90)));
+//                drive.turn(Math.toRadians(90));
+//                endEnter = endEnter.plus(new Pose2d(0, 0, Math.toRadians(90)));
                 vector = relativeSpikeLeft2();
                 traj = drive.trajectoryBuilder(endEnter)
                         .lineToConstantHeading(new Vector2d(endEnter.getX() + vector.getX(), endEnter.getY() + vector.getY()))
@@ -297,9 +297,10 @@ public class BaseAuto {
                 endEnter = traj.end();
                 break;
         }
+        telemetry.update();
 
-        // TODO: release the pixel
         bot.dropper.closed();
+        sleep(500);
 
         if (finishSpike) {
             Trajectory exit = spikeExit2(endEnter);

@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.Arm;
+import org.firstinspires.ftc.teamcode.Autonomous.AutoBases.BlueFarAuto;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoBases.BlueNearAuto;
 import org.firstinspires.ftc.teamcode.Karen;
 
@@ -25,4 +26,17 @@ public class AutoTest extends LinearOpMode {
         auto.placePixel(BlueNearAuto.startingPosition, aprilId, true);
         auto.spike2(BlueNearAuto.startingPosition, auto.tfSpike(true), false);
     }
+
+//    @Override
+//    public void init() {
+//        aprilTags = new AprilTagsAutonomous();
+//    }
+//
+//    @Override
+//    public void loop() {
+//        Vector2d aprilVector = aprilTags.getOffset(hardwareMap, telemetry, aprilId);
+//        telemetry.addData("x", aprilVector.getX());
+//        telemetry.addData("y", aprilVector.getY());
+//        telemetry.update();
+//    }
 }

@@ -9,7 +9,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class RedFarAuto extends BaseAuto {
 
-    public static Pose2d startingPosition = new Pose2d(-36, -60, Math.toRadians(90));
+    public static Pose2d startingPosition = new Pose2d(-36, -62, Math.toRadians(90));
 
     public RedFarAuto(HardwareMap hardwareMap, Telemetry telemetry) {
         super(hardwareMap, telemetry, startingPosition);
@@ -73,17 +73,17 @@ public class RedFarAuto extends BaseAuto {
 
     @Override
     public Vector2d relativeSpikeCenter2() {
-        return new Vector2d(0, 6);
+        return new Vector2d(0, 14);
     }
 
     @Override
     public Vector2d relativeSpikeLeft2() {
-        return new Vector2d(10, 0);
+        return new Vector2d(11, 0);
     }
 
     @Override
     public Vector2d relativeSpikeRight2() {
-        return new Vector2d(-10, 0);
+        return new Vector2d(-11, 0);
     }
 
     @Override
@@ -96,7 +96,7 @@ public class RedFarAuto extends BaseAuto {
     @Override
     public Trajectory backdropStart2(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(38, -35))
+                .lineToConstantHeading(new Vector2d(43, -35))
                 .build();
     }
 
