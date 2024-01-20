@@ -232,24 +232,8 @@ public class BaseAuto {
         return backTraj;
     }
 
-//    public Trajectory placePixel(Pose2d startPose, int aprilId, boolean blue) {
-//        return placePixel(startPose, aprilId, blue, false);
-//    }
-
     public Trajectory placePixel(Pose2d startPose, String side, boolean blue) {
-        int aprilId;
-        switch (side) {
-            case "left":
-                aprilId = 1;
-                break;
-            case "right":
-                aprilId = 3;
-                break;
-            default:
-                aprilId = 2;
-                break;
-        }
-        return placePixel(startPose, side, blue);
+        return placePixel(startPose, side, blue, false);
     }
 
     public Trajectory backdropStart1(Pose2d startPose) {
