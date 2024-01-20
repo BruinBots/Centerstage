@@ -6,12 +6,13 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoBases.BlueFarAuto;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoBases.BlueNearAuto;
 
-@Autonomous(name = "BlueNearParkOnly")
-public class BlueNearParkOnly extends LinearOpMode {
+@Autonomous(name = "BlueNearSpikePixel")
+public class BlueNearSpikePixel extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         BlueNearAuto auto = new BlueNearAuto(hardwareMap, telemetry);
         waitForStart();
-        auto.park(auto.startPark(BlueNearAuto.startingPosition));
+        String tfSpike = auto.tfSpike(true);
+        auto.placePixel(auto.spike2(BlueNearAuto.startingPosition, tfSpike, true), tfSpike, true);
     }
 }

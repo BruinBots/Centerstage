@@ -8,6 +8,8 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Autonomous.AprilTagsAutonomous;
+import org.firstinspires.ftc.teamcode.Autonomous.TensorFlowForAutonomousBlueRed;
 import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
@@ -206,7 +208,7 @@ public class BaseAuto {
         }
         Trajectory backTraj = drive.trajectoryBuilder(start2.end())
                 .lineToConstantHeading(new Vector2d(48 - 8, 35 + offset))
-                        .build();
+                .build();
         drive.followTrajectory(backTraj);
 
         // TODO: place pixel
@@ -237,8 +239,24 @@ public class BaseAuto {
         return backTraj;
     }
 
+//    public Trajectory placePixel(Pose2d startPose, int aprilId, boolean blue) {
+//        return placePixel(startPose, aprilId, blue, false);
+//    }
+
     public Trajectory placePixel(Pose2d startPose, String side, boolean blue) {
-        return placePixel(startPose, side, blue, false);
+        int aprilId;
+        switch (side) {
+            case "left":
+                aprilId = 1;
+                break;
+            case "right":
+                aprilId = 3;
+                break;
+            default:
+                aprilId = 2;
+                break;
+        }
+        return placePixel(startPose, side, blue);
     }
 
     public Trajectory backdropStart1(Pose2d startPose) {

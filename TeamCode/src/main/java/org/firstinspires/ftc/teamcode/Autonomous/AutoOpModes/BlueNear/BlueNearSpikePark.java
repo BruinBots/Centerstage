@@ -3,15 +3,14 @@ package org.firstinspires.ftc.teamcode.Autonomous.AutoOpModes.BlueNear;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Autonomous.AutoBases.BlueFarAuto;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoBases.BlueNearAuto;
 
-@Autonomous(name = "BlueNearParkOnly")
-public class BlueNearParkOnly extends LinearOpMode {
+@Autonomous(name = "BlueNearSpikePark")
+public class BlueNearSpikePark extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         BlueNearAuto auto = new BlueNearAuto(hardwareMap, telemetry);
         waitForStart();
-        auto.park(auto.startPark(BlueNearAuto.startingPosition));
+        auto.park(auto.spike2(BlueNearAuto.startingPosition, auto.tfSpike(true), true));
     }
 }
