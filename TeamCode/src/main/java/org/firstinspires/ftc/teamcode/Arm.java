@@ -43,7 +43,7 @@ public class Arm {
         double armAngle = armAngle();
         double clawAngle = 0;
         if (armAngle > 120) {
-            clawAngle = armAngle - 120;
+            clawAngle = armAngle - 120 + 3; // + 3 to make it offset a little bit
         }
         return clawAngle;
     }
