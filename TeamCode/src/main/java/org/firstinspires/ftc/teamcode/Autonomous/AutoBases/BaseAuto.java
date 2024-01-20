@@ -207,14 +207,14 @@ public class BaseAuto {
         sleep(500);
         bot.claw.closeBothClaw();
         sleep(500);
-        bot.arm.moveArm(2780, 0.5); // 2560
+        bot.arm.moveArm(2780, true); // 2560
         sleep(500);
         bot.claw.setClawWrist(0.266);
         sleep(500);
         sleep(3500);
         bot.claw.openBothClaw();
         sleep(500);
-        bot.arm.moveArm(0, 0.3);
+        bot.arm.moveArm(0, true);
         sleep(1000);
         bot.claw.setClawWrist(0.1);
         sleep(1000);
