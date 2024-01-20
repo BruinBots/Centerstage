@@ -12,6 +12,6 @@ public class RedNearParkOnly extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         RedNearAuto auto = new RedNearAuto(hardwareMap, telemetry);
         waitForStart();
-        auto.park(RedNearAuto.startingPosition);
+        auto.park(auto.startPark(RedNearAuto.startingPosition));
     }
 }
