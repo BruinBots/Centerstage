@@ -4,8 +4,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class Claw {
     private static Servo wrist;
-    private final Servo lowerFinger;
-    private final Servo upperFinger;
+    private static Servo lowerFinger;
+    private static Servo upperFinger;
 
     public static final double CLAW_WRIST_MIN = 0;
     public static final double CLAW_WRIST_MAX = 0.8;
@@ -17,6 +17,10 @@ public class Claw {
 
     public static final double UPPER_OPEN = 0.27;
     public static final double UPPER_CLOSED = 0;
+
+    public enum Status {OPEN, CLOSED}
+    public static Status upper;
+    public static Status lower;
 
     public Claw(Servo wrist, Servo lowerFinger, Servo upperFinger) {
         Claw.wrist = wrist;
@@ -44,29 +48,33 @@ public class Claw {
     }
 
     public void openLowerClaw() {
+        lower = Status.OPEN;
         lowerFinger.setPosition(LOWER_OPEN);
     }
 
-    public void closeLowerClaw() {
+    public static void closeLowerClaw() {
+        lower = Status.CLOSED;
         lowerFinger.setPosition(LOWER_CLOSED);
     }
 
     public void openUpperClaw() {
+        upper = Status.OPEN;
         upperFinger.setPosition(UPPER_OPEN);
     }
 
-    public void closeUpperClaw() {
+    public static void closeUpperClaw() {
+        upper = Status.CLOSED;
         upperFinger.setPosition(UPPER_CLOSED);
     }
 
     public void openBothClaw() {
-        lowerFinger.setPosition(LOWER_OPEN);
-        upperFinger.setPosition(UPPER_OPEN);
+        openUpperClaw();
+        openLowerClaw();
     }
 
-    public void closeBothClaw() {
-        lowerFinger.setPosition(LOWER_CLOSED);
-        upperFinger.setPosition(UPPER_CLOSED);
+    public static void closeBothClaw() {
+        closeUpperClaw();
+        closeLowerClaw();
     }
 
     public double getCurrentWristPosition() {
