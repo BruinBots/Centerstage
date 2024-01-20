@@ -43,34 +43,36 @@ public class Arm {
         double armAngle = armAngle();
         double clawAngle = 0;
         if (armAngle > 120) {
-            clawAngle = armAngle - 120;
+            clawAngle = armAngle - 120 + 3; // + 3 to make it offset a little bit
         }
         return clawAngle;
     }
 
     public void moveArm(int targetPos, boolean safety) {
-        if (safety) {
-            if (!(InOutTake.scoopServo.getPosition() > InOutTake.SCOOP_MIDDLE_POS + 0.001)) {
-                bypass = true;
+        if (Claw.lower == Claw.Status.CLOSED && Claw.upper == Claw.Status.CLOSED) {
+            if (safety) {
+                if (!(InOutTake.scoopServo.getPosition() > InOutTake.SCOOP_MIDDLE_POS + 0.001)) {
+                    bypass = true;
+                } else {
+                    bypass = false;
+                    return;
+                }
             } else {
-                bypass = false;
-                return;
+                bypass = true;
             }
-        } else {
-            bypass = true;
-        }
-        if (bypass) {
-            // if arm pos is greater or less than max/min then set to max/min
-            if (targetPos < MIN_ARM_POSITION) {
-                targetPos = MIN_ARM_POSITION;
-            } else if (targetPos > MAX_ARM_POSITION) {
-                targetPos = MAX_ARM_POSITION;
-            }
+            if (bypass) {
+                // if arm pos is greater or less than max/min then set to max/min
+                if (targetPos < MIN_ARM_POSITION) {
+                    targetPos = MIN_ARM_POSITION;
+                } else if (targetPos > MAX_ARM_POSITION) {
+                    targetPos = MAX_ARM_POSITION;
+                }
 
-            armMotor.setPower(ARM_POWER);
-            armMotor.setTargetPosition(targetPos);
-            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            Claw.setClawWristFromAngle(Arm.clawAngle());
+                armMotor.setPower(ARM_POWER);
+                armMotor.setTargetPosition(targetPos);
+                armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                Claw.setClawWristFromAngle(Arm.clawAngle());
+            }
         }
     }
 
