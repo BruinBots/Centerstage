@@ -103,7 +103,7 @@ public class MecanumOpMode extends OpMode
         drive = Math.copySign(Math.pow(drive, 2), drive);
         turn = Math.copySign(Math.pow(turn, 2), turn);
 
-        bot.moveBotRamping(drive, turn, strafe,  0.65); // actually move the robot
+        bot.moveBotMecanum(drive, turn, strafe,  0.65); // actually move the robot
 
         // GAMEPAD 1 (ANNA)
 

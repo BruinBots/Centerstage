@@ -98,13 +98,13 @@ public class Arm {
         // This function allows a means to manually lower the arm back down to close to it's normal zero position
 
         // Use a low power - we don't want this to be fast, and gravity will be pulling on the arm
-        armMotor.setPower(0.2);
-        // Set the target position to 10 ticks below where the arm is
-        armMotor.setTargetPosition(armMotor.getCurrentPosition() - 10);
-        // Call RunToPosition - The arm will start to move, then...
-        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armMotor.setPower(0.35);
         // We stop and reset the encoder.  This will likely result in a very jerky downward movement
         armMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        // Set the target position to 10 ticks below where the arm is
+        armMotor.setTargetPosition(armMotor.getCurrentPosition() - 150);
         // There is a deprecated RESET_ENCODERS mode that we could try if this proves problematic
+        // Call RunToPosition - The arm will start to move, then...
+        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 }
