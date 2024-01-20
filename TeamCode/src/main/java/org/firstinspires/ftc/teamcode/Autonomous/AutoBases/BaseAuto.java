@@ -44,12 +44,12 @@ public class BaseAuto {
      */
     public String tfSpike(boolean blue) {
 
-        bot.inOutTake.scoopDown();
+        bot.scoopServo.setPosition(0);
         sleep(750);
 
         TensorFlowForAutonomousBlueRed tf = new TensorFlowForAutonomousBlueRed(hardwareMap, telemetry, blue ? "blue" : "red");
         tf.initTfod();
-        sleep(500);
+        sleep(1000);
 
         tf.visionPortal.resumeStreaming();
 
@@ -65,7 +65,7 @@ public class BaseAuto {
 
         tf.visionPortal.close();
 
-        bot.inOutTake.scoopHalfDown();
+        bot.inOutTake.scoopMiddle();
         sleep(750);
 
         return side;
@@ -299,9 +299,10 @@ public class BaseAuto {
                 endEnter = traj.end();
                 break;
         }
+        telemetry.update();
 
-        // TODO: release the pixel
         bot.dropper.closed();
+        sleep(500);
 
         if (finishSpike) {
             Trajectory exit = spikeExit2(endEnter);

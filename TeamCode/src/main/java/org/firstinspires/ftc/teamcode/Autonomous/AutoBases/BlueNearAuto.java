@@ -74,7 +74,7 @@ public class BlueNearAuto extends BaseAuto {
 
     @Override
     public Vector2d relativeSpikeCenter2() {
-        return new Vector2d(0, -6);
+        return new Vector2d(0, -14);
     }
 
     @Override
@@ -97,7 +97,7 @@ public class BlueNearAuto extends BaseAuto {
     @Override
     public Trajectory backdropStart2(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(38, 35))
+                .lineToConstantHeading(new Vector2d(42, 31))
                 .build();
     }
 

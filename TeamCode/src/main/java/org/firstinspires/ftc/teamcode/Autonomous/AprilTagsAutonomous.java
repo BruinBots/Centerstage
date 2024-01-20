@@ -18,8 +18,6 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
-import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvWebcam;
 
 import java.util.List;
 
@@ -30,17 +28,17 @@ public class AprilTagsAutonomous {
     public static double offSetBackboardX = -7.5;
     public static double offSetBackboardY = 2;
     private AprilTagProcessor aprilTag;
-    private VisionPortal visionPortal;
+    public VisionPortal visionPortal;
 
     public Vector2d getOffset(HardwareMap hardwareMap, Telemetry telemetry, int idBackboard) {
         initAprilTag(hardwareMap);
-        sleep(1000);
+        sleep(2500);
         Vector2d offset = getAprilTagPose(telemetry, idBackboard);
         visionPortal.close();
         return offset;
     }
 
-    private void initAprilTag(HardwareMap hardwareMap) {
+    public void initAprilTag(HardwareMap hardwareMap) {
         // Create the AprilTag processor.
         aprilTag = new AprilTagProcessor.Builder()
                 //.setDrawAxes(false)
@@ -60,9 +58,6 @@ public class AprilTagsAutonomous {
         // Set the camera (webcam vs. built-in RC phone camera).
         if (USE_WEBCAM) {
             builder.setCamera(hardwareMap.get(WebcamName.class, "Purple Camera"));
-            int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-            OpenCvWebcam camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Purple Camera"), cameraMonitorViewId);
-            FtcDashboard.getInstance().startCameraStream(camera, 0);
         } else {
             builder.setCamera(BuiltinCameraDirection.BACK);
         }

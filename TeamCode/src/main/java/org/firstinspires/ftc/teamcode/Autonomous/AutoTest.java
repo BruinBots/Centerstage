@@ -22,10 +22,16 @@ public class AutoTest extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 //        Karen bot = new Karen(hardwareMap);
 //        waitForStart();
+//        aprilTags = new AprilTagsAutonomous();
+//        aprilTags.initAprilTag(hardwareMap);
+
         BlueNearAuto auto = new BlueNearAuto(hardwareMap, telemetry);
         waitForStart();
-        auto.placePixel(BlueNearAuto.startingPosition, aprilId, true);
-//        auto.spike2(BlueNearAuto.startingPosition, "center", false);
+
+//        aprilTags.visionPortal.close();
+
+//        auto.placePixel(BlueNearAuto.startingPosition, aprilId, true);
+        auto.spike2(BlueNearAuto.startingPosition, "left", false);
 
     }
 
