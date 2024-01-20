@@ -103,7 +103,7 @@ public class MecanumOpMode extends OpMode
         drive = Math.copySign(Math.pow(drive, 2), drive);
         turn = Math.copySign(Math.pow(turn, 2), turn);
 
-        bot.moveBotMecanum(drive, turn, strafe,  0.5); // actually move the robot
+        bot.moveBotMecanum(drive, turn, strafe,  0.65); // actually move the robot
 
         // GAMEPAD 1 (ANNA)
 
@@ -123,6 +123,7 @@ public class MecanumOpMode extends OpMode
 
         // flipper
         if (gamepad1.dpad_up && !gp1dpadup) {
+            bot.claw.openBothClaw();
             bot.inOutTake.scoopUp();
         } else if (gamepad1.dpad_left && !gp1dpadleft) {
             bot.inOutTake.scoopMiddle();
@@ -142,23 +143,23 @@ public class MecanumOpMode extends OpMode
         // arm
         if (gamepad2.right_bumper) {
             if (bot.hanger.launched) {
-                bot.arm.safeMoveArm(bot.arm.getCurrentArmPos() + Arm.ARM_SPEED);
+                bot.arm.moveArm(bot.arm.getCurrentArmPos() + Arm.ARM_SPEED, false);
             } else {
-                bot.arm.safeMoveArm(bot.arm.getCurrentArmPos() + Arm.ARM_SPEED);
+                bot.arm.moveArm(bot.arm.getCurrentArmPos() + Arm.ARM_SPEED, true);
             }
         }
         else if (gamepad2.left_bumper) {
             if (bot.hanger.launched) {
-                bot.arm.safeMoveArm(bot.arm.getCurrentArmPos() - Arm.ARM_SPEED);
+                bot.arm.moveArm(bot.arm.getCurrentArmPos() - Arm.ARM_SPEED, false);
             } else {
-                bot.arm.safeMoveArm(bot.arm.getCurrentArmPos() - Arm.ARM_SPEED);
+                bot.arm.moveArm(bot.arm.getCurrentArmPos() - Arm.ARM_SPEED, true);
             }
         } else if (gamepad2.dpad_left) {
-            bot.arm.safeMoveArm(Arm.MAX_ARM_POSITION);
+            bot.arm.goMax();
         } else if (gamepad2.dpad_right) {
-            bot.arm.safeMoveArm(1720);
+            bot.arm.goStraight();
         } else if (gamepad2.dpad_down) {
-            bot.arm.safeMoveArm(0);
+            bot.arm.goDown();
         }
         else {
             bot.arm.holdArmPos();

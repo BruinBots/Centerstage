@@ -31,7 +31,7 @@ public class InOutTake {
     private final Servo inServoLeft;
     private final Servo inServoRight;
     // scoop servo is standard servo to move pixel between intake and claw
-    private static Servo scoopServo;
+    static Servo scoopServo;
 
     public InOutTake(Servo inServoLeft, Servo inServoRight, Servo scoopServo) {
         this.inServoLeft = inServoLeft;
