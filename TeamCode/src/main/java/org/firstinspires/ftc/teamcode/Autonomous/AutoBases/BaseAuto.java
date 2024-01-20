@@ -35,6 +35,14 @@ public class BaseAuto {
         drive.setPoseEstimate(startingPosition);
     }
 
+    public Trajectory startPark(Pose2d startPose) {
+        Trajectory traj = drive.trajectoryBuilder(startPose)
+                .lineToConstantHeading(new Vector2d(startPose.getX(), Math.copySign(Math.abs(startPose.getY()) - 2, startPose.getY())))
+                .build();
+        drive.followTrajectory(traj);
+        return traj;
+    }
+
     /*
     tfSpike() -> String
     use tensorflow to determine which side the spike mark is on, returning as a string from:
