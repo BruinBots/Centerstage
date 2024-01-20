@@ -143,23 +143,23 @@ public class MecanumOpMode extends OpMode
         // arm
         if (gamepad2.right_bumper) {
             if (bot.hanger.launched) {
-                bot.arm.safeMoveArm(bot.arm.getCurrentArmPos() + Arm.ARM_SPEED);
+                bot.arm.moveArm(bot.arm.getCurrentArmPos() + Arm.ARM_SPEED, false);
             } else {
-                bot.arm.safeMoveArm(bot.arm.getCurrentArmPos() + Arm.ARM_SPEED);
+                bot.arm.moveArm(bot.arm.getCurrentArmPos() + Arm.ARM_SPEED, true);
             }
         }
         else if (gamepad2.left_bumper) {
             if (bot.hanger.launched) {
-                bot.arm.safeMoveArm(bot.arm.getCurrentArmPos() - Arm.ARM_SPEED);
+                bot.arm.moveArm(bot.arm.getCurrentArmPos() - Arm.ARM_SPEED, false);
             } else {
-                bot.arm.safeMoveArm(bot.arm.getCurrentArmPos() - Arm.ARM_SPEED);
+                bot.arm.moveArm(bot.arm.getCurrentArmPos() - Arm.ARM_SPEED, true);
             }
         } else if (gamepad2.dpad_left) {
-            bot.arm.safeMoveArm(Arm.MAX_ARM_POSITION);
+            bot.arm.goMax();
         } else if (gamepad2.dpad_right) {
-            bot.arm.safeMoveArm(1720);
+            bot.arm.goStraight();
         } else if (gamepad2.dpad_down) {
-            bot.arm.safeMoveArm(0);
+            bot.arm.goDown();
         }
         else {
             bot.arm.holdArmPos();
