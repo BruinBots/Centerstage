@@ -43,7 +43,7 @@ public class Arm {
         double armAngle = armAngle();
         double clawAngle = 0;
         if (armAngle > 120) {
-            clawAngle = armAngle - 120 + 3; // + 3 to make it offset a little bit
+            clawAngle = armAngle - 120 + 10; // + 3 to make it offset a little bit
         }
         return clawAngle;
     }
@@ -73,6 +73,8 @@ public class Arm {
                 armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 Claw.setClawWristFromAngle(Arm.clawAngle());
             }
+        } else {
+            Claw.closeBothClaw();
         }
     }
 
