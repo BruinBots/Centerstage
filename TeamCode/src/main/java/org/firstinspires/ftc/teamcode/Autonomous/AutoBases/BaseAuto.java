@@ -269,6 +269,9 @@ public class BaseAuto {
      */
     public Pose2d spike2(Pose2d startPose, String side, boolean finishSpike) {
 
+        bot.inOutTake.scoopMiddle();
+        sleep(500);
+
         bot.dropper.open();
         Trajectory enter = spikeEnter2(startPose);
 

@@ -67,7 +67,7 @@ public class BlueFarAuto extends BaseAuto {
     @Override
     public Trajectory spikeExit2(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(startingPosition.getX(), startingPosition.getY()))
+                .lineToConstantHeading(new Vector2d(startingPosition.getX(), startingPosition.getY()-3))
                 .build();
     }
 
