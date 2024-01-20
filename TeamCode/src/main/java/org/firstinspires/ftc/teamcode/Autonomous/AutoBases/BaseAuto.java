@@ -85,7 +85,7 @@ public class BaseAuto {
     public Trajectory spike(Pose2d startPose, String side, boolean finishSpike) {
 
         // ensure the pixel is securely in the dropper
-        bot.dropper.open();
+        bot.dropper.closed();
         sleep(250);
 
         Trajectory traj0a = spikeStart(startPose);
@@ -115,7 +115,7 @@ public class BaseAuto {
         drive.followTrajectory(traj0a); // move to the spikeStart position to ensure no crashing during navigation
         drive.followTrajectory(traj0b); // move to the spike mark
 
-        bot.dropper.closed(); // release the pixel
+        bot.dropper.open(); // release the pixel
         sleep(250);
 
         if (finishSpike) {
@@ -208,7 +208,7 @@ public class BaseAuto {
 
         }
         Trajectory backTraj = drive.trajectoryBuilder(start2.end())
-                .lineToConstantHeading(new Vector2d(48 - 8, 35 + offset))
+                .lineToConstantHeading(new Vector2d(48 - 6, 35 + offset))
                 .build();
         drive.followTrajectory(backTraj);
 
@@ -238,26 +238,6 @@ public class BaseAuto {
         }
 
         return backTraj;
-    }
-
-//    public Trajectory placePixel(Pose2d startPose, int aprilId, boolean blue) {
-//        return placePixel(startPose, aprilId, blue, false);
-//    }
-
-    public Trajectory placePixel(Pose2d startPose, String side, boolean blue) {
-        int aprilId;
-        switch (side) {
-            case "left":
-                aprilId = 1;
-                break;
-            case "right":
-                aprilId = 3;
-                break;
-            default:
-                aprilId = 2;
-                break;
-        }
-        return placePixel(startPose, side, blue);
     }
 
     public Trajectory backdropStart1(Pose2d startPose) {

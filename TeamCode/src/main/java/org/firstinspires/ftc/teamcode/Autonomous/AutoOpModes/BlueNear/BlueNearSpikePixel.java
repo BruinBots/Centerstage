@@ -13,6 +13,6 @@ public class BlueNearSpikePixel extends LinearOpMode {
         BlueNearAuto auto = new BlueNearAuto(hardwareMap, telemetry);
         waitForStart();
         String tfSpike = auto.tfSpike(true);
-        auto.placePixel(auto.spike2(BlueNearAuto.startingPosition, tfSpike, true), tfSpike, true);
+        auto.placePixel(auto.spike2(BlueNearAuto.startingPosition, tfSpike, false), tfSpike, true, false);
     }
 }
