@@ -137,6 +137,11 @@ public class MecanumOpMode extends OpMode
         }
         bot.drone.loop();
 
+        // EMERGENCY Arm Lowering - Used if Autonomous leaves the arm in a raised position
+        // Lowers arm and rewrites zero
+        if (gamepad1.left_bumper && gamepad1.right_bumper) {
+            bot.arm.emergencyLower();
+        }
 
         // GAMEPAD 2 (ENRIQUE)
 
