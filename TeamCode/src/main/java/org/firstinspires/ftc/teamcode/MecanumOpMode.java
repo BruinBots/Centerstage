@@ -123,6 +123,7 @@ public class MecanumOpMode extends OpMode
 
         // flipper
         if (gamepad1.dpad_up && !gp1dpadup) {
+            bot.claw.openBothClaw();
             bot.inOutTake.scoopUp();
         } else if (gamepad1.dpad_left && !gp1dpadleft) {
             bot.inOutTake.scoopMiddle();
