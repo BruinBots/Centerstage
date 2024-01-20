@@ -34,6 +34,7 @@ public class BaseAuto {
         drive = new SampleMecanumDrive(hardwareMap);
         drive.setPoseEstimate(startingPosition);
     }
+
     public Trajectory startPark(Pose2d startPose) {
         Trajectory traj = drive.trajectoryBuilder(startPose)
                 .lineToConstantHeading(new Vector2d(startPose.getX(), Math.copySign(Math.abs(startPose.getY()) - 2, startPose.getY())))

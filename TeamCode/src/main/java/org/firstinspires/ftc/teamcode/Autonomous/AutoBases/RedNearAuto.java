@@ -53,7 +53,7 @@ public class RedNearAuto extends BaseAuto {
     @Override
     public Trajectory parkTraj(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineTo(new Vector2d(60, -62))
+                .lineTo(new Vector2d(60, -61))
                 .build();
     }
 
