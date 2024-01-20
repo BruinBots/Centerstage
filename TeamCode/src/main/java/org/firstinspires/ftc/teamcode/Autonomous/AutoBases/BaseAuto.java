@@ -159,7 +159,7 @@ public class BaseAuto {
     // Place the pixel on the backdrop
     public Trajectory placePixel(Pose2d startPose, int aprilId, boolean blue, boolean finishPixel) {
         // navigate to backdrop
-
+       // drive.setPoseEstimate(startPose);
         Trajectory start1 = backdropStart1(startPose);
         drive.followTrajectory(start1);
 
@@ -174,10 +174,11 @@ public class BaseAuto {
         telemetry.update();
         sleep(5000);
         Pose2d startEnd = start2.end().plus(new Pose2d(0, 0, Math.toRadians(blue ? -90 : 90)));
-        Trajectory aprilTraj = drive.trajectoryBuilder(startEnd)
-                .lineToConstantHeading(new Vector2d(startEnd.getX() + aprilVector.getX(), startEnd.getY() + aprilVector.getY()))
-                .build();
-        drive.followTrajectory(aprilTraj);
+
+//        Trajectory aprilTraj1 = backdropEnd(startEnd);
+//        drive.followTrajectory(aprilTraj1);
+        Trajectory aprilTraj2 = backdropEnd(new Pose2d(start2.end().getX() + aprilVector.getX(), start2.end().getY() + aprilVector.getY()));
+        drive.followTrajectory(aprilTraj2);;
 
         // TODO: place pixel
         bot.inOutTake.scoopHalfDown();
@@ -197,14 +198,13 @@ public class BaseAuto {
         sleep(1000);
         sleep(3000);
 
-
         if (finishPixel) {
-            Trajectory end = backdropEnd(aprilTraj.end());
+            Trajectory end = backdropEnd(aprilTraj2.end());
             drive.followTrajectory(end);
             return end;
         }
 
-        return aprilTraj;
+        return aprilTraj2;
     }
 
     public Trajectory placePixel(Pose2d startPose, int aprilId, boolean blue) {

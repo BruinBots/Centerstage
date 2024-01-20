@@ -23,8 +23,8 @@ public class AutoTest extends LinearOpMode {
 //        waitForStart();
         BlueNearAuto auto = new BlueNearAuto(hardwareMap, telemetry);
         waitForStart();
+      //  auto.spike2(BlueNearAuto.startingPosition, auto.tfSpike(true), false);
         auto.placePixel(BlueNearAuto.startingPosition, aprilId, true);
-        auto.spike2(BlueNearAuto.startingPosition, auto.tfSpike(true), false);
     }
 
 //    @Override
