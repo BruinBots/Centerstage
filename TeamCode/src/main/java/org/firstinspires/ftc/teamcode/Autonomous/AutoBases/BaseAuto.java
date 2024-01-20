@@ -157,54 +157,60 @@ public class BaseAuto {
     }
 
     // Place the pixel on the backdrop
-    public Trajectory placePixel(Pose2d startPose, int aprilId, boolean blue, boolean finishPixel) {
+    public Trajectory placePixel(Pose2d startPose, String side, boolean blue, boolean finishPixel) {
         // navigate to backdrop
-       // drive.setPoseEstimate(startPose);
+        drive.setPoseEstimate(startPose);
         Trajectory start1 = backdropStart1(startPose);
         drive.followTrajectory(start1);
 
-        Trajectory start2 = backdropStart2(start1.end());
+        //Trajectory start2 = backdropStart2(start1.end());
+        //drive.followTrajectory(start2);
+        Pose2d startEnd = start1.end().plus(new Pose2d(0, 0, Math.toRadians(blue ? -90 : 90)));
+
+        Trajectory start2 = backdropStart2(startEnd);
         drive.followTrajectory(start2);
         drive.turn(Math.toRadians(blue ? -90 : 90));
 
         AprilTagsAutonomous aprilTags = new AprilTagsAutonomous();
+//        AprilTags aprilTags = new AprilTags();
+//        AprilTagsUpdated aprilTags = new AprilTagsUpdated();
         Vector2d aprilVector = aprilTags.getOffset(hardwareMap, telemetry, aprilId);
         telemetry.addData("x", aprilVector.getX());
         telemetry.addData("y", aprilVector.getY());
         telemetry.update();
         sleep(5000);
         Pose2d startEnd = start2.end().plus(new Pose2d(0, 0, Math.toRadians(blue ? -90 : 90)));
-
-//        Trajectory aprilTraj1 = backdropEnd(startEnd);
-//        drive.followTrajectory(aprilTraj1);
-        Trajectory aprilTraj2 = backdropEnd(new Pose2d(start2.end().getX() + aprilVector.getX(), start2.end().getY() + aprilVector.getY()));
-        drive.followTrajectory(aprilTraj2);;
+        Trajectory aprilTraj = drive.trajectoryBuilder(startEnd)
+                .lineToConstantHeading(new Vector2d(startEnd.getX() + aprilVector.getX(), startEnd.getY() + aprilVector.getY()))
+                .build();
+        drive.followTrajectory(aprilTraj);
 
         // TODO: place pixel
         bot.inOutTake.scoopHalfDown();
         sleep(500);
         bot.claw.closeBothClaw();
         sleep(500);
-        bot.arm.moveArm(2780, 0.5); // 2560
+        bot.arm.moveArm(2780, true); // 2560
         sleep(500);
         bot.claw.setClawWrist(0.266);
         sleep(500);
         sleep(3500);
         bot.claw.openBothClaw();
         sleep(500);
-        bot.arm.moveArm(0, 0.3);
+        bot.arm.moveArm(0, true);
         sleep(1000);
         bot.claw.setClawWrist(0.1);
         sleep(1000);
         sleep(3000);
 
+
         if (finishPixel) {
-            Trajectory end = backdropEnd(aprilTraj2.end());
+            Trajectory end = backdropEnd(aprilTraj.end());
             drive.followTrajectory(end);
             return end;
         }
 
-        return aprilTraj2;
+        return aprilTraj;
     }
 
     public Trajectory placePixel(Pose2d startPose, int aprilId, boolean blue) {
