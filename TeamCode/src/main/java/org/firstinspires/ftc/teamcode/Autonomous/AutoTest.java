@@ -30,10 +30,11 @@ public class AutoTest extends LinearOpMode {
         BlueFarAuto auto = new BlueFarAuto(hardwareMap, telemetry);
         waitForStart();
 
+
 //        aprilTags.visionPortal.close();
 
-        auto.placePixel(BlueFarAuto.startingPosition, aprilId, true);
-//        auto.spike2(BlueFarAuto.startingPosition, "center",  false);
+//        auto.placePixel(BlueFarAuto.startingPosition, aprilId, true);
+        auto.spike2(BlueFarAuto.startingPosition, auto.tfSpike(true),  false);
 
     }
 

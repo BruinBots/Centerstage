@@ -9,7 +9,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class RedFarAuto extends BaseAuto {
 
-    public static Pose2d startingPosition = new Pose2d(-36, -60, Math.toRadians(90));
+    public static Pose2d startingPosition = new Pose2d(-36, -62, Math.toRadians(90));
 
     public RedFarAuto(HardwareMap hardwareMap, Telemetry telemetry) {
         super(hardwareMap, telemetry, startingPosition);

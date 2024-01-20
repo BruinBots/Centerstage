@@ -9,7 +9,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class BlueFarAuto extends BaseAuto {
 
-    public static Pose2d startingPosition = new Pose2d(-36, 60, Math.toRadians(270));
+    public static Pose2d startingPosition = new Pose2d(-36, 62, Math.toRadians(270));
 
     public BlueFarAuto(HardwareMap hardwareMap, Telemetry telemetry) {
         super(hardwareMap, telemetry, startingPosition);

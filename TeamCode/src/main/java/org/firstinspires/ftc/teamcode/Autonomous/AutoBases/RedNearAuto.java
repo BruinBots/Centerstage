@@ -9,7 +9,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class RedNearAuto extends BaseAuto {
 
-    public static Pose2d startingPosition = new Pose2d(12, -60, Math.toRadians(90));
+    public static Pose2d startingPosition = new Pose2d(12, -62, Math.toRadians(90));
 
     public RedNearAuto(HardwareMap hardwareMap, Telemetry telemetry) {
         super(hardwareMap, telemetry, startingPosition);
