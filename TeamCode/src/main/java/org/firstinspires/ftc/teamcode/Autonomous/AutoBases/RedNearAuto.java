@@ -67,7 +67,7 @@ public class RedNearAuto extends BaseAuto {
     @Override
     public Trajectory spikeExit2(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(startingPosition.getX(), startingPosition.getY()+3))
+                .lineToConstantHeading(new Vector2d(startingPosition.getX(), startingPosition.getY()+5))
                 .build();
     }
 

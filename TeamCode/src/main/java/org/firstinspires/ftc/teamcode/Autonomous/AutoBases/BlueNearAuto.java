@@ -61,14 +61,15 @@ public class BlueNearAuto extends BaseAuto {
     @Override
     public Trajectory spikeEnter2(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(13, 35))
+                .lineToConstantHeading(new Vector2d(15, 35))
                 .build();
     }
 
     @Override
     public Trajectory spikeExit2(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(startingPosition.getX(), startingPosition.getY()-3))
+                //.lineToConstantHeading(new Vector2d(startingPosition.getX(), startingPosition.getY()-50))
+                .lineToConstantHeading(new Vector2d(30, 30))
                 .build();
     }
 
@@ -97,14 +98,14 @@ public class BlueNearAuto extends BaseAuto {
     @Override
     public Trajectory backdropStart2(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(40, 35))
+                .lineToConstantHeading(new Vector2d(50, 30))
                 .build();
     }
 
     @Override
     public Trajectory backdropEnd(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(24, 60))
+                .lineToConstantHeading(new Vector2d(60, 61)) //(24,60)
                 .build();
     }
 }
