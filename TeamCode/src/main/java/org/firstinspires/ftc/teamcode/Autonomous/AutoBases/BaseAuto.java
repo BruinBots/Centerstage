@@ -231,6 +231,8 @@ public class BaseAuto {
         Trajectory enter = spikeEnter2(startPose); //(15,35) blue near Center spike
         drive.followTrajectory(enter);
 
+        bot.dropper.open();
+
         Pose2d endEnter = enter.end();
         Vector2d vector;
         Trajectory traj;
@@ -280,7 +282,7 @@ public class BaseAuto {
                 break;
         }
         telemetry.update();
-        bot.dropper.open();
+        bot.dropper.closed();
         bot.inOutTake.scoopUp();
         sleep(500);
 
