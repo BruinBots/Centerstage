@@ -205,7 +205,6 @@ public class BaseAuto {
         sleep(1000);
         bot.claw.setClawWrist(0.1);
         sleep(1000);
-        sleep(3000);
         telemetry.addData("0 arm", "0");
         bot.arm.moveArm(0,true);
         //if (finishPixel) {
