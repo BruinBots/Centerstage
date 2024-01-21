@@ -18,8 +18,6 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
-import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvWebcam;
 
 import java.util.List;
 
@@ -27,20 +25,20 @@ import java.util.List;
 public class AprilTagsAutonomous {
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
     //this variable is the offset for the robot doesn't hit the backboard in inch to how close you want it to the backboard/ put always if you want a number put add one
-    public static double offSetBackboardX = -7.5;
-    public static double offSetBackboardY = 2;
+    public static double offSetBackboardX = 0;
+    public static double offSetBackboardY = 0;
     private AprilTagProcessor aprilTag;
-    private VisionPortal visionPortal;
+    public VisionPortal visionPortal;
 
     public Vector2d getOffset(HardwareMap hardwareMap, Telemetry telemetry, int idBackboard) {
         initAprilTag(hardwareMap);
-        sleep(1000);
+        sleep(3000);
         Vector2d offset = getAprilTagPose(telemetry, idBackboard);
         visionPortal.close();
         return offset;
     }
 
-    private void initAprilTag(HardwareMap hardwareMap) {
+    public void initAprilTag(HardwareMap hardwareMap) {
         // Create the AprilTag processor.
         aprilTag = new AprilTagProcessor.Builder()
                 //.setDrawAxes(false)
@@ -60,9 +58,6 @@ public class AprilTagsAutonomous {
         // Set the camera (webcam vs. built-in RC phone camera).
         if (USE_WEBCAM) {
             builder.setCamera(hardwareMap.get(WebcamName.class, "Purple Camera"));
-            int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-            OpenCvWebcam camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Purple Camera"), cameraMonitorViewId);
-            FtcDashboard.getInstance().startCameraStream(camera, 0);
         } else {
             builder.setCamera(BuiltinCameraDirection.BACK);
         }
@@ -124,7 +119,8 @@ public class AprilTagsAutonomous {
                 telemetry.addData("range", detection.ftcPose.range);
                 telemetry.addData("bearing", detection.ftcPose.bearing);
                 telemetry.addData("elevation", detection.ftcPose.elevation);
-                return new Vector2d(detection.ftcPose.y + offSetBackboardX, -detection.ftcPose.x + offSetBackboardY);
+//                return new Vector2d(detection.ftcPose.x + offSetBackboardY, detection.ftcPose.range*Math.cos(Math.toRadians(detection.ftcPose.bearing))+offSetBackboardX);
+                return new Vector2d(detection.ftcPose.range + offSetBackboardX, -detection.ftcPose.x + offSetBackboardY);
             }
         }
         return new Vector2d(0, 0);

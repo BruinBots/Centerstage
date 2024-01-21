@@ -13,6 +13,6 @@ public class RedNearFull extends LinearOpMode {
         RedNearAuto auto = new RedNearAuto(hardwareMap, telemetry);
         waitForStart();
         String tfSpike = auto.tfSpike(false);
-        auto.park(auto.placePixel(auto.spike2(RedNearAuto.startingPosition, tfSpike, true), 2, false, true));
+        auto.park(auto.placePixel(auto.spike2(RedNearAuto.startingPosition, tfSpike, true), tfSpike, false, true));
     }
 }

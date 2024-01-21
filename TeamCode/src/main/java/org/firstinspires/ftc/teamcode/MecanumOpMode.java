@@ -123,7 +123,9 @@ public class MecanumOpMode extends OpMode
 
         // flipper
         if (gamepad1.dpad_up && !gp1dpadup) {
-            bot.claw.openBothClaw();
+            if (Arm.armAngle() < 0) {
+                bot.claw.openBothClaw();
+            }
             bot.inOutTake.scoopUp();
         } else if (gamepad1.dpad_left && !gp1dpadleft) {
             bot.inOutTake.scoopMiddle();
@@ -137,6 +139,11 @@ public class MecanumOpMode extends OpMode
         }
         bot.drone.loop();
 
+        // EMERGENCY Arm Lowering - Used if Autonomous leaves the arm in a raised position
+        // Lowers arm and rewrites zero
+        if (gamepad1.left_bumper && gamepad1.right_bumper) {
+            bot.arm.emergencyLower();
+        }
 
         // GAMEPAD 2 (ENRIQUE)
 

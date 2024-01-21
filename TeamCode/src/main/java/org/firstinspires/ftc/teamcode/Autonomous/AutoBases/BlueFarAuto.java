@@ -9,7 +9,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class BlueFarAuto extends BaseAuto {
 
-    public static Pose2d startingPosition = new Pose2d(-36, 60, Math.toRadians(270));
+    public static Pose2d startingPosition = new Pose2d(-36, 62, Math.toRadians(270));
 
     public BlueFarAuto(HardwareMap hardwareMap, Telemetry telemetry) {
         super(hardwareMap, telemetry, startingPosition);
@@ -53,7 +53,7 @@ public class BlueFarAuto extends BaseAuto {
     @Override
     public Trajectory parkTraj(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineTo(new Vector2d(60, 60))
+                .lineTo(new Vector2d(60, 61))
                 .build();
     }
 
@@ -67,23 +67,23 @@ public class BlueFarAuto extends BaseAuto {
     @Override
     public Trajectory spikeExit2(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(startingPosition.getX(), startingPosition.getY()))
+                .lineToConstantHeading(new Vector2d(startingPosition.getX(), startingPosition.getY()-5))
                 .build();
     }
 
     @Override
     public Vector2d relativeSpikeCenter2() {
-        return new Vector2d(0, -6);
+        return new Vector2d(0, -14);
     }
 
     @Override
     public Vector2d relativeSpikeLeft2() {
-        return new Vector2d(10, 0);
+        return new Vector2d(11, 0);
     }
 
     @Override
     public Vector2d relativeSpikeRight2() {
-        return new Vector2d(-10, 0);
+        return new Vector2d(-11, 0);
     }
 
     @Override
@@ -96,7 +96,7 @@ public class BlueFarAuto extends BaseAuto {
     @Override
     public Trajectory backdropStart2(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(38, 35))
+                .lineToConstantHeading(new Vector2d(40, 35))
                 .build();
     }
 
