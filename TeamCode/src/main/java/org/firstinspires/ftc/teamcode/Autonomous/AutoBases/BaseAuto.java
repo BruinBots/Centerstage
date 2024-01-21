@@ -150,7 +150,7 @@ public class BaseAuto {
         Pose2d startEnd = startPose.plus(new Pose2d(0, 0, Math.toRadians(blue ? -90 : 90)));
 
         // navigate to backdrop
-       Trajectory start1 = backdropStart2(startEnd); //(48,35)
+       Trajectory start1 = backdropStart2(startEnd); //(,35)
         drive.followTrajectory(start1);
 
 //
@@ -207,10 +207,12 @@ public class BaseAuto {
         sleep(1000);
         telemetry.addData("0 arm", "0");
         bot.arm.moveArm(0,true);
+        sleep(2500);
+        bot.inOutTake.scoopUp();
         //if (finishPixel) {
         Trajectory end = backdropEnd(start1.end());
         drive.followTrajectory(end);
-        bot.inOutTake.scoopUp();
+
           //  return end;
         //}
         return start1;
@@ -245,7 +247,7 @@ public class BaseAuto {
      */
     public Pose2d spike2(Pose2d startPose, String side, boolean finishSpike) {
         drive.setPoseEstimate(startPose);
-        Trajectory enter = spikeEnter2(startPose); //(13,35) Center spike
+        Trajectory enter = spikeEnter2(startPose); //(15,35) blue near Center spike
         drive.followTrajectory(enter);
 
         Pose2d endEnter = enter.end();

@@ -98,7 +98,7 @@ public class BlueNearAuto extends BaseAuto {
     @Override
     public Trajectory backdropStart2(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(51.5, 30))
+                .lineToConstantHeading(new Vector2d(51.5, 33.5)) //BlueNearSpikePixel(51.5,30)
                 .build();
     }
 

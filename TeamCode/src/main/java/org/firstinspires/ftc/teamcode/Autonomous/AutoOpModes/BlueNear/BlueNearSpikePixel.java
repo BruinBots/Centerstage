@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Autonomous.AutoBases.BlueFarAuto;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoBases.BlueNearAuto;
-
+//working
 @Autonomous(name = "BlueNearSpikePixel")
 public class BlueNearSpikePixel extends LinearOpMode {
     @Override
