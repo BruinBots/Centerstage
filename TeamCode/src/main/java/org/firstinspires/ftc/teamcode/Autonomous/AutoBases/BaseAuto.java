@@ -192,6 +192,7 @@ public class BaseAuto {
         bot.inOutTake.scoopDown();
         bot.claw.closeBothClaw();
         sleep(500);
+        telemetry.addData("2560 arm", "2560");
         bot.arm.moveArm(2560, true); // 2560
         sleep(500);
         bot.claw.setClawWrist(0.266);
@@ -199,17 +200,20 @@ public class BaseAuto {
         sleep(2500);
         bot.claw.openBothClaw();
         sleep(500);
+        telemetry.addData("80 arm", "80");
         bot.arm.moveArm(80, true);
         sleep(1000);
         bot.claw.setClawWrist(0.1);
         sleep(1000);
         sleep(3000);
-
-        if (finishPixel) {
-            Trajectory end = backdropEnd(start1.end());
-            drive.followTrajectory(end);
-            return end;
-        }
+        telemetry.addData("0 arm", "0");
+        bot.arm.moveArm(0,true);
+        //if (finishPixel) {
+        Trajectory end = backdropEnd(start1.end());
+        drive.followTrajectory(end);
+        bot.inOutTake.scoopUp();
+          //  return end;
+        //}
         return start1;
     }
 
