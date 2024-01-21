@@ -24,7 +24,7 @@ public class AutoTest extends LinearOpMode {
 
 //        aprilTags.visionPortal.close();
 
-        auto.placePixel(BlueFarAuto.startingPosition, "center", true, false);
+        auto.placePixel(BlueFarAuto.startingPosition, "center", true);
 //        auto.spike2(BlueFarAuto.startingPosition, auto.tfSpike(true),  false);
 
     }

@@ -146,31 +146,13 @@ public class BaseAuto {
     }
 
     // Place the pixel on the backdrop
-    public Trajectory placePixel(Pose2d startPose, String side, boolean blue, boolean finishPixel) {
+    public Trajectory placePixel(Pose2d startPose, String side, boolean blue) {
         Pose2d startEnd = startPose.plus(new Pose2d(0, 0, Math.toRadians(blue ? -90 : 90)));
 
         // navigate to backdrop
        Trajectory start1 = backdropStart2(startEnd); //(,35)
         drive.followTrajectory(start1);
 
-//
-//        Trajectory start2 = backdropStart2(startEnd); //(40,35)
-//        drive.followTrajectory(start2);
-
-
-//        AprilTagsAutonomous aprilTags = new AprilTagsAutonomous();
-//        AprilTags aprilTags = new AprilTags();
-//        AprilTagsUpdated aprilTags = new AprilTagsUpdated();
-//        Vector2d aprilVector = aprilTags.getOffset(hardwareMap, telemetry, aprilId);
-//        telemetry.addData("x", aprilVector.getX());
-//        telemetry.addData("y", aprilVector.getY());
-//        telemetry.update();
-//        sleep(5000);
-
-//        Trajectory aprilTraj = drive.trajectoryBuilder(startEnd)
-//                .lineToConstantHeading(new Vector2d(startEnd.getX() + aprilVector.getX(), startEnd.getY() + aprilVector.getY()))
-//                .build();
-//        drive.followTrajectory(aprilTraj);
 
         int offset;
         switch (side) {
@@ -184,10 +166,10 @@ public class BaseAuto {
                 offset = 0;
                 break;
         }
-//        Trajectory backTraj = drive.trajectoryBuilder(start1.end())
-//                .lineToConstantHeading(new Vector2d(48, 35)) //48 too close need adjust at the field
-//                .build();
-//        drive.followTrajectory(backTraj);
+        Trajectory backTraj = drive.trajectoryBuilder(start1.end())
+                .lineToConstantHeading(new Vector2d(48, 35)) //48 too close need adjust at the field
+                .build();
+        drive.followTrajectory(backTraj);
 // TODO: place pixel
         bot.inOutTake.scoopDown();
         bot.claw.closeBothClaw();
@@ -209,12 +191,11 @@ public class BaseAuto {
         bot.arm.moveArm(0,true);
         sleep(2500);
         bot.inOutTake.scoopUp();
-        //if (finishPixel) {
+        sleep(500);
+
         Trajectory end = backdropEnd(start1.end());
         drive.followTrajectory(end);
 
-          //  return end;
-        //}
         return start1;
     }
 
