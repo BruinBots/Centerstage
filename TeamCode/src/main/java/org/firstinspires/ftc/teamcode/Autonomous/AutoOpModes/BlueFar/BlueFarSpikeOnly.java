@@ -11,6 +11,6 @@ public class BlueFarSpikeOnly extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         BlueFarAuto auto = new BlueFarAuto(hardwareMap, telemetry);
         waitForStart();
-        auto.spike2(BlueFarAuto.startingPosition, auto.tfSpike(true), false);
+        auto.spike(BlueFarAuto.startingPosition, auto.tfSpike(true), false);
     }
 }

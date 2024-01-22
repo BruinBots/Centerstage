@@ -48,7 +48,7 @@ public class Arm {
         return clawAngle;
     }
 
-    public void moveArm(int targetPos, boolean safety) {
+    public void moveArm(int targetPos, boolean safety, double power) {
         if (Claw.lower == Claw.Status.CLOSED && Claw.upper == Claw.Status.CLOSED) {
             if (safety) {
                 if (!(InOutTake.scoopServo.getPosition() > InOutTake.SCOOP_MIDDLE_POS + 0.001)) {
@@ -68,7 +68,7 @@ public class Arm {
                     targetPos = MAX_ARM_POSITION;
                 }
 
-                armMotor.setPower(ARM_POWER);
+                armMotor.setPower(power);
                 armMotor.setTargetPosition(targetPos);
                 armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 Claw.setClawWristFromAngle(Arm.clawAngle());
@@ -76,6 +76,10 @@ public class Arm {
         } else {
             Claw.closeBothClaw();
         }
+    }
+
+    public void moveArm(int targetPos, boolean safety) {
+        moveArm(targetPos, safety, ARM_POWER);
     }
 
     public void goMax() {

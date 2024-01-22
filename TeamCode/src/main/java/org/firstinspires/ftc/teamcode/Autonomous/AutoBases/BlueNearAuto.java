@@ -17,58 +17,24 @@ public class BlueNearAuto extends BaseAuto {
     }
 
     @Override
-    public Trajectory spikeStart(Pose2d startPose) {
-        return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(12, 55))
-                .build();
-    }
-
-    @Override
-    public Trajectory spikeLeft(Pose2d startPose) {
-        return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(13, 34))
-                .build();
-    }
-
-    @Override
-    public Trajectory spikeCenter(Pose2d startPose) {
-        return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(12, 30))
-                .build();
-    }
-
-    @Override
-    public Trajectory spikeRight(Pose2d startPose) {
-        return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(12, 36))
-                .build();
-    }
-
-    @Override
-    public Trajectory spikeEnd(Pose2d startPose) {
-        return drive.trajectoryBuilder(startPose)
-                .lineTo(new Vector2d(12, 60))
-                .build();
-    }
-
-    @Override
     public Trajectory parkTraj(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineTo(new Vector2d(60, 62))
+                .lineTo(new Vector2d(60, 61))
                 .build();
     }
 
     @Override
     public Trajectory spikeEnter2(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(13, 35))
+                .lineToConstantHeading(new Vector2d(15, 35))
                 .build();
     }
 
     @Override
     public Trajectory spikeExit2(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(startingPosition.getX(), startingPosition.getY()))
+                .lineToConstantHeading(new Vector2d(startingPosition.getX(), startingPosition.getY()-2))
+//                .lineToConstantHeading(new Vector2d(30, 30))
                 .build();
     }
 
@@ -90,21 +56,28 @@ public class BlueNearAuto extends BaseAuto {
     @Override
     public Trajectory backdropStart1(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(15, 60))
+                .lineToConstantHeading(new Vector2d(48, 33.5))
                 .build();
     }
 
     @Override
     public Trajectory backdropStart2(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(48, 35))
+                .lineToConstantHeading(new Vector2d(51.5, 33.5)) //BlueNearSpikePixel(51.5,30)
+                .build();
+    }
+
+    @Override
+    public Trajectory backdropAlign(Pose2d startPose, int offset) {
+        return drive.trajectoryBuilder(startPose)
+                .lineToConstantHeading(new Vector2d(60 - BACKDROP_DISTANCE_FROM_WALL, 35 + offset))
                 .build();
     }
 
     @Override
     public Trajectory backdropEnd(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(24, 60))
+                .lineToConstantHeading(new Vector2d(45, 60)) //(24,60)
                 .build();
     }
 }
