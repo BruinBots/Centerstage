@@ -53,7 +53,7 @@ public class BaseAuto {
         TensorFlowForAutonomousBlueRed tf = new TensorFlowForAutonomousBlueRed(hardwareMap, telemetry, blue ? "blue" : "red");
         tf.initTfod();
         tf.visionPortal.resumeStreaming();
-        sleep(1000);
+        sleep(2000);
         int i = 0;
         String side = "center";
         while (side.equals("none") && i < 2) {
@@ -63,9 +63,9 @@ public class BaseAuto {
             i++;
             sleep(20);
         }
-        tf.visionPortal.close();
+//        tf.visionPortal.close();
         bot.inOutTake.scoopMiddle();
-        sleep(750);
+        sleep(1000);
         return side;
     }
 

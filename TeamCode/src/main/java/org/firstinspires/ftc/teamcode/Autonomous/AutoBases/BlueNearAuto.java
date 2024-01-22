@@ -33,8 +33,8 @@ public class BlueNearAuto extends BaseAuto {
     @Override
     public Trajectory spikeExit2(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                //.lineToConstantHeading(new Vector2d(startingPosition.getX(), startingPosition.getY()-50))
-                .lineToConstantHeading(new Vector2d(30, 30))
+                .lineToConstantHeading(new Vector2d(startingPosition.getX(), startingPosition.getY()-2))
+//                .lineToConstantHeading(new Vector2d(30, 30))
                 .build();
     }
 
