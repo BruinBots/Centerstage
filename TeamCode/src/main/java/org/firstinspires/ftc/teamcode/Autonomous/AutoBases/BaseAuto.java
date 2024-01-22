@@ -18,6 +18,8 @@ public class BaseAuto {
     public SampleMecanumDrive drive;
     private Karen bot;
 
+    public static final double BACKDROP_DISTANCE_FROM_WALL = 13;
+
     public BaseAuto(HardwareMap hardwareMap, Telemetry telemetry, Pose2d startingPosition) {
 
         // assign class variables
@@ -48,12 +50,17 @@ public class BaseAuto {
     - "right"
      */
     public String tfSpike(boolean blue) {
+        // move the flipper down to let the camera see the orbs
         bot.scoopServo.setPosition(0);
         bot.inOutTake.scoopDown();
+        sleep(500); // let the flipper move down
+
+        // instantiate tensorflow
         TensorFlowForAutonomousBlueRed tf = new TensorFlowForAutonomousBlueRed(hardwareMap, telemetry, blue ? "blue" : "red");
         tf.initTfod();
-        tf.visionPortal.resumeStreaming();
-        sleep(2000);
+        tf.visionPortal.resumeStreaming(); // start the camera
+        sleep(2000); // give tensorflow time to think
+
         int i = 0;
         String side = "center";
         while (side.equals("none") && i < 2) {
@@ -63,79 +70,17 @@ public class BaseAuto {
             i++;
             sleep(20);
         }
-//        tf.visionPortal.close();
-        bot.inOutTake.scoopMiddle();
-        sleep(1000);
+//        tf.visionPortal.close(); // This causes OpenCV errors
+        bot.inOutTake.scoopMiddle(); // move the flipper back up to not hit it against the field
+        sleep(1000); // let the flipper move up
         return side;
-    }
-
-    // place the pixel by the spike mark on given side
-//    public Trajectory spike(Pose2d startPose, String side, boolean finishSpike) {
-//        // ensure the pixel is securely in the dropper
-//        bot.dropper.closed();
-//        Trajectory traj0a = spikeStart(startPose);
-//        Trajectory traj0b;
-//        switch (side) {
-//            case "left":
-//                telemetry.addData("side", "left");
-//                traj0b = spikeLeft(traj0a.end());
-//                break;
-//            case "center":
-//                telemetry.addData("side", "center");
-//                traj0b = spikeCenter(traj0a.end());
-//                break;
-//            case "right":
-//                telemetry.addData("side", "right");
-//                traj0b = spikeRight(traj0a.end());
-//                break;
-//            default:
-//                telemetry.addData("side", "default");
-//                traj0b = spikeCenter(traj0a.end());
-//                break;
-//        }
-//
-//        Trajectory traj0c = spikeEnd(traj0b.end());
-//
-//        drive.followTrajectory(traj0a); // move to the spikeStart position to ensure no crashing during navigation
-//        drive.followTrajectory(traj0b); // move to the spike mark
-//
-//        bot.dropper.open(); // release the pixel
-////        sleep(250);
-//
-//        if (finishSpike) {
-//            drive.followTrajectory(traj0c); // if finishing spike, return to spikeEnd position to prepare for parking/pixel placing
-//            return traj0c;
-//        }
-//        return traj0b;
-//    }
-
-    // will be run before doing spike placement
-    public Trajectory spikeStart(Pose2d startPose) {
-        return drive.trajectoryBuilder(startPose).build();
-    }
-
-    public Trajectory spikeLeft(Pose2d startPose) {
-        return drive.trajectoryBuilder(startPose).build();
-    }
-
-    public Trajectory spikeCenter(Pose2d startPose) {
-        return drive.trajectoryBuilder(startPose).build();
-    }
-
-    public Trajectory spikeRight(Pose2d startPose) {
-        return drive.trajectoryBuilder(startPose).build();
-    }
-
-    // will be run after doing spike placement
-    public Trajectory spikeEnd(Pose2d startPose) {
-        return drive.trajectoryBuilder(startPose).build();
     }
 
     // park the bot in the corner by the backdrop
     public Trajectory park(Pose2d startPose) {
-        Trajectory traj2 = parkTraj(startPose);
-        drive.followTrajectory(traj2);
-        return traj2;
+        Trajectory traj = parkTraj(startPose);
+        drive.followTrajectory(traj);
+        return traj;
     }
 
     public Trajectory park(Trajectory startTraj) {
@@ -148,13 +93,16 @@ public class BaseAuto {
 
     // Place the pixel on the backdrop
     public Trajectory placePixel(Pose2d startPose, String side, boolean blue, boolean finishPixel) {
-        Pose2d startEnd = startPose.plus(new Pose2d(0, 0, Math.toRadians(blue ? -90 : 90)));
+
 
         // navigate to backdrop
-       Trajectory start1 = backdropStart1(startEnd); //(,35)
+        Trajectory start1 = backdropStart1(startPose); //(,35)
         drive.followTrajectory(start1);
 
-        Trajectory start2 = backdropStart2(start1.end());
+        drive.turn(blue ? -90 : 90);
+        Pose2d startEnd = startPose.plus(new Pose2d(0, 0, Math.toRadians(blue ? -90 : 90)));
+
+        Trajectory start2 = backdropStart2(startEnd);
         drive.followTrajectory(start2);
 
 
@@ -170,11 +118,12 @@ public class BaseAuto {
                 offset = 0;
                 break;
         }
-        Trajectory backTraj = drive.trajectoryBuilder(start2.end())
-                .lineToConstantHeading(new Vector2d(47, (blue ? 35 : -35) + offset)) //48 too close need adjust at the field
-                .build();
+//        Trajectory backTraj = drive.trajectoryBuilder(start2.end())
+//                .lineToConstantHeading(new Vector2d(47, (blue ? 35 : -35) + offset)) //48 too close need adjust at the field
+//                .build();
+        Trajectory backTraj = backdropAlign(start2.end(), offset);
         drive.followTrajectory(backTraj);
-// TODO: place pixel
+
         bot.inOutTake.scoopDown();
         bot.claw.closeBothClaw();
         sleep(500);
@@ -204,6 +153,10 @@ public class BaseAuto {
         }
 
         return start1;
+    }
+
+    public Trajectory backdropAlign(Pose2d startPose, int offset) {
+        return drive.trajectoryBuilder(startPose).build();
     }
 
     public Trajectory backdropStart1(Pose2d startPose) {
@@ -291,12 +244,6 @@ public class BaseAuto {
         telemetry.update();
         bot.dropper.closed();
         sleep(500);
-//        for (int i = 0; i < 5; i ++) {
-//            bot.dropper.open();
-//            sleep(50);
-//            bot.dropper.closed();
-//            sleep(50);
-//        }
         bot.inOutTake.scoopUp();
         sleep(500);
 

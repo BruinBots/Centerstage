@@ -67,6 +67,13 @@ public class RedNearAuto extends BaseAuto {
     }
 
     @Override
+    public Trajectory backdropAlign(Pose2d startPose, int offset) {
+        return drive.trajectoryBuilder(startPose)
+                .lineToConstantHeading(new Vector2d(60 - BACKDROP_DISTANCE_FROM_WALL, -35 + offset))
+                .build();
+    }
+
+    @Override
     public Trajectory backdropEnd(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
                 .lineToConstantHeading(new Vector2d(45, -60))
