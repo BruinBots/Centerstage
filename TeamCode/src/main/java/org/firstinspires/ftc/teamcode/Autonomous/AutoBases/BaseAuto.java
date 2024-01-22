@@ -8,7 +8,9 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Arm;
 import org.firstinspires.ftc.teamcode.Autonomous.TensorFlowForAutonomousBlueRed;
+import org.firstinspires.ftc.teamcode.Claw;
 import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
@@ -118,9 +120,7 @@ public class BaseAuto {
                 offset = 0;
                 break;
         }
-//        Trajectory backTraj = drive.trajectoryBuilder(start2.end())
-//                .lineToConstantHeading(new Vector2d(47, (blue ? 35 : -35) + offset)) //48 too close need adjust at the field
-//                .build();
+
         Trajectory backTraj = backdropAlign(start2.end(), offset);
         drive.followTrajectory(backTraj);
 
@@ -130,15 +130,16 @@ public class BaseAuto {
         telemetry.addData("2560 arm", "2560");
         bot.arm.moveArm(2560, true, 0.8); // 2560
         sleep(500);
-        bot.claw.setClawWrist(0.266);
-        sleep(500);
+        Claw.setClawWristFromAngle(Arm.armAngle());
+//        bot.claw.setClawWrist(0.266);
+//        sleep(500);
         sleep(2500);
         bot.claw.openBothClaw();
         sleep(500);
         telemetry.addData("80 arm", "80");
         bot.arm.moveArm(80, true, 0.7);
         sleep(1000);
-        bot.claw.setClawWrist(0.1);
+        bot.claw.setClawWrist(Claw.ZERO_ANGLE_POS);
         sleep(1000);
         telemetry.addData("0 arm", "0");
         bot.arm.moveArm(0,true);
@@ -231,8 +232,6 @@ public class BaseAuto {
                 break;
             default:
                 telemetry.addData("side", "default");
-//                drive.turn(Math.toRadians(90));
-//                endEnter = endEnter.plus(new Pose2d(0, 0, Math.toRadians(90)));
                 vector = relativeSpikeLeft2();
                 traj = drive.trajectoryBuilder(endEnter)
                         .lineToConstantHeading(new Vector2d(endEnter.getX() + vector.getX(), endEnter.getY() + vector.getY()))
@@ -250,9 +249,9 @@ public class BaseAuto {
         if (finishSpike) {
             Trajectory exit = spikeExit2(endEnter);
             drive.followTrajectory(exit); // if finishing spike, return to spikeEnd position to prepare for parking/pixel placing
-            return exit.end();//.plus(new Pose2d(0, 0, Math.toRadians(90)));
+            return exit.end();
         }
-        return endEnter;//.plus(new Pose2d(0, 0, Math.toRadians(90)));
+        return endEnter;
     }
 
     public Trajectory spikeEnter2(Pose2d startPose) {
