@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.Autonomous.AutoOpModes.BlueNear;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Autonomous.AutoBases.BlueFarAuto;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoBases.BlueNearAuto;
 
 @Autonomous(name = "BlueNearFull")
@@ -13,6 +12,6 @@ public class BlueNearFull extends LinearOpMode {
         BlueNearAuto auto = new BlueNearAuto(hardwareMap, telemetry);
         waitForStart();
         String tfSpike = auto.tfSpike(true);
-        auto.park(auto.placePixel(auto.spike2(BlueNearAuto.startingPosition, tfSpike, true), tfSpike, true, true));
+        auto.park(auto.placePixel(auto.spike(BlueNearAuto.startingPosition, tfSpike, true), tfSpike, true, true));
     }
 }

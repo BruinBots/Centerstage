@@ -16,41 +16,6 @@ public class RedFarAuto extends BaseAuto {
     }
 
     @Override
-    public Trajectory spikeStart(Pose2d startPose) {
-        return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(-44, -55))
-                .build();
-    }
-
-    @Override
-    public Trajectory spikeLeft(Pose2d startPose) {
-        return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(-35, -34))
-                .build();
-    }
-
-    @Override
-    public Trajectory spikeCenter(Pose2d startPose) {
-        return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(-36, -37))
-                .build();
-    }
-
-    @Override
-    public Trajectory spikeRight(Pose2d startPose) {
-        return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(-34, -36))
-                .build();
-    }
-
-    @Override
-    public Trajectory spikeEnd(Pose2d startPose) {
-        return drive.trajectoryBuilder(startPose)
-                .lineTo(new Vector2d(-55, -60))
-                .build();
-    }
-
-    @Override
     public Trajectory parkTraj(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
                 .lineTo(new Vector2d(60, -61))
@@ -60,14 +25,14 @@ public class RedFarAuto extends BaseAuto {
     @Override
     public Trajectory spikeEnter2(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(-35, -35))
+                .lineToConstantHeading(new Vector2d(-36, -34))
                 .build();
     }
 
     @Override
     public Trajectory spikeExit2(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(startingPosition.getX(), startingPosition.getY()+5))
+                .lineToConstantHeading(new Vector2d(startingPosition.getX(), startingPosition.getY()+2))
                 .build();
     }
 
@@ -96,14 +61,21 @@ public class RedFarAuto extends BaseAuto {
     @Override
     public Trajectory backdropStart2(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(40, -35))
+                .lineToConstantHeading(new Vector2d(40, -60))
+                .build();
+    }
+
+    @Override
+    public Trajectory backdropAlign(Pose2d startPose, int offset) {
+        return drive.trajectoryBuilder(startPose)
+                .lineToConstantHeading(new Vector2d(60 - BACKDROP_DISTANCE_FROM_WALL, -35 + offset))
                 .build();
     }
 
     @Override
     public Trajectory backdropEnd(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(24, -60))
+                .lineToConstantHeading(new Vector2d(45, -60))
                 .build();
     }
 }
