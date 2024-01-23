@@ -72,7 +72,6 @@ public class BaseAuto {
             i++;
             sleep(20);
         }
-//        tf.visionPortal.close(); // This causes OpenCV errors
         bot.inOutTake.scoopMiddle(); // move the flipper back up to not hit it against the field
         sleep(1000); // let the flipper move up
         return side;
