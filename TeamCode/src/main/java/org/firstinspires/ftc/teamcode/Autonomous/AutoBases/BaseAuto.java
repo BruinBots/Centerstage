@@ -15,12 +15,11 @@ import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 public class BaseAuto {
-    private HardwareMap hardwareMap;
-    private Telemetry telemetry;
-    public SampleMecanumDrive drive;
-    private Karen bot;
-
     public static final double BACKDROP_DISTANCE_FROM_WALL = 13;
+    private final HardwareMap hardwareMap;
+    private final Telemetry telemetry;
+    private final Karen bot;
+    public SampleMecanumDrive drive;
 
     public BaseAuto(HardwareMap hardwareMap, Telemetry telemetry, Pose2d startingPosition) {
 
@@ -37,9 +36,7 @@ public class BaseAuto {
     }
 
     public Trajectory startPark(Pose2d startPose) {
-        Trajectory traj = drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(startPose.getX(), Math.copySign(Math.abs(startPose.getY()) - 2, startPose.getY())))
-                .build();
+        Trajectory traj = drive.trajectoryBuilder(startPose).lineToConstantHeading(new Vector2d(startPose.getX(), Math.copySign(Math.abs(startPose.getY()) - 2, startPose.getY()))).build();
         drive.followTrajectory(traj);
         return traj;
     }
@@ -94,8 +91,6 @@ public class BaseAuto {
 
     // Place the pixel on the backdrop
     public Trajectory placePixel(Pose2d startPose, String side, boolean blue, boolean finishPixel) {
-
-
         // navigate to backdrop
         Trajectory start1 = backdropStart1(startPose); //(,35)
         drive.followTrajectory(start1);
@@ -105,7 +100,6 @@ public class BaseAuto {
 
         Trajectory start2 = backdropStart2(startEnd);
         drive.followTrajectory(start2);
-
 
         int offset;
         switch (side) {
@@ -124,24 +118,21 @@ public class BaseAuto {
         drive.followTrajectory(backTraj);
 
         bot.inOutTake.scoopDown();
-        bot.claw.closeBothClaw();
+        Claw.closeBothClaw();
         sleep(500);
-        telemetry.addData("2560 arm", "2560");
         bot.arm.moveArm(2560, true, 0.8); // 2560
         sleep(500);
-        for (int i = 0; i < 5; i ++) {
+        for (int i = 0; i < 5; i++) {
             Claw.setClawWristFromAngle(Arm.armAngle());
             sleep(500);
         }
         bot.claw.openBothClaw(); // drop the pixels
         sleep(500);
-        telemetry.addData("80 arm", "80");
         bot.arm.moveArm(80, true, 0.7);
         sleep(1000);
-        bot.claw.setClawWrist(Claw.ZERO_ANGLE_POS);
+        Claw.setClawWrist(Claw.ZERO_ANGLE_POS);
         sleep(1000);
-        telemetry.addData("0 arm", "0");
-        bot.arm.moveArm(0,true);
+        bot.arm.moveArm(0, true);
         sleep(2500);
         bot.inOutTake.scoopUp();
         sleep(500);
@@ -187,76 +178,53 @@ public class BaseAuto {
      places the pixel by the spike mark on given side
      */
     public Pose2d spike(Pose2d startPose, String side, boolean finishSpike) {
-        Trajectory enter = spikeEnter2(startPose, side == "center"); //(15,35) blue near Center spike
+        Trajectory enter = spikeEnter(startPose, side == "center"); //(15,35) blue near Center spike
         drive.followTrajectory(enter);
 
         Pose2d endEnter = enter.end();
-        Vector2d vector;
-        Trajectory traj;
+        Vector2d vector = null;
+        Trajectory traj = null;
+
+        telemetry.addData("side", side);
+        telemetry.update();
+
+        int angle = 0;
 
         switch (side) {
             case "left":
-                telemetry.addData("side", "left");
-                drive.turn(Math.toRadians(90));
-                endEnter = endEnter.plus(new Pose2d(0, 0, Math.toRadians(90)));
-                vector = relativeSpikeLeft2();
-                traj = drive.trajectoryBuilder(endEnter)
-                        .lineToConstantHeading(new Vector2d(endEnter.getX() + vector.getX(), endEnter.getY() + vector.getY()))
-                        .build();
-                drive.followTrajectory(traj);
-                bot.inOutTake.scoopDown();
-                bot.inOutTake.outtake();
-                sleep(500);
-                bot.inOutTake.stopTake();
-                bot.inOutTake.scoopMiddle();
-                sleep(750);
-                drive.turn(-90);
-                endEnter = traj.end().plus(new Pose2d(0, 0, Math.toRadians(-90)));
-                break;
-            case "center":
-                telemetry.addData("side", "center");
-                bot.inOutTake.scoopDown();
-                bot.inOutTake.outtake();
-                sleep(500);
-                bot.inOutTake.stopTake();
-                bot.inOutTake.scoopMiddle();
-                sleep(750);
+                angle = 90;
+                vector = relativeSpikeLeft();
                 break;
             case "right":
-                telemetry.addData("side", "right");
-                drive.turn(Math.toRadians(-90));
-                endEnter = endEnter.plus(new Pose2d(0, 0, Math.toRadians(-90)));
-                vector = relativeSpikeRight2();
-                traj = drive.trajectoryBuilder(endEnter)
-                        .lineToConstantHeading(new Vector2d(endEnter.getX() + vector.getX(), endEnter.getY() + vector.getY()))
-                        .build();
-                drive.followTrajectory(traj);
-                bot.inOutTake.scoopDown();
-                bot.inOutTake.outtake();
-                sleep(500);
-                bot.inOutTake.stopTake();
-                bot.inOutTake.scoopMiddle();
-                sleep(750);
-                drive.turn(90);
-                endEnter = traj.end().plus(new Pose2d(0, 0, Math.toRadians(90)));
-                break;
-            default:
-                telemetry.addData("side", "default");
-                vector = relativeSpikeCenter2();
-                traj = drive.trajectoryBuilder(endEnter)
-                        .lineToConstantHeading(new Vector2d(endEnter.getX() + vector.getX(), endEnter.getY() + vector.getY()))
-                        .build();
-                drive.followTrajectory(traj);
-                endEnter = traj.end();
+                angle = -90;
+                vector = relativeSpikeRight();
                 break;
         }
-        telemetry.update();
-        bot.inOutTake.scoopUp();
+
+        drive.turn(Math.toRadians(angle));
+        endEnter = endEnter.plus(new Pose2d(0, 0, Math.toRadians(angle)));
+
+        if (vector != null) {
+            traj = drive.trajectoryBuilder(endEnter).lineToConstantHeading(new Vector2d(endEnter.getX() + vector.getX(), endEnter.getY() + vector.getY())).build();
+        }
+        if (traj != null) {
+            drive.followTrajectory(traj);
+            endEnter = traj.end();
+        }
+        bot.inOutTake.scoopDown();
         sleep(500);
+        bot.inOutTake.outtake();
+        sleep(500);
+        bot.inOutTake.stopTake();
+        bot.inOutTake.scoopUp();
+        sleep(750);
+
+        drive.turn(Math.toRadians(-angle));
+        endEnter = endEnter.plus(new Pose2d(0, 0, Math.toRadians(-angle)));
 
         if (finishSpike) {
-            Trajectory finishEnter = spikeEnter2(endEnter, side == "center");
-            Trajectory exit = spikeExit2(finishEnter.end());
+            Trajectory finishEnter = spikeEnter(endEnter, side == "center");
+            Trajectory exit = spikeExit(finishEnter.end());
             drive.followTrajectory(finishEnter);
             drive.followTrajectory(exit); // if finishing spike, return to spikeEnd position to prepare for parking/pixel placing
             return exit.end();
@@ -264,23 +232,26 @@ public class BaseAuto {
         return endEnter;
     }
 
-    public Trajectory spikeEnter2(Pose2d startPose, boolean isCenter) {
+    // this will move the robot in the center of all the spike marks
+    public Trajectory spikeEnter(Pose2d startPose, boolean isCenter) {
         return drive.trajectoryBuilder(startPose).build();
     }
 
-    public Vector2d relativeSpikeLeft2() {
+    // if the spike is left, the robot will move this vector relative to the current position to drop the pixel
+    public Vector2d relativeSpikeLeft() {
         return new Vector2d(0, 0);
     }
 
-    public Vector2d  relativeSpikeCenter2() {
+    // if the spike is center, the robot will move this vector relative to the current position to drop the pixel
+    public Vector2d relativeSpikeCenter() {
         return new Vector2d(0, 0);
     }
 
-    public Vector2d relativeSpikeRight2() {
+    public Vector2d relativeSpikeRight() {
         return new Vector2d(0, 0);
     }
 
-    public Trajectory spikeExit2(Pose2d startPose) {
+    public Trajectory spikeExit(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose).build();
     }
     //endregion

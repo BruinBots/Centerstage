@@ -72,31 +72,31 @@ public class BlueFarAuto extends BaseAuto {
     }
 
     @Override
-    public Trajectory spikeEnter2(Pose2d startPose, boolean isCenter) {
+    public Trajectory spikeEnter(Pose2d startPose, boolean isCenter) {
         return drive.trajectoryBuilder(startPose)
                 .lineToConstantHeading(new Vector2d(SPIKEENTER_X, isCenter ? SPIKEENTER_Y + RELATIVESPIKECENTER_Y : SPIKEENTER_Y))
                 .build();
     }
 
     @Override
-    public Trajectory spikeExit2(Pose2d startPose) {
+    public Trajectory spikeExit(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
                 .lineToConstantHeading(new Vector2d(SPIKEEXIT_X, SPIKEEXIT_Y))
                 .build();
     }
 
     @Override
-    public Vector2d relativeSpikeCenter2() {
+    public Vector2d relativeSpikeCenter() {
         return new Vector2d(0, RELATIVESPIKECENTER_Y);
     }
 
     @Override
-    public Vector2d relativeSpikeLeft2() {
+    public Vector2d relativeSpikeLeft() {
         return new Vector2d(RELATIVESPIKELEFT_X, 0);
     }
 
     @Override
-    public Vector2d relativeSpikeRight2() {
+    public Vector2d relativeSpikeRight() {
         return new Vector2d(RELATIVESPIKERIGHT_X, 0);
     }
 
