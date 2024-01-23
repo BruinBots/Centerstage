@@ -133,9 +133,6 @@ public class BaseAuto {
             Claw.setClawWristFromAngle(Arm.armAngle());
             sleep(500);
         }
-//        bot.claw.setClawWrist(0.266);
-//        sleep(500);
-//        sleep(2500);
         bot.claw.openBothClaw(); // drop the pixels
         sleep(500);
         telemetry.addData("80 arm", "80");
@@ -218,21 +215,12 @@ public class BaseAuto {
                 break;
             case "center":
                 telemetry.addData("side", "center");
-//                vector = relativeSpikeCenter2();
-//                telemetry.addData("x", vector.getX());
-//                telemetry.addData("y", vector.getY());
-//                telemetry.update();
-//                traj = drive.trajectoryBuilder(endEnter)
-//                        .lineToConstantHeading(new Vector2d(endEnter.getX() + vector.getX(),endEnter.getY() + vector.getY()))
-//                        .build();
-//                drive.followTrajectory(traj);
                 bot.inOutTake.scoopDown();
                 bot.inOutTake.outtake();
                 sleep(500);
                 bot.inOutTake.stopTake();
                 bot.inOutTake.scoopMiddle();
                 sleep(750);
-//                endEnter = traj.end();
                 break;
             case "right":
                 telemetry.addData("side", "right");
@@ -263,8 +251,6 @@ public class BaseAuto {
                 break;
         }
         telemetry.update();
-//        bot.dropper.closed();
-//        sleep(500);
         bot.inOutTake.scoopUp();
         sleep(500);
 
