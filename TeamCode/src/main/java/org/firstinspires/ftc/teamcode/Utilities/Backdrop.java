@@ -56,8 +56,9 @@ public class Backdrop {
         sleep(1000);
         Claw.closeBothClaw();
         sleep(500);
-        bot.arm.moveArm(2560, true, 0.8);
-        for (int i = 0; i < 50; i++) {
+        bot.arm.moveArm(2560, true);
+        sleep(750);
+        for (int i = 0; i < 45; i++) {
             Claw.setClawWristFromAngle(Arm.armAngle());
             sleep(50);
         }
