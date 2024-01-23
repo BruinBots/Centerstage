@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import android.util.Size;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -77,15 +78,16 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
         initTfod();
 
         // Wait for the DS start button to be touched.
-        telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
-        telemetry.addData(">", "Touch Play to start OpMode");
-        telemetry.update();
+//        telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
+//        telemetry.addData(">", "Touch Play to start OpMode");
+//        telemetry.update();
         waitForStart();
 
-        if (opModeIsActive()) {
+//        if (opModeIsActive()) {
             while (opModeIsActive()) {
 
-                telemetryTfod();
+                telemetry.addData("blue-side", blueTelemetryTfod());
+                telemetry.addData("red-side", redTelemetryTfod());
                 // Save CPU resources; can resume streaming when needed.
                 if (gamepad1.dpad_down) {
                     visionPortal.stopStreaming();
@@ -96,7 +98,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
                 // Share the CPU.
                 sleep(20);
             }
-        }
+//        }
 
         // Save more CPU resources when camera is no longer o.
         visionPortal.close();
@@ -331,7 +333,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
     }
 
 
-    private String blueTelemetryTfod() {
+    public String blueTelemetryTfod() {
         Recognition recognition = blueTfod();
         String direction = "center";
         double screenWidth = 2200;//tfodProcessor.getCameraView().getWidth();
