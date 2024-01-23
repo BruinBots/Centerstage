@@ -38,30 +38,30 @@ public class BlueFarAuto extends BaseAuto {
 
     public BlueFarAuto(HardwareMap hardwareMap, Telemetry telemetry) {
         super(hardwareMap, telemetry, startingPosition);
-        try (InputStream input = new FileInputStream("org/firstinspires/ftc/teamcode/Autonomous/AutoBases/coordinates.properties")) {
-            Properties prop = new Properties();
-            prop.load(input);
-            PARK_X = Integer.parseInt(prop.getProperty("bluefar.park.x"));
-            PARK_Y = Integer.parseInt(prop.getProperty("blue.park.y"));
-            SPIKEENTER_X = Integer.parseInt(prop.getProperty("bluefar.spikeenter.x"));
-            SPIKEENTER_Y = Integer.parseInt(prop.getProperty("bluefar.spikeenter.y"));
-            SPIKEEXIT_X = Integer.parseInt(prop.getProperty("bluefar.spikeexit.x"));
-            SPIKEEXIT_Y = Integer.parseInt(prop.getProperty("blue.spikeexit.y"));
-            RELATIVESPIKECENTER_Y = Integer.parseInt(prop.getProperty("blue.relativespikecenter.y"));
-            RELATIVESPIKELEFT_X = Integer.parseInt(prop.getProperty("blue.relativespikeleft.x"));
-            RELATIVESPIKERIGHT_X = Integer.parseInt(prop.getProperty("blue.relativespikeright.x"));
-            BACKDROPSTART1_X = Integer.parseInt(prop.getProperty("blue.backdropstart1.x"));
-            BACKDROPSTART1_Y = Integer.parseInt(prop.getProperty("blue.backdropstart1.y"));
-            BACKDROPSTART2_X = Integer.parseInt(prop.getProperty("blue.backdropstart2.x"));
-            BACKDROPSTART2_Y = Integer.parseInt(prop.getProperty("blue.backdropstart2.y"));
-            BACKDROPALIGN_X = Integer.parseInt(prop.getProperty("blue.backdropalign.x"));
-            BACKDROPALIGN_Y = Integer.parseInt(prop.getProperty("blue.backdropalign.y"));
-            BACKDROPEND_X = Integer.parseInt(prop.getProperty("blue.backdropend.x"));
-            BACKDROPEND_Y = Integer.parseInt(prop.getProperty("blue.backdropend.y"));
-        }
-        catch (IOException ex) {
-            ex.printStackTrace();
-        }
+//        try (InputStream input = new FileInputStream("org/firstinspires/ftc/teamcode/coordinates.properties")) {
+//            Properties prop = new Properties();
+//            prop.load(input);
+//            PARK_X = Integer.parseInt(prop.getProperty("blue.park.x"));
+//            PARK_Y = Integer.parseInt(prop.getProperty("blue.park.y"));
+//            SPIKEENTER_X = Integer.parseInt(prop.getProperty("bluefar.spikeenter.x"));
+//            SPIKEENTER_Y = Integer.parseInt(prop.getProperty("bluefar.spikeenter.y"));
+//            SPIKEEXIT_X = Integer.parseInt(prop.getProperty("bluefar.spikeexit.x"));
+//            SPIKEEXIT_Y = Integer.parseInt(prop.getProperty("blue.spikeexit.y"));
+//            RELATIVESPIKECENTER_Y = Integer.parseInt(prop.getProperty("blue.relativespikecenter.y"));
+//            RELATIVESPIKELEFT_X = Integer.parseInt(prop.getProperty("blue.relativespikeleft.x"));
+//            RELATIVESPIKERIGHT_X = Integer.parseInt(prop.getProperty("blue.relativespikeright.x"));
+//            BACKDROPSTART1_X = Integer.parseInt(prop.getProperty("blue.backdropstart1.x"));
+//            BACKDROPSTART1_Y = Integer.parseInt(prop.getProperty("blue.backdropstart1.y"));
+//            BACKDROPSTART2_X = Integer.parseInt(prop.getProperty("blue.backdropstart2.x"));
+//            BACKDROPSTART2_Y = Integer.parseInt(prop.getProperty("blue.backdropstart2.y"));
+//            BACKDROPALIGN_X = Integer.parseInt(prop.getProperty("blue.backdropalign.x"));
+//            BACKDROPALIGN_Y = Integer.parseInt(prop.getProperty("blue.backdropalign.y"));
+//            BACKDROPEND_X = Integer.parseInt(prop.getProperty("blue.backdropend.x"));
+//            BACKDROPEND_Y = Integer.parseInt(prop.getProperty("blue.backdropend.y"));
+//        }
+//        catch (IOException ex) {
+//            ex.printStackTrace();
+//        }
     }
 
     @Override

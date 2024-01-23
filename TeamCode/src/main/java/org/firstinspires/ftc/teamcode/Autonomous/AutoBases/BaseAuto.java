@@ -191,9 +191,6 @@ public class BaseAuto {
         Trajectory enter = spikeEnter2(startPose); //(15,35) blue near Center spike
         drive.followTrajectory(enter);
 
-        bot.dropper.open();
-        sleep(500);
-
         Pose2d endEnter = enter.end();
         Vector2d vector;
         Trajectory traj;
@@ -208,15 +205,31 @@ public class BaseAuto {
                         .lineToConstantHeading(new Vector2d(endEnter.getX() + vector.getX(), endEnter.getY() + vector.getY()))
                         .build();
                 drive.followTrajectory(traj);
-                endEnter = traj.end();
+                bot.inOutTake.scoopDown();
+                bot.inOutTake.outtake();
+                sleep(500);
+                bot.inOutTake.stopTake();
+                bot.inOutTake.scoopMiddle();
+                sleep(750);
+                drive.turn(-90);
+                endEnter = traj.end().plus(new Pose2d(0, 0, Math.toRadians(-90)));
                 break;
             case "center":
                 telemetry.addData("side", "center");
                 vector = relativeSpikeCenter2();
+                telemetry.addData("x", vector.getX());
+                telemetry.addData("y", vector.getY());
+                telemetry.update();
                 traj = drive.trajectoryBuilder(endEnter)
                         .lineToConstantHeading(new Vector2d(endEnter.getX() + vector.getX(),endEnter.getY() + vector.getY()))
                         .build();
                 drive.followTrajectory(traj);
+                bot.inOutTake.scoopDown();
+                bot.inOutTake.outtake();
+                sleep(500);
+                bot.inOutTake.stopTake();
+                bot.inOutTake.scoopMiddle();
+                sleep(750);
                 endEnter = traj.end();
                 break;
             case "right":
@@ -228,11 +241,18 @@ public class BaseAuto {
                         .lineToConstantHeading(new Vector2d(endEnter.getX() + vector.getX(), endEnter.getY() + vector.getY()))
                         .build();
                 drive.followTrajectory(traj);
-                endEnter = traj.end();
+                bot.inOutTake.scoopDown();
+                bot.inOutTake.outtake();
+                sleep(500);
+                bot.inOutTake.stopTake();
+                bot.inOutTake.scoopMiddle();
+                sleep(750);
+                drive.turn(90);
+                endEnter = traj.end().plus(new Pose2d(0, 0, Math.toRadians(90)));
                 break;
             default:
                 telemetry.addData("side", "default");
-                vector = relativeSpikeLeft2();
+                vector = relativeSpikeCenter2();
                 traj = drive.trajectoryBuilder(endEnter)
                         .lineToConstantHeading(new Vector2d(endEnter.getX() + vector.getX(), endEnter.getY() + vector.getY()))
                         .build();
@@ -241,13 +261,15 @@ public class BaseAuto {
                 break;
         }
         telemetry.update();
-        bot.dropper.closed();
-        sleep(500);
+//        bot.dropper.closed();
+//        sleep(500);
         bot.inOutTake.scoopUp();
         sleep(500);
 
         if (finishSpike) {
-            Trajectory exit = spikeExit2(endEnter);
+            Trajectory finishEnter = spikeEnter2(endEnter);
+            Trajectory exit = spikeExit2(finishEnter.end());
+            drive.followTrajectory(finishEnter);
             drive.followTrajectory(exit); // if finishing spike, return to spikeEnd position to prepare for parking/pixel placing
             return exit.end();
         }
