@@ -65,7 +65,7 @@ public class BaseAuto {
 
         int i = 0;
         String side = "center";
-        while (side.equals("none") && i < 2) {
+        while (side.equals("center") && i < 5) {
             side = tf.getSide(blue);
             telemetry.addData("A-side", side);
             telemetry.update();
