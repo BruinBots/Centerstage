@@ -175,6 +175,7 @@ public class BaseAuto {
         bot.inOutTake.outtake();
         sleep(500);
         bot.inOutTake.stopTake();
+        sleep(250);
         bot.inOutTake.scoopUp();
         sleep(750);
 
@@ -182,9 +183,13 @@ public class BaseAuto {
         endEnter = endEnter.plus(new Pose2d(0, 0, Math.toRadians(-angle)));
 
         if (finishSpike) {
-            Trajectory finishEnter = spikeEnter(endEnter, side == Backdrop.Side.CENTER);
-            Trajectory exit = spikeExit(finishEnter.end());
-            drive.followTrajectory(finishEnter);
+            Pose2d finish = endEnter;
+            if (side != Backdrop.Side.CENTER) {
+                Trajectory finishEnter = spikeEnter(endEnter, side == Backdrop.Side.CENTER);
+                drive.followTrajectory(finishEnter);
+                finish = finishEnter.end();
+            }
+            Trajectory exit = spikeExit(finish);
             drive.followTrajectory(exit); // if finishing spike, return to spikeEnd position to prepare for parking/pixel placing
             return exit.end();
         }

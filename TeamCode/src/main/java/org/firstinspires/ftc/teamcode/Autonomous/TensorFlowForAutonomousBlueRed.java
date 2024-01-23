@@ -4,6 +4,7 @@ import static android.os.SystemClock.sleep;
 
 import android.util.Size;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -28,6 +29,7 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
 
+@Autonomous(name="Tensorflow")
 public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
     private static final boolean USE_WEBCAM = true;  // true for webc// m, false for phone camera
     //1 is blue 2 is red
@@ -68,8 +70,8 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
         sleep(2000); // give tensorflow time to think
 
         int i = 0;
-        Backdrop.Side side = Backdrop.Side.CENTER;
-        while (side == Backdrop.Side.CENTER && i < 5) {
+        Backdrop.Side side = null;
+        while (side == null && i < 5) {
             side = getSide(blue);
             telemetry.addData("A-side", side);
             telemetry.update();
@@ -106,7 +108,9 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
         if (opModeIsActive()) {
             while (opModeIsActive()) {
 
-                telemetryTfod();
+                telemetry.addData("blue-side", getSide(true));
+                telemetry.addData("red-side", getSide(false));
+                telemetry.update();
                 // Save CPU resources; can resume streaming when needed.
                 if (gamepad1.dpad_down) {
                     visionPortal.stopStreaming();
@@ -316,7 +320,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
 
     public Backdrop.Side redTelemetryTfod() {
         Recognition recognition = redTfod();
-        Backdrop.Side direction = Backdrop.Side.CENTER;
+        Backdrop.Side direction = null;
         double screenWidth = 2200;//tfodProcessor.getCameraView().getWidth();
 
         if(recognition==null) {
@@ -354,7 +358,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
 
     private Backdrop.Side blueTelemetryTfod() {
         Recognition recognition = blueTfod();
-        Backdrop.Side direction = Backdrop.Side.CENTER;
+        Backdrop.Side direction = null;
         double screenWidth = 2200;//tfodProcessor.getCameraView().getWidth();
 
         if(recognition==null) {

@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Autonomous.AutoBases;
 
+import android.content.res.AssetManager;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -7,6 +9,7 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -18,50 +21,51 @@ public class RedFarAuto extends BaseAuto {
 
     public static Pose2d startingPosition = new Pose2d(-36, -62, Math.toRadians(90));
 
-    public static int PARK_X=60;
-    public static int PARK_Y=-61;
-    public static int SPIKEENTER_X=-36;
-    public static int SPIKEENTER_Y=-28;
-    public static int SPIKEEXIT_X=-36;
-    public static int SPIKEEXIT_Y=-59;
-    public static int RELATIVESPIKECENTER_Y=-13;
-    public static int RELATIVESPIKELEFT_X=-3;
-    public static int RELATIVESPIKERIGHT_X=3;
-    public static int BACKDROPSTART1_X=15;
-    public static int BACKDROPSTART1_Y=-60;
-    public static int BACKDROPSTART2_X=40;
-    public static int BACKDROPSTART2_Y=-60;
-    public static int BACKDROPALIGN_X=60;
-    public static int BACKDROPALIGN_Y=-35;
-    public static int BACKDROPEND_X=45;
-    public static int BACKDROPEND_Y=-60;
+    public static int PARK_X;
+    public static int PARK_Y;
+    public static int SPIKEENTER_X;
+    public static int SPIKEENTER_Y;
+    public static int SPIKEEXIT_X;
+    public static int SPIKEEXIT_Y;
+    public static int RELATIVESPIKECENTER_Y;
+    public static int RELATIVESPIKELEFT_X;
+    public static int RELATIVESPIKERIGHT_X;
+    public static int BACKDROPSTART1_X;
+    public static int BACKDROPSTART1_Y;
+    public static int BACKDROPSTART2_X;
+    public static int BACKDROPSTART2_Y;
+    public static int BACKDROPALIGN_X;
+    public static int BACKDROPALIGN_Y;
+    public static int BACKDROPEND_X;
+    public static int BACKDROPEND_Y;
 
     public RedFarAuto(HardwareMap hardwareMap, Telemetry telemetry) {
         super(hardwareMap, telemetry, startingPosition);
-//        try (InputStream input = new FileInputStream("org/firstinspires/ftc/teamcode/coordinates.properties")) {
-//            Properties prop = new Properties();
-//            prop.load(input);
-//            PARK_X = Integer.parseInt(prop.getProperty("red.park.x"));
-//            PARK_Y = Integer.parseInt(prop.getProperty("red.park.y"));
-//            SPIKEENTER_X = Integer.parseInt(prop.getProperty("redfar.spikeenter.x"));
-//            SPIKEENTER_Y = Integer.parseInt(prop.getProperty("redfar.spikeenter.y"));
-//            SPIKEEXIT_X = Integer.parseInt(prop.getProperty("redfar.spikeexit.x"));
-//            SPIKEEXIT_Y = Integer.parseInt(prop.getProperty("red.spikeexit.y"));
-//            RELATIVESPIKECENTER_Y = Integer.parseInt(prop.getProperty("red.relativespikecenter.y"));
-//            RELATIVESPIKELEFT_X = Integer.parseInt(prop.getProperty("red.relativespikeleft.x"));
-//            RELATIVESPIKERIGHT_X = Integer.parseInt(prop.getProperty("red.relativespikeright.x"));
-//            BACKDROPSTART1_X = Integer.parseInt(prop.getProperty("red.backdropstart1.x"));
-//            BACKDROPSTART1_Y = Integer.parseInt(prop.getProperty("red.backdropstart1.y"));
-//            BACKDROPSTART2_X = Integer.parseInt(prop.getProperty("red.backdropstart2.x"));
-//            BACKDROPSTART2_Y = Integer.parseInt(prop.getProperty("red.backdropstart2.y"));
-//            BACKDROPALIGN_X = Integer.parseInt(prop.getProperty("red.backdropalign.x"));
-//            BACKDROPALIGN_Y = Integer.parseInt(prop.getProperty("red.backdropalign.y"));
-//            BACKDROPEND_X = Integer.parseInt(prop.getProperty("red.backdropend.x"));
-//            BACKDROPEND_Y = Integer.parseInt(prop.getProperty("red.backdropend.y"));
-//        }
-//        catch (IOException ex) {
-//            ex.printStackTrace();
-//        }
+        AssetManager assetManager = AppUtil.getDefContext().getAssets();
+        try (InputStream input = assetManager.open("coordinates.properties")) {
+            Properties prop = new Properties();
+            prop.load(input);
+            PARK_X = Integer.parseInt(prop.getProperty("red.park.x"));
+            PARK_Y = Integer.parseInt(prop.getProperty("red.park.y"));
+            SPIKEENTER_X = Integer.parseInt(prop.getProperty("redfar.spikeenter.x"));
+            SPIKEENTER_Y = Integer.parseInt(prop.getProperty("redfar.spikeenter.y"));
+            SPIKEEXIT_X = Integer.parseInt(prop.getProperty("redfar.spikeexit.x"));
+            SPIKEEXIT_Y = Integer.parseInt(prop.getProperty("red.spikeexit.y"));
+            RELATIVESPIKECENTER_Y = Integer.parseInt(prop.getProperty("red.relativespikecenter.y"));
+            RELATIVESPIKELEFT_X = Integer.parseInt(prop.getProperty("red.relativespikeleft.x"));
+            RELATIVESPIKERIGHT_X = Integer.parseInt(prop.getProperty("red.relativespikeright.x"));
+            BACKDROPSTART1_X = Integer.parseInt(prop.getProperty("red.backdropstart1.x"));
+            BACKDROPSTART1_Y = Integer.parseInt(prop.getProperty("red.backdropstart1.y"));
+            BACKDROPSTART2_X = Integer.parseInt(prop.getProperty("red.backdropstart2.x"));
+            BACKDROPSTART2_Y = Integer.parseInt(prop.getProperty("red.backdropstart2.y"));
+            BACKDROPALIGN_X = Integer.parseInt(prop.getProperty("red.backdropalign.x"));
+            BACKDROPALIGN_Y = Integer.parseInt(prop.getProperty("red.backdropalign.y"));
+            BACKDROPEND_X = Integer.parseInt(prop.getProperty("red.backdropend.x"));
+            BACKDROPEND_Y = Integer.parseInt(prop.getProperty("red.backdropend.y"));
+        }
+        catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override

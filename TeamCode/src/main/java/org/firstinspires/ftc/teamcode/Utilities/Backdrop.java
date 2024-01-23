@@ -5,6 +5,7 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.har
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Arm;
 import org.firstinspires.ftc.teamcode.Claw;
@@ -14,6 +15,7 @@ import static android.os.SystemClock.sleep;
 
 public class Backdrop {
 
+    public static HardwareMap hardwareMap;
     public static double BACKDROP_OFFSET = 3;
 
     public static enum Side {
@@ -25,12 +27,11 @@ public class Backdrop {
 
     public static void initBot() {
         if (bot == null) {
-            Backdrop.bot = new Karen(hardwareMap);
+            Backdrop.bot = new Karen(Backdrop.hardwareMap);
         }
     }
 
     public static Pose2d alignBackdrop(SampleMecanumDrive drive, Pose2d startPose, Side side) {
-        initBot();
         int distance = 0;
         // distance = bot.distanceSensor.getDistance();
 
@@ -52,21 +53,22 @@ public class Backdrop {
 
     public static void liftArm() {
         bot.inOutTake.scoopDown();
+        sleep(1000);
         Claw.closeBothClaw();
         sleep(500);
         bot.arm.moveArm(2560, true, 0.8);
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 50; i++) {
             Claw.setClawWristFromAngle(Arm.armAngle());
-            sleep(500);
+            sleep(50);
         }
     }
 
     public static void lowerArm() {
-        bot.arm.moveArm(80, true, 0.7);
-        sleep(1000);
-        Claw.setClawWrist(Claw.ZERO_ANGLE_POS);
-        sleep(1000);
+        bot.arm.moveArm(1, true);
+        sleep(500);
         bot.arm.moveArm(0, true);
         sleep(1000);
+        Claw.setClawWrist(Claw.ZERO_ANGLE_POS);
+        sleep(2500);
     }
 }
