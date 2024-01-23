@@ -11,6 +11,6 @@ public class RedNearSpikeOnly extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         RedNearAuto auto = new RedNearAuto(hardwareMap, telemetry);
         waitForStart();
-        auto.spike(RedNearAuto.startingPosition, auto.tfSpike(), false);
+        auto.spike(RedNearAuto.startingPosition, auto.tfSpike(false), false);
     }
 }

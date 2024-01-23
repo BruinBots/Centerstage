@@ -11,6 +11,6 @@ public class RedFarSpikeOnly extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         RedFarAuto auto = new RedFarAuto(hardwareMap, telemetry);
         waitForStart();
-        auto.spike(RedFarAuto.startingPosition, auto.tfSpike(), false);
+        auto.spike(RedFarAuto.startingPosition, auto.tfSpike(false), false);
     }
 }

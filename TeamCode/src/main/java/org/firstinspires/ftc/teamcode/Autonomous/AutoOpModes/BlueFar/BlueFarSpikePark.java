@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonomous.AutoOpModes.BlueNear;
+package org.firstinspires.ftc.teamcode.Autonomous.AutoOpModes.BlueFar;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -11,6 +11,6 @@ public class BlueFarSpikePark extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         BlueFarAuto auto = new BlueFarAuto(hardwareMap, telemetry);
         waitForStart();
-        auto.park(auto.spike(BlueFarAuto.startingPosition, auto.tfSpike(), true).end());
+        auto.park(auto.spike(BlueFarAuto.startingPosition, auto.tfSpike(true), true));
     }
 }

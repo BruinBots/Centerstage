@@ -12,6 +12,6 @@ public class RedFarParkOnly extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         RedFarAuto auto = new RedFarAuto(hardwareMap, telemetry);
         waitForStart();
-        auto.park(RedFarAuto.startingPosition);
+        auto.park(auto.startPark(RedFarAuto.startingPosition));
     }
 }
