@@ -72,9 +72,9 @@ public class BlueNearAuto extends BaseAuto {
     }
 
     @Override
-    public Trajectory spikeEnter2(Pose2d startPose) {
+    public Trajectory spikeEnter2(Pose2d startPose, boolean isCenter) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(SPIKEENTER_X, SPIKEENTER_Y))
+                .lineToConstantHeading(new Vector2d(SPIKEENTER_X, isCenter ? SPIKEENTER_Y + RELATIVESPIKECENTER_Y : SPIKEENTER_Y))
                 .build();
     }
 

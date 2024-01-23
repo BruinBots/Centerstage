@@ -188,7 +188,7 @@ public class BaseAuto {
      places the pixel by the spike mark on given side
      */
     public Pose2d spike(Pose2d startPose, String side, boolean finishSpike) {
-        Trajectory enter = spikeEnter2(startPose); //(15,35) blue near Center spike
+        Trajectory enter = spikeEnter2(startPose, side == "center"); //(15,35) blue near Center spike
         drive.followTrajectory(enter);
 
         Pose2d endEnter = enter.end();
@@ -216,21 +216,21 @@ public class BaseAuto {
                 break;
             case "center":
                 telemetry.addData("side", "center");
-                vector = relativeSpikeCenter2();
-                telemetry.addData("x", vector.getX());
-                telemetry.addData("y", vector.getY());
-                telemetry.update();
-                traj = drive.trajectoryBuilder(endEnter)
-                        .lineToConstantHeading(new Vector2d(endEnter.getX() + vector.getX(),endEnter.getY() + vector.getY()))
-                        .build();
-                drive.followTrajectory(traj);
+//                vector = relativeSpikeCenter2();
+//                telemetry.addData("x", vector.getX());
+//                telemetry.addData("y", vector.getY());
+//                telemetry.update();
+//                traj = drive.trajectoryBuilder(endEnter)
+//                        .lineToConstantHeading(new Vector2d(endEnter.getX() + vector.getX(),endEnter.getY() + vector.getY()))
+//                        .build();
+//                drive.followTrajectory(traj);
                 bot.inOutTake.scoopDown();
                 bot.inOutTake.outtake();
                 sleep(500);
                 bot.inOutTake.stopTake();
                 bot.inOutTake.scoopMiddle();
                 sleep(750);
-                endEnter = traj.end();
+//                endEnter = traj.end();
                 break;
             case "right":
                 telemetry.addData("side", "right");
@@ -267,7 +267,7 @@ public class BaseAuto {
         sleep(500);
 
         if (finishSpike) {
-            Trajectory finishEnter = spikeEnter2(endEnter);
+            Trajectory finishEnter = spikeEnter2(endEnter, side == "center");
             Trajectory exit = spikeExit2(finishEnter.end());
             drive.followTrajectory(finishEnter);
             drive.followTrajectory(exit); // if finishing spike, return to spikeEnd position to prepare for parking/pixel placing
@@ -276,7 +276,7 @@ public class BaseAuto {
         return endEnter;
     }
 
-    public Trajectory spikeEnter2(Pose2d startPose) {
+    public Trajectory spikeEnter2(Pose2d startPose, boolean isCenter) {
         return drive.trajectoryBuilder(startPose).build();
     }
 

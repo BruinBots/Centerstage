@@ -18,23 +18,23 @@ public class RedNearAuto extends BaseAuto {
 
     public static Pose2d startingPosition = new Pose2d(12, -62, Math.toRadians(90));
 
-    public static int PARK_X;
-    public static int PARK_Y;
-    public static int SPIKEENTER_X;
-    public static int SPIKEENTER_Y;
-    public static int SPIKEEXIT_X;
-    public static int SPIKEEXIT_Y;
-    public static int RELATIVESPIKECENTER_Y;
-    public static int RELATIVESPIKELEFT_X;
-    public static int RELATIVESPIKERIGHT_X;
-    public static int BACKDROPSTART1_X;
-    public static int BACKDROPSTART1_Y;
-    public static int BACKDROPSTART2_X;
-    public static int BACKDROPSTART2_Y;
-    public static int BACKDROPALIGN_X;
-    public static int BACKDROPALIGN_Y;
-    public static int BACKDROPEND_X;
-    public static int BACKDROPEND_Y;
+    public static int PARK_X=60;
+    public static int PARK_Y=-61;
+    public static int SPIKEENTER_X=15;
+    public static int SPIKEENTER_Y=-28;
+    public static int SPIKEEXIT_X=12;
+    public static int SPIKEEXIT_Y=-59;
+    public static int RELATIVESPIKECENTER_Y=-13;
+    public static int RELATIVESPIKELEFT_X=-3;
+    public static int RELATIVESPIKERIGHT_X=3;
+    public static int BACKDROPSTART1_X=15;
+    public static int BACKDROPSTART1_Y=-60;
+    public static int BACKDROPSTART2_X=40;
+    public static int BACKDROPSTART2_Y=-60;
+    public static int BACKDROPALIGN_X=60;
+    public static int BACKDROPALIGN_Y=-35;
+    public static int BACKDROPEND_X=45;
+    public static int BACKDROPEND_Y=-60;
 
     public RedNearAuto(HardwareMap hardwareMap, Telemetry telemetry) {
         super(hardwareMap, telemetry, startingPosition);
@@ -72,9 +72,9 @@ public class RedNearAuto extends BaseAuto {
     }
 
     @Override
-    public Trajectory spikeEnter2(Pose2d startPose) {
+    public Trajectory spikeEnter2(Pose2d startPose, boolean isCenter) {
         return drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(SPIKEENTER_X, SPIKEENTER_Y))
+                .lineToConstantHeading(new Vector2d(SPIKEENTER_X, isCenter ? SPIKEENTER_Y + RELATIVESPIKECENTER_Y : SPIKEENTER_Y))
                 .build();
     }
 
