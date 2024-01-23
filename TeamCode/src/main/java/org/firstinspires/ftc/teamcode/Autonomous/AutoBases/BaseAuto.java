@@ -130,11 +130,14 @@ public class BaseAuto {
         telemetry.addData("2560 arm", "2560");
         bot.arm.moveArm(2560, true, 0.8); // 2560
         sleep(500);
-        Claw.setClawWristFromAngle(Arm.armAngle());
+        for (int i = 0; i < 5; i ++) {
+            Claw.setClawWristFromAngle(Arm.armAngle());
+            sleep(500);
+        }
 //        bot.claw.setClawWrist(0.266);
 //        sleep(500);
-        sleep(2500);
-        bot.claw.openBothClaw();
+//        sleep(2500);
+        bot.claw.openBothClaw(); // drop the pixels
         sleep(500);
         telemetry.addData("80 arm", "80");
         bot.arm.moveArm(80, true, 0.7);
