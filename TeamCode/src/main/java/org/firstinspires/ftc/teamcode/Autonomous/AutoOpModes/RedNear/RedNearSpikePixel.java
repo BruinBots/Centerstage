@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Autonomous.AutoBases.RedNearAuto;
+import org.firstinspires.ftc.teamcode.Utilities.Backdrop;
 
 @Autonomous(name = "RedNearSpikePixel")
 public class RedNearSpikePixel extends LinearOpMode {
@@ -11,7 +12,7 @@ public class RedNearSpikePixel extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         RedNearAuto auto = new RedNearAuto(hardwareMap, telemetry);
         waitForStart();
-        String tfSpike = auto.tfSpike(false);
+        Backdrop.Side tfSpike = auto.tfSpike(false);
         auto.placePixel(auto.spike(RedNearAuto.startingPosition, tfSpike, true), tfSpike, false, true);
     }
 }

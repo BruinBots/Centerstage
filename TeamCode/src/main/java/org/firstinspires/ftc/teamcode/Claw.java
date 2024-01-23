@@ -24,8 +24,8 @@ public class Claw {
 
     public Claw(Servo wrist, Servo lowerFinger, Servo upperFinger) {
         Claw.wrist = wrist;
-        this.lowerFinger = lowerFinger;
-        this.upperFinger = upperFinger;
+        Claw.lowerFinger = lowerFinger;
+        Claw.upperFinger = upperFinger;
     }
 
     public static void setClawWrist(double targetPos) {

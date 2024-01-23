@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Autonomous.AutoBases.BlueFarAuto;
+import org.firstinspires.ftc.teamcode.Utilities.Backdrop;
 
 @Autonomous(name = "BlueFarSpikePixel")
 public class BlueFarSpikePixel extends LinearOpMode {
@@ -11,7 +12,7 @@ public class BlueFarSpikePixel extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         BlueFarAuto auto = new BlueFarAuto(hardwareMap, telemetry);
         waitForStart();
-        String tfSpike = auto.tfSpike(true);
+        Backdrop.Side tfSpike = auto.tfSpike(true);
         auto.placePixel(auto.spike(BlueFarAuto.startingPosition, tfSpike, false), tfSpike, true, false);
     }
 }

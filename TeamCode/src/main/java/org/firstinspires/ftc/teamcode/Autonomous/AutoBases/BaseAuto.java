@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.Arm;
 import org.firstinspires.ftc.teamcode.Autonomous.TensorFlowForAutonomousBlueRed;
 import org.firstinspires.ftc.teamcode.Claw;
 import org.firstinspires.ftc.teamcode.Karen;
+import org.firstinspires.ftc.teamcode.Utilities.Backdrop;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 public class BaseAuto {
@@ -48,7 +49,7 @@ public class BaseAuto {
     - "center"
     - "right"
      */
-    public String tfSpike(boolean blue) {
+    public Backdrop.Side tfSpike(boolean blue) {
         // move the flipper down to let the camera see the orbs
         bot.scoopServo.setPosition(0);
         bot.inOutTake.scoopDown();
@@ -56,19 +57,7 @@ public class BaseAuto {
 
         // instantiate tensorflow
         TensorFlowForAutonomousBlueRed tf = new TensorFlowForAutonomousBlueRed(hardwareMap, telemetry, blue ? "blue" : "red");
-        tf.initTfod();
-        tf.visionPortal.resumeStreaming(); // start the camera
-        sleep(2000); // give tensorflow time to think
-
-        int i = 0;
-        String side = "center";
-        while (side.equals("center") && i < 5) {
-            side = tf.getSide(blue);
-            telemetry.addData("A-side", side);
-            telemetry.update();
-            i++;
-            sleep(20);
-        }
+        Backdrop.Side side = tf.compute(blue);
         bot.inOutTake.scoopMiddle(); // move the flipper back up to not hit it against the field
         sleep(1000); // let the flipper move up
         return side;
@@ -90,7 +79,7 @@ public class BaseAuto {
     }
 
     // Place the pixel on the backdrop
-    public Trajectory placePixel(Pose2d startPose, String side, boolean blue, boolean finishPixel) {
+    public Pose2d placePixel(Pose2d startPose, Backdrop.Side side, boolean blue, boolean finishPixel) {
         // navigate to backdrop
         Trajectory start1 = backdropStart1(startPose); //(,35)
         drive.followTrajectory(start1);
@@ -101,49 +90,19 @@ public class BaseAuto {
         Trajectory start2 = backdropStart2(startEnd);
         drive.followTrajectory(start2);
 
-        int offset;
-        switch (side) {
-            case "left":
-                offset = 6;
-                break;
-            case "right":
-                offset = -6;
-                break;
-            default:
-                offset = 0;
-                break;
-        }
-
-        Trajectory backTraj = backdropAlign(start2.end(), offset);
-        drive.followTrajectory(backTraj);
-
-        bot.inOutTake.scoopDown();
-        Claw.closeBothClaw();
+        Pose2d endAlign = Backdrop.alignBackdrop(drive, start2.end(), side);
+        Backdrop.liftArm();
+        bot.claw.openBothClaw();
         sleep(500);
-        bot.arm.moveArm(2560, true, 0.8); // 2560
-        sleep(500);
-        for (int i = 0; i < 5; i++) {
-            Claw.setClawWristFromAngle(Arm.armAngle());
-            sleep(500);
-        }
-        bot.claw.openBothClaw(); // drop the pixels
-        sleep(500);
-        bot.arm.moveArm(80, true, 0.7);
-        sleep(1000);
-        Claw.setClawWrist(Claw.ZERO_ANGLE_POS);
-        sleep(1000);
-        bot.arm.moveArm(0, true);
-        sleep(2500);
-        bot.inOutTake.scoopUp();
-        sleep(500);
+        Backdrop.lowerArm();
 
         if (finishPixel) {
-            Trajectory end = backdropEnd(start1.end());
+            Trajectory end = backdropEnd(endAlign);
             drive.followTrajectory(end);
-            return end;
+            return end.end();
         }
 
-        return start1;
+        return endAlign;
     }
 
     public Trajectory backdropAlign(Pose2d startPose, int offset) {
@@ -177,8 +136,8 @@ public class BaseAuto {
 
      places the pixel by the spike mark on given side
      */
-    public Pose2d spike(Pose2d startPose, String side, boolean finishSpike) {
-        Trajectory enter = spikeEnter(startPose, side == "center"); //(15,35) blue near Center spike
+    public Pose2d spike(Pose2d startPose, Backdrop.Side side, boolean finishSpike) {
+        Trajectory enter = spikeEnter(startPose, side == Backdrop.Side.CENTER); //(15,35) blue near Center spike
         drive.followTrajectory(enter);
 
         Pose2d endEnter = enter.end();
@@ -191,11 +150,11 @@ public class BaseAuto {
         int angle = 0;
 
         switch (side) {
-            case "left":
+            case LEFT:
                 angle = 90;
                 vector = relativeSpikeLeft();
                 break;
-            case "right":
+            case RIGHT:
                 angle = -90;
                 vector = relativeSpikeRight();
                 break;
@@ -223,7 +182,7 @@ public class BaseAuto {
         endEnter = endEnter.plus(new Pose2d(0, 0, Math.toRadians(-angle)));
 
         if (finishSpike) {
-            Trajectory finishEnter = spikeEnter(endEnter, side == "center");
+            Trajectory finishEnter = spikeEnter(endEnter, side == Backdrop.Side.CENTER);
             Trajectory exit = spikeExit(finishEnter.end());
             drive.followTrajectory(finishEnter);
             drive.followTrajectory(exit); // if finishing spike, return to spikeEnd position to prepare for parking/pixel placing

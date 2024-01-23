@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Autonomous.AutoBases;
 
+import android.content.res.AssetManager;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -7,6 +9,7 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -38,30 +41,31 @@ public class BlueNearAuto extends BaseAuto {
 
     public BlueNearAuto(HardwareMap hardwareMap, Telemetry telemetry) {
         super(hardwareMap, telemetry, startingPosition);
-//        try (InputStream input = new FileInputStream("org/firstinspires/ftc/teamcode/coordinates.properties")) {
-//            Properties prop = new Properties();
-//            prop.load(input);
-//            PARK_X = Integer.parseInt(prop.getProperty("blue.park.x"));
-//            PARK_Y = Integer.parseInt(prop.getProperty("blue.park.y"));
-//            SPIKEENTER_X = Integer.parseInt(prop.getProperty("bluenear.spikeenter.x"));
-//            SPIKEENTER_Y = Integer.parseInt(prop.getProperty("bluenear.spikeenter.y"));
-//            SPIKEEXIT_X = Integer.parseInt(prop.getProperty("bluenear.spikeexit.x"));
-//            SPIKEEXIT_Y = Integer.parseInt(prop.getProperty("blue.spikeexit.y"));
-//            RELATIVESPIKECENTER_Y = Integer.parseInt(prop.getProperty("blue.relativespikecenter.y"));
-//            RELATIVESPIKELEFT_X = Integer.parseInt(prop.getProperty("blue.relativespikeleft.x"));
-//            RELATIVESPIKERIGHT_X = Integer.parseInt(prop.getProperty("blue.relativespikeright.x"));
-//            BACKDROPSTART1_X = Integer.parseInt(prop.getProperty("blue.backdropstart1.x"));
-//            BACKDROPSTART1_Y = Integer.parseInt(prop.getProperty("blue.backdropstart1.y"));
-//            BACKDROPSTART2_X = Integer.parseInt(prop.getProperty("blue.backdropstart2.x"));
-//            BACKDROPSTART2_Y = Integer.parseInt(prop.getProperty("blue.backdropstart2.y"));
-//            BACKDROPALIGN_X = Integer.parseInt(prop.getProperty("blue.backdropalign.x"));
-//            BACKDROPALIGN_Y = Integer.parseInt(prop.getProperty("blue.backdropalign.y"));
-//            BACKDROPEND_X = Integer.parseInt(prop.getProperty("blue.backdropend.x"));
-//            BACKDROPEND_Y = Integer.parseInt(prop.getProperty("blue.backdropend.y"));
-//        }
-//        catch (IOException ex) {
-//            ex.printStackTrace();
-//        }
+        AssetManager assetManager = AppUtil.getDefContext().getAssets();
+        try (InputStream input = assetManager.open("coordinates.properties")) {
+            Properties prop = new Properties();
+            prop.load(input);
+            PARK_X = Integer.parseInt(prop.getProperty("blue.park.x"));
+            PARK_Y = Integer.parseInt(prop.getProperty("blue.park.y"));
+            SPIKEENTER_X = Integer.parseInt(prop.getProperty("bluenear.spikeenter.x"));
+            SPIKEENTER_Y = Integer.parseInt(prop.getProperty("bluenear.spikeenter.y"));
+            SPIKEEXIT_X = Integer.parseInt(prop.getProperty("bluenear.spikeexit.x"));
+            SPIKEEXIT_Y = Integer.parseInt(prop.getProperty("blue.spikeexit.y"));
+            RELATIVESPIKECENTER_Y = Integer.parseInt(prop.getProperty("blue.relativespikecenter.y"));
+            RELATIVESPIKELEFT_X = Integer.parseInt(prop.getProperty("blue.relativespikeleft.x"));
+            RELATIVESPIKERIGHT_X = Integer.parseInt(prop.getProperty("blue.relativespikeright.x"));
+            BACKDROPSTART1_X = Integer.parseInt(prop.getProperty("blue.backdropstart1.x"));
+            BACKDROPSTART1_Y = Integer.parseInt(prop.getProperty("blue.backdropstart1.y"));
+            BACKDROPSTART2_X = Integer.parseInt(prop.getProperty("blue.backdropstart2.x"));
+            BACKDROPSTART2_Y = Integer.parseInt(prop.getProperty("blue.backdropstart2.y"));
+            BACKDROPALIGN_X = Integer.parseInt(prop.getProperty("blue.backdropalign.x"));
+            BACKDROPALIGN_Y = Integer.parseInt(prop.getProperty("blue.backdropalign.y"));
+            BACKDROPEND_X = Integer.parseInt(prop.getProperty("blue.backdropend.x"));
+            BACKDROPEND_Y = Integer.parseInt(prop.getProperty("blue.backdropend.y"));
+        }
+        catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override

@@ -1,18 +1,14 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.Arm;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoBases.BlueFarAuto;
-import org.firstinspires.ftc.teamcode.Autonomous.AutoBases.BlueNearAuto;
-import org.firstinspires.ftc.teamcode.Karen;
+import org.firstinspires.ftc.teamcode.Utilities.Backdrop;
 
 @Config
-@Autonomous(name="AutoTest", group="Autonomous: Testing")
+@Autonomous(name = "AutoTest", group = "Autonomous: Testing")
 public class AutoTest extends LinearOpMode {
 
 
@@ -20,12 +16,6 @@ public class AutoTest extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         BlueFarAuto auto = new BlueFarAuto(hardwareMap, telemetry);
         waitForStart();
-
-
-//        aprilTags.visionPortal.close();
-
-        auto.placePixel(BlueFarAuto.startingPosition, "center", true, false);
-//        auto.spike2(BlueFarAuto.startingPosition, auto.tfSpike(true),  false);
-
+        auto.placePixel(BlueFarAuto.startingPosition, Backdrop.Side.CENTER, true, false);
     }
 }

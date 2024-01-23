@@ -1,14 +1,18 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
+import static android.os.SystemClock.sleep;
+
 import android.util.Size;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Supplier;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.teamcode.Utilities.Backdrop;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
@@ -46,7 +50,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
             "redsphere"
     };
 
-    String side = "";
+    Backdrop.Side side = null;
     int xMax = 0;
 
     public TensorFlowForAutonomousBlueRed(HardwareMap hardwareMap, Telemetry telemetry, String color) {
@@ -58,7 +62,25 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
         this.telemetry = telemetry;
     }
 
-    public String getSide(boolean blue) {
+    public Backdrop.Side compute(boolean blue) {
+        initTfod();
+        visionPortal.resumeStreaming(); // start the camera
+        sleep(2000); // give tensorflow time to think
+
+        int i = 0;
+        Backdrop.Side side = Backdrop.Side.CENTER;
+        while (side == Backdrop.Side.CENTER && i < 5) {
+            side = getSide(blue);
+            telemetry.addData("A-side", side);
+            telemetry.update();
+            i++;
+            sleep(20);
+        }
+
+        return side;
+    }
+
+    public Backdrop.Side getSide(boolean blue) {
         sleep(500);
         if (blue) {
             side = blueTelemetryTfod();
@@ -292,9 +314,9 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
         return direction;
     }
 
-    public String redTelemetryTfod() {
+    public Backdrop.Side redTelemetryTfod() {
         Recognition recognition = redTfod();
-        String direction = "center";
+        Backdrop.Side direction = Backdrop.Side.CENTER;
         double screenWidth = 2200;//tfodProcessor.getCameraView().getWidth();
 
         if(recognition==null) {
@@ -316,13 +338,13 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
 
         if (objectCenterX < screenWidth / 3.0) {
             telemetry.addData("Position", "Left");
-            direction = "left";
+            direction = Backdrop.Side.LEFT;
         } else if (objectCenterX < 2 * screenWidth / 3.0) {
             telemetry.addData("Position", "Center");
-            direction = "center";
+            direction = Backdrop.Side.CENTER;
         } else {
             telemetry.addData("Position", "Right");
-            direction = "right";
+            direction = Backdrop.Side.RIGHT;
         }
         telemetry.addData("Object Center X", objectCenterX);
         telemetry.update();
@@ -330,9 +352,9 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
     }
 
 
-    private String blueTelemetryTfod() {
+    private Backdrop.Side blueTelemetryTfod() {
         Recognition recognition = blueTfod();
-        String direction = "center";
+        Backdrop.Side direction = Backdrop.Side.CENTER;
         double screenWidth = 2200;//tfodProcessor.getCameraView().getWidth();
 
         if(recognition==null) {
@@ -354,13 +376,13 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
 
         if (objectCenterX < screenWidth / 3.0) {
             telemetry.addData("Position", "Left");
-            direction = "left";
+            direction = Backdrop.Side.LEFT;
         } else if (objectCenterX < 2 * screenWidth / 3.0) {
             telemetry.addData("Position", "Center");
-            direction = "center";
+            direction = Backdrop.Side.CENTER;
         } else {
             telemetry.addData("Position", "Right");
-            direction = "right";
+            direction = Backdrop.Side.RIGHT;
         }
         telemetry.addData("Object Center X", objectCenterX);
         telemetry.update();
