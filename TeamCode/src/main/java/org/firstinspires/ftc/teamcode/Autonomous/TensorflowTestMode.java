@@ -20,6 +20,7 @@ public class TensorflowTestMode extends OpMode {
     public void loop() {
         telemetry.addData("blue-side", tf.blueTelemetryTfod());
         telemetry.addData("red-side", tf.redTelemetryTfod());
+        telemetry.update();
         if (tf.isStopRequested()) {
             stop();
         }
