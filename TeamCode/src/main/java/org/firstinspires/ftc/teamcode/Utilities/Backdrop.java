@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Arm;
 import org.firstinspires.ftc.teamcode.Claw;
+import org.firstinspires.ftc.teamcode.Hanger;
+import org.firstinspires.ftc.teamcode.InOutTake;
 import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import static android.os.SystemClock.sleep;
@@ -28,6 +30,8 @@ public class Backdrop {
     public static void initBot() {
         if (bot == null) {
             Backdrop.bot = new Karen(Backdrop.hardwareMap);
+            sleep(500);
+            bot.hanger.hangServo.setPosition(Hanger.PRIMED_POS);
         }
     }
 
@@ -53,22 +57,26 @@ public class Backdrop {
 
     public static void liftArm() {
         bot.inOutTake.scoopDown();
-        sleep(1000);
-        Claw.closeBothClaw();
         sleep(500);
+        Claw.closeBothClaw();
+        sleep(250);
+        bot.arm.moveArm(25, true, 0.3);
+        sleep(250);
         bot.arm.moveArm(2560, true);
         sleep(750);
         for (int i = 0; i < 45; i++) {
-            Claw.setClawWristFromAngle(Arm.armAngle());
+            Claw.setClawWristFromAngle(Arm.clawAngle());
             sleep(50);
         }
     }
 
     public static void lowerArm() {
-        bot.arm.moveArm(1, true);
+        if (bot.scoopServo.getPosition() > InOutTake.SCOOP_MIDDLE_POS + 0.01) {
+            bot.inOutTake.scoopDown();
+            sleep(500);
+        }
+        bot.arm.moveArm(25, true);
         sleep(500);
-        bot.arm.moveArm(0, true);
-        sleep(1000);
         Claw.setClawWrist(Claw.ZERO_ANGLE_POS);
         sleep(2500);
     }
