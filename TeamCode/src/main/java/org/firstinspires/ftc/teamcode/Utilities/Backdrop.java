@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Utilities;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -29,9 +30,15 @@ public class Backdrop {
 
     public static void initBot() {
         if (bot == null) {
-            Backdrop.bot = new Karen(Backdrop.hardwareMap);
-            sleep(500);
-            bot.hanger.hangServo.setPosition(Hanger.PRIMED_POS);
+            Backdrop.bot = new Karen(hardwareMap);
+            telemetry.addData("Status", "Initialized");
+            bot.claw.setClawWrist(0.1);
+            bot.claw.closeBothClaw();
+            bot.drone.resetPoses();
+            bot.hanger.hangServo.setPosition(bot.hanger.PRIMED_POS);
+            bot.dropper.closed();
+            bot.inOutTake.scoopMiddle();
+            telemetry.update();
         }
     }
 
@@ -56,8 +63,10 @@ public class Backdrop {
     }
 
     public static void liftArm() {
-        bot.inOutTake.scoopDown();
-        sleep(500);
+        if (bot.scoopServo.getPosition() > InOutTake.SCOOP_MIDDLE_POS + 0.01) {
+            bot.inOutTake.scoopDown();
+            sleep(500);
+        }
         Claw.closeBothClaw();
         sleep(250);
         bot.arm.moveArm(25, true, 0.3);
@@ -71,11 +80,11 @@ public class Backdrop {
     }
 
     public static void lowerArm() {
-        if (bot.scoopServo.getPosition() > InOutTake.SCOOP_MIDDLE_POS + 0.01) {
+//        if (bot.scoopServo.getPosition() > InOutTake.SCOOP_MIDDLE_POS + 0.01) {
             bot.inOutTake.scoopDown();
             sleep(500);
-        }
-        bot.arm.moveArm(25, true);
+//        }
+        bot.arm.moveArm(25, false);
         sleep(500);
         Claw.setClawWrist(Claw.ZERO_ANGLE_POS);
         sleep(2500);

@@ -33,9 +33,13 @@ public class AutoTest extends LinearOpMode {
 //        Claw.closeBothClaw();
 //        sleep(500);
         Backdrop.lowerArm();
-        Backdrop.liftArm();
+//        Backdrop.liftArm();
+        bot.arm.goMax();
+        sleep(3000);
         bot.claw.openBothClaw();
         sleep(500);
-        Backdrop.lowerArm();
+//        Backdrop.lowerArm();
+        bot.arm.goDown();
+        sleep(2500);
     }
 }
