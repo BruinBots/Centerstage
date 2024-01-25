@@ -28,7 +28,10 @@ public class AutoTest extends LinearOpMode {
 //        auto.spike(BlueNearAuto.startingPosition, side, finish);
         Backdrop.hardwareMap = hardwareMap;
         initBot();
+        bot.inOutTake.scoopHalfDown();
+        sleep(750);
         Claw.closeBothClaw();
+        sleep(500);
         Backdrop.liftArm();
         bot.claw.openBothClaw();
         sleep(500);
