@@ -3,11 +3,13 @@ package org.firstinspires.ftc.teamcode.Utilities;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Arm;
 import org.firstinspires.ftc.teamcode.Claw;
 import org.firstinspires.ftc.teamcode.Hanger;
@@ -16,10 +18,12 @@ import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import static android.os.SystemClock.sleep;
 
+@Config
 public class Backdrop {
 
     public static HardwareMap hardwareMap;
-    public static double BACKDROP_OFFSET = 10;
+    public static Telemetry telemetry;
+    public static double BACKDROP_OFFSET = 5.35;
 
     public static enum Side {
         LEFT,
@@ -29,17 +33,15 @@ public class Backdrop {
     public static Karen bot;
 
     public static void initBot() {
-        if (bot == null) {
-            Backdrop.bot = new Karen(hardwareMap);
-            telemetry.addData("Status", "Initialized");
-            bot.claw.setClawWrist(0.1);
-            bot.claw.closeBothClaw();
-            bot.drone.resetPoses();
-            bot.hanger.hangServo.setPosition(bot.hanger.PRIMED_POS);
-            bot.dropper.closed();
-            bot.inOutTake.scoopMiddle();
-            telemetry.update();
-        }
+        Backdrop.bot = new Karen(hardwareMap);
+        telemetry.addData("Status", "Initialized");
+        bot.claw.setClawWrist(0.1);
+        bot.claw.closeBothClaw();
+        bot.drone.resetPoses();
+        bot.hanger.hangServo.setPosition(bot.hanger.PRIMED_POS);
+        bot.dropper.closed();
+        bot.inOutTake.scoopMiddle();
+        telemetry.update();
     }
 
     public static Pose2d alignBackdrop(SampleMecanumDrive drive, Pose2d startPose, Side side) {
@@ -56,7 +58,7 @@ public class Backdrop {
                 break;
         }
         Trajectory traj = drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(distance - BACKDROP_OFFSET, offset))
+                .lineToConstantHeading(new Vector2d(startPose.getX() + distance - BACKDROP_OFFSET, startPose.getY() + offset))
                 .build();
         drive.followTrajectory(traj);
         return traj.end();
