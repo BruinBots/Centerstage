@@ -204,6 +204,8 @@ public class Karen  {
         }
     }
 
+
+
     public void stop() {
         // stop drivetrain motors
         leftFrontMotor.setPower(0);

@@ -23,7 +23,7 @@ public class Backdrop {
 
     public static HardwareMap hardwareMap;
     public static Telemetry telemetry;
-    public static double BACKDROP_OFFSET = 5.35;
+    public static double BACKDROP_OFFSET = 6.15;
 
     public static enum Side {
         LEFT,
@@ -45,8 +45,10 @@ public class Backdrop {
     }
 
     public static Pose2d alignBackdrop(SampleMecanumDrive drive, Pose2d startPose, Side side) {
-//        int distance = 0;
+        sleep(100);
         double distance = bot.distance.getDistance();
+        telemetry.addData("distance", distance);
+        telemetry.update();
 
         int offset = 0;
         switch (side) {

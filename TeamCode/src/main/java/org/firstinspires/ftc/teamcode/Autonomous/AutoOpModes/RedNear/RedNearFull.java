@@ -14,6 +14,6 @@ public class RedNearFull extends LinearOpMode {
         RedNearAuto auto = new RedNearAuto(hardwareMap, telemetry);
         waitForStart();
         Backdrop.Side tfSpike = auto.tfSpike(false);
-        auto.park(auto.placePixel(auto.spike(RedNearAuto.startingPosition, tfSpike, true), tfSpike, false, true));
+        auto.placePixel(auto.spike(RedNearAuto.startingPosition, tfSpike, true), tfSpike, false, true);
     }
 }

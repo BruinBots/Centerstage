@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.Autonomous.AutoBases;
 
 import static android.os.SystemClock.sleep;
 
+import static org.firstinspires.ftc.teamcode.Utilities.Backdrop.bot;
+
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
@@ -29,7 +31,10 @@ public class BaseAuto {
         this.telemetry = telemetry;
 
         // create bot from hardwareMap
-        bot = new Karen(hardwareMap);
+        Backdrop.hardwareMap = hardwareMap;
+        Backdrop.telemetry = telemetry;
+        Backdrop.initBot();
+        bot = Backdrop.bot;
 
         // create SampleMecanumDrive from hardwareMap and set the startingPosition
         drive = new SampleMecanumDrive(hardwareMap);
@@ -84,17 +89,34 @@ public class BaseAuto {
         Trajectory start1 = backdropStart1(startPose); //(,35)
         drive.followTrajectory(start1);
 
-        drive.turn(blue ? -90 : 90);
+        drive.turn(Math.toRadians(blue ? -90 : 90));
         Pose2d startEnd = startPose.plus(new Pose2d(0, 0, Math.toRadians(blue ? -90 : 90)));
 
         Trajectory start2 = backdropStart2(startEnd);
         drive.followTrajectory(start2);
 
+        // use distance sensor to navigate to backdrop
         Pose2d endAlign = Backdrop.alignBackdrop(drive, start2.end(), side);
-        Backdrop.liftArm();
+
+        // place pixel
+        bot.inOutTake.scoopDown();
+        sleep(1000);
+        bot.arm.goMax();
+        sleep(1000);
+        for (int i = 0; i < 150; i ++) {
+            Claw.setClawWristFromAngle(Arm.clawAngle());
+            sleep(10);
+        }
         bot.claw.openBothClaw();
+        sleep(1500);
+        bot.claw.closeBothClaw();
         sleep(500);
-        Backdrop.lowerArm();
+        bot.arm.goDown();
+        sleep(500);
+        Claw.setClawWrist(Claw.ZERO_ANGLE_POS);
+        sleep(2500);
+        bot.inOutTake.scoopMiddle();
+        sleep(500);
 
         if (finishPixel) {
             Trajectory end = backdropEnd(endAlign);
