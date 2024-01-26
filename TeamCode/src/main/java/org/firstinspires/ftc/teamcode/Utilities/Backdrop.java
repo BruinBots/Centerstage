@@ -19,7 +19,7 @@ import static android.os.SystemClock.sleep;
 public class Backdrop {
 
     public static HardwareMap hardwareMap;
-    public static double BACKDROP_OFFSET = 3;
+    public static double BACKDROP_OFFSET = 10;
 
     public static enum Side {
         LEFT,
@@ -43,8 +43,8 @@ public class Backdrop {
     }
 
     public static Pose2d alignBackdrop(SampleMecanumDrive drive, Pose2d startPose, Side side) {
-        int distance = 0;
-        // distance = bot.distanceSensor.getDistance();
+//        int distance = 0;
+        double distance = bot.distance.getDistance();
 
         int offset = 0;
         switch (side) {
