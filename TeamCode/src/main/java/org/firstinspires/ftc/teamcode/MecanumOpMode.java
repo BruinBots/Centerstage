@@ -67,12 +67,8 @@ public class MecanumOpMode extends OpMode
     public void init() {
         bot = new Karen(hardwareMap);
         telemetry.addData("Status", "Initialized");
-        bot.claw.setClawWrist(0.1);
-        bot.claw.closeBothClaw();
-        bot.drone.resetPoses();
-        bot.hanger.hangServo.setPosition(bot.hanger.PRIMED_POS);
-        bot.dropper.closed();
-        bot.inOutTake.scoopMiddle();
+        bot.init();
+        telemetry.update();
     }
 
     //
@@ -99,9 +95,9 @@ public class MecanumOpMode extends OpMode
         if (strafe > 1) { strafe = 1; }
         if (turn > 1) { turn = 1; }
 
-        strafe = Math.copySign(Math.pow(strafe, 2), strafe);
-        drive = Math.copySign(Math.pow(drive, 2), drive);
-        turn = Math.copySign(Math.pow(turn, 2), turn);
+        strafe = Math.copySign(Math.pow(strafe, 3), strafe);
+        drive = Math.copySign(Math.pow(drive, 3), drive);
+        turn = Math.copySign(Math.pow(turn, 3), turn);
 
         bot.moveBotMecanum(drive, turn, strafe,  0.65); // actually move the robot
 
@@ -192,6 +188,7 @@ public class MecanumOpMode extends OpMode
             hanging = false;
         }
 
+        telemetry.addData("distance", bot.distance.getDistance());
         telemetry.addData("arm", bot.arm.getCurrentArmPos());
         telemetry.addData("armAngle", bot.arm.armAngle());
         telemetry.addData("clawAngle", bot.arm.clawAngle());

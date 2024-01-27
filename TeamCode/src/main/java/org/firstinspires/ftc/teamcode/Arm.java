@@ -71,7 +71,7 @@ public class Arm {
                 armMotor.setPower(power);
                 armMotor.setTargetPosition(targetPos);
                 armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                Claw.setClawWristFromAngle(Arm.clawAngle());
+                Claw.setClawWristFromAngle(Arm.clawAngle()); // inverse kinematics
             }
         } else {
             Claw.closeBothClaw();

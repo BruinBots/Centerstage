@@ -13,10 +13,10 @@ public class Claw {
     public static final double TICKS_PER_DEGREE = 0.0033333333;
 
     public static final double LOWER_OPEN = 0.27;
-    public static final double LOWER_CLOSED = 0;
+    public static final double LOWER_CLOSED = 0.045;
 
     public static final double UPPER_OPEN = 0.27;
-    public static final double UPPER_CLOSED = 0;
+    public static final double UPPER_CLOSED = 0.03;
 
     public enum Status {OPEN, CLOSED}
     public static Status upper;
@@ -24,8 +24,8 @@ public class Claw {
 
     public Claw(Servo wrist, Servo lowerFinger, Servo upperFinger) {
         Claw.wrist = wrist;
-        this.lowerFinger = lowerFinger;
-        this.upperFinger = upperFinger;
+        Claw.lowerFinger = lowerFinger;
+        Claw.upperFinger = upperFinger;
     }
 
     public static void setClawWrist(double targetPos) {

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -42,6 +43,8 @@ public class Karen  {
 
     Servo hangerServo;
 
+    ModernRoboticsI2cRangeSensor distanceSensor;
+
 
     public double lastwheelSpeeds[] = new double[4];     // Tracks the last power sent to the wheels to assist in ramping power
     public static double        SPEED_INCREMENT = 0.09;  // Increment that wheel speed will be increased/decreased
@@ -55,6 +58,7 @@ public class Karen  {
     public Drone drone;
     public Dropper dropper;
     public Hanger hanger;
+    public DistanceSensor distance;
 
     // constructor with map
     public Karen(HardwareMap map) {
@@ -110,6 +114,9 @@ public class Karen  {
         intakeServoRight = map.get(Servo.class, "intake_servo_right");
         scoopServo = map.get(Servo.class, "scoop_servo");
         inOutTake = new InOutTake(intakeServoLeft, intakeServoRight, scoopServo);
+
+        distanceSensor = map.get(ModernRoboticsI2cRangeSensor.class, "distance_sensor");
+        distance = new DistanceSensor(distanceSensor);
     }
 
     private double rampUp(double x) {
@@ -196,6 +203,16 @@ public class Karen  {
             lastwheelSpeeds[i] = wheelSpeeds[i];
         }
     }
+
+    public void init() {
+        claw.setClawWrist(0.1);
+        claw.closeBothClaw();
+        drone.resetPoses();
+        hanger.hangServo.setPosition(hanger.PRIMED_POS);
+        dropper.closed();
+        inOutTake.scoopMiddle();
+    }
+
 
     public void stop() {
         // stop drivetrain motors
