@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.Claw;
 import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.Utilities.Backdrop;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.tensorflow.lite.Tensor;
 
 public class BaseAuto {
     public static final double BACKDROP_DISTANCE_FROM_WALL = 13;
@@ -23,8 +24,9 @@ public class BaseAuto {
     private final Telemetry telemetry;
     private final Karen bot;
     public SampleMecanumDrive drive;
+    public boolean blue;
 
-    public BaseAuto(HardwareMap hardwareMap, Telemetry telemetry, Pose2d startingPosition) {
+    public BaseAuto(HardwareMap hardwareMap, Telemetry telemetry, Pose2d startingPosition, boolean blue) {
 
         // assign class variables
         this.hardwareMap = hardwareMap;
@@ -54,7 +56,7 @@ public class BaseAuto {
     - "center"
     - "right"
      */
-    public Backdrop.Side tfSpike(boolean blue) {
+    public Backdrop.Side tfSpike() {
         // move the flipper down to let the camera see the orbs
         bot.scoopServo.setPosition(0);
         bot.inOutTake.scoopDown();
@@ -62,6 +64,7 @@ public class BaseAuto {
 
         // instantiate tensorflow
         TensorFlowForAutonomousBlueRed tf = new TensorFlowForAutonomousBlueRed(hardwareMap, telemetry, blue ? "blue" : "red");
+        tf.initTfod();
         Backdrop.Side side = tf.compute(blue);
         bot.inOutTake.scoopMiddle(); // move the flipper back up to not hit it against the field
         sleep(1000); // let the flipper move up
@@ -99,24 +102,7 @@ public class BaseAuto {
         Pose2d endAlign = Backdrop.alignBackdrop(drive, start2.end(), side);
 
         // place pixel
-        bot.inOutTake.scoopDown();
-        sleep(1000);
-        bot.arm.goMax();
-        sleep(1000);
-        for (int i = 0; i < 150; i ++) {
-            Claw.setClawWristFromAngle(Arm.clawAngle());
-            sleep(10);
-        }
-        bot.claw.openBothClaw();
-        sleep(1500);
-        bot.claw.closeBothClaw();
-        sleep(500);
-        bot.arm.goDown();
-        sleep(500);
-        Claw.setClawWrist(Claw.ZERO_ANGLE_POS);
-        sleep(2500);
-        bot.inOutTake.scoopMiddle();
-        sleep(500);
+        Backdrop.placePixel();
 
         if (finishPixel) {
             Trajectory end = backdropEnd(endAlign);

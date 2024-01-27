@@ -65,7 +65,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
     }
 
     public Backdrop.Side compute(boolean blue) {
-        initTfod();
+//        initTfod();
         visionPortal.resumeStreaming(); // start the camera
         sleep(2000); // give tensorflow time to think
 
@@ -134,18 +134,15 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
     public void initTfod() {
         // Create the TensorFlow processor by using a builder.
         tfodProcessor = new TfodProcessor.Builder()
-
                 // Use setModelAssetName() if the TF Model is built in as an asset.
                 // Use setModelFileName() if you have downloaded a custom team model to the Robot Controller.
                 .setModelAssetName(TFOD_MODEL_ASSET)
                 //          .setModelFileName(TFOD_MODEL_FILE)
-
                 .setModelLabels(LABELS)
                 .setIsModelTensorFlow2(true)
                 .setIsModelQuantized(true)
                 .setModelInputSize(300)
                 .setModelAspectRatio(16.0 / 9.0)
-
                 .build();
 
         // Create the vision portal by using a builder.
@@ -236,7 +233,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
      */
     private String telemetryTfod() {
         String direction = "center";
-        double screenWidth = 2200;//tfodProcessor..getCameraView().getWidth();
+        double screenWidth = 2000;//tfodProcessor..getCameraView().getWidth();
 
         if (tfodProcessor != null) {
             // Get updated recognition list.
@@ -321,7 +318,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
     public Backdrop.Side redTelemetryTfod() {
         Recognition recognition = redTfod();
         Backdrop.Side direction = null;
-        double screenWidth = 2200;//tfodProcessor.getCameraView().getWidth();
+        double screenWidth = 2000;//tfodProcessor.getCameraView().getWidth();
 
         if(recognition==null) {
             telemetry.addData("recognition is null", "default center");
@@ -359,7 +356,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
     private Backdrop.Side blueTelemetryTfod() {
         Recognition recognition = blueTfod();
         Backdrop.Side direction = null;
-        double screenWidth = 2200;//tfodProcessor.getCameraView().getWidth();
+        double screenWidth = 2000;//tfodProcessor.getCameraView().getWidth();
 
         if(recognition==null) {
             telemetry.addData("recognition is null", "default center");

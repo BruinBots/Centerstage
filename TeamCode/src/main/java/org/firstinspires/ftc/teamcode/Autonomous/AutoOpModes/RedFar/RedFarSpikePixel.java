@@ -12,7 +12,7 @@ public class RedFarSpikePixel extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         RedFarAuto auto = new RedFarAuto(hardwareMap, telemetry);
         waitForStart();
-        Backdrop.Side tfSpike = auto.tfSpike(false);
+        Backdrop.Side tfSpike = auto.tfSpike();
         auto.placePixel(auto.spike(RedFarAuto.startingPosition, tfSpike, true), tfSpike, false, false);
     }
 }

@@ -13,7 +13,7 @@ public class RedNearFull extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         RedNearAuto auto = new RedNearAuto(hardwareMap, telemetry);
         waitForStart();
-        Backdrop.Side tfSpike = auto.tfSpike(false);
+        Backdrop.Side tfSpike = auto.tfSpike();
         auto.placePixel(auto.spike(RedNearAuto.startingPosition, tfSpike, true), tfSpike, false, true);
     }
 }

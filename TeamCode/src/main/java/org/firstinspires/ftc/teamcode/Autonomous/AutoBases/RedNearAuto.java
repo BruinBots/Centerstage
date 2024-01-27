@@ -40,7 +40,7 @@ public class RedNearAuto extends BaseAuto {
     public static int BACKDROPEND_Y;
 
     public RedNearAuto(HardwareMap hardwareMap, Telemetry telemetry) {
-        super(hardwareMap, telemetry, startingPosition);
+        super(hardwareMap, telemetry, startingPosition, false);
         AssetManager assetManager = AppUtil.getDefContext().getAssets();
         try (InputStream input = assetManager.open("coordinates.properties")) {
             Properties prop = new Properties();
@@ -50,7 +50,7 @@ public class RedNearAuto extends BaseAuto {
             SPIKEENTER_X = Integer.parseInt(prop.getProperty("rednear.spikeenter.x"));
             SPIKEENTER_Y = Integer.parseInt(prop.getProperty("rednear.spikeenter.y"));
             SPIKEEXIT_X = Integer.parseInt(prop.getProperty("rednear.spikeexit.x"));
-            SPIKEEXIT_Y = Integer.parseInt(prop.getProperty("red.sspikeexit.y"));
+            SPIKEEXIT_Y = Integer.parseInt(prop.getProperty("red.spikeexit.y"));
             RELATIVESPIKECENTER_Y = Integer.parseInt(prop.getProperty("red.relativespikecenter.y"));
             RELATIVESPIKELEFT_X = Integer.parseInt(prop.getProperty("red.relativespikeleft.x"));
             RELATIVESPIKERIGHT_X = Integer.parseInt(prop.getProperty("red.relativespikeright.x"));

@@ -40,7 +40,7 @@ public class BlueFarAuto extends BaseAuto {
     public static int BACKDROPEND_Y;
 
     public BlueFarAuto(HardwareMap hardwareMap, Telemetry telemetry) {
-        super(hardwareMap, telemetry, startingPosition);
+        super(hardwareMap, telemetry, startingPosition, true);
         AssetManager assetManager = AppUtil.getDefContext().getAssets();
         try (InputStream input = assetManager.open("coordinates.properties")) {
             Properties prop = new Properties();

@@ -35,12 +35,7 @@ public class Backdrop {
     public static void initBot() {
         Backdrop.bot = new Karen(hardwareMap);
         telemetry.addData("Status", "Initialized");
-        bot.claw.setClawWrist(0.1);
-        bot.claw.closeBothClaw();
-        bot.drone.resetPoses();
-        bot.hanger.hangServo.setPosition(bot.hanger.PRIMED_POS);
-        bot.dropper.closed();
-        bot.inOutTake.scoopMiddle();
+        bot.init();
         telemetry.update();
     }
 
@@ -66,31 +61,24 @@ public class Backdrop {
         return traj.end();
     }
 
-    public static void liftArm() {
-        if (bot.scoopServo.getPosition() > InOutTake.SCOOP_MIDDLE_POS + 0.01) {
-            bot.inOutTake.scoopDown();
-            sleep(500);
-        }
-        Claw.closeBothClaw();
-        sleep(250);
-        bot.arm.moveArm(25, true, 0.3);
-        sleep(250);
-        bot.arm.moveArm(2560, true);
-        sleep(750);
-        for (int i = 0; i < 45; i++) {
+    public static void placePixel() {
+        bot.inOutTake.scoopDown();
+        sleep(1000);
+        bot.arm.goMax();
+        sleep(1000);
+        for (int i = 0; i < 150; i ++) {
             Claw.setClawWristFromAngle(Arm.clawAngle());
-            sleep(50);
+            sleep(10);
         }
-    }
-
-    public static void lowerArm() {
-//        if (bot.scoopServo.getPosition() > InOutTake.SCOOP_MIDDLE_POS + 0.01) {
-            bot.inOutTake.scoopDown();
-            sleep(500);
-//        }
-        bot.arm.moveArm(25, false);
+        bot.claw.openBothClaw();
+        sleep(1500);
+        bot.claw.closeBothClaw();
+        sleep(500);
+        bot.arm.goDown();
         sleep(500);
         Claw.setClawWrist(Claw.ZERO_ANGLE_POS);
         sleep(2500);
+        bot.inOutTake.scoopMiddle();
+        sleep(500);
     }
 }

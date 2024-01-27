@@ -13,7 +13,7 @@ public class BlueNearSpikePixel extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         BlueNearAuto auto = new BlueNearAuto(hardwareMap, telemetry);
         waitForStart();
-        Backdrop.Side tfSpike = auto.tfSpike(true);
+        Backdrop.Side tfSpike = auto.tfSpike();
         auto.placePixel(auto.spike(BlueNearAuto.startingPosition, tfSpike, true), tfSpike, true, false);
     }
 }

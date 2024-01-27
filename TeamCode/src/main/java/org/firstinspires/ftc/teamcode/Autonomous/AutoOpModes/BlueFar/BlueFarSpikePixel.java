@@ -12,7 +12,7 @@ public class BlueFarSpikePixel extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         BlueFarAuto auto = new BlueFarAuto(hardwareMap, telemetry);
         waitForStart();
-        Backdrop.Side tfSpike = auto.tfSpike(true);
+        Backdrop.Side tfSpike = auto.tfSpike();
         auto.placePixel(auto.spike(BlueFarAuto.startingPosition, tfSpike, false), tfSpike, true, false);
     }
 }
