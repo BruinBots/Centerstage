@@ -18,8 +18,8 @@ import static android.os.SystemClock.sleep;
 @Config
 public class Backdrop {
 
-    public static HardwareMap hardwareMap;
     public static Telemetry telemetry;
+    public static Karen bot;
     public static double BACKDROP_OFFSET = 6.15;
 
     public static enum Side {
@@ -27,10 +27,8 @@ public class Backdrop {
         CENTER,
         RIGHT
     }
-    public static Karen bot;
 
     public static void initBot() {
-        Backdrop.bot = new Karen(hardwareMap);
         telemetry.addData("Status", "Initialized");
         bot.init();
         telemetry.update();
@@ -43,6 +41,7 @@ public class Backdrop {
             sleep(50);
         }
         telemetry.addData("distance", distance);
+        telemetry.update();
         int offset = 0;
         switch (side) {
             case LEFT:

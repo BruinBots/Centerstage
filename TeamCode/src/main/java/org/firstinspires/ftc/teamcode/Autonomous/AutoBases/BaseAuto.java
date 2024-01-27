@@ -33,10 +33,10 @@ public class BaseAuto {
         this.telemetry = telemetry;
 
         // create bot from hardwareMap
-        Backdrop.hardwareMap = hardwareMap;
+        bot = new Karen(hardwareMap);
         Backdrop.telemetry = telemetry;
+        Backdrop.bot = bot;
         Backdrop.initBot();
-        bot = Backdrop.bot;
 
         // create SampleMecanumDrive from hardwareMap and set the startingPosition
         drive = new SampleMecanumDrive(hardwareMap);
