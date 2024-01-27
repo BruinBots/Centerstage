@@ -15,21 +15,17 @@ public class MeepMeepTesting {
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-                .setConstraints(36, 36, Math.toRadians(180), Math.toRadians(180), 16.8)
+                .setConstraints(20, 36, Math.toRadians(180), Math.toRadians(180), 16.8)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(12, -65, Math.toRadians(270)))
-                                .lineToConstantHeading(new Vector2d(11, -36))
-                                .lineToConstantHeading(new Vector2d(10, -11))
-                                .lineToConstantHeading(new Vector2d(-58, -11))
-                                .lineToConstantHeading(new Vector2d(10, -11))
-                                .lineToConstantHeading(new Vector2d(48, -35))
-//                                .lineToConstantHeading(new Vector2d(46, -60))
-//                                .lineToConstantHeading(new Vector2d(10, -10))
-//                                .lineToConstantHeading(new Vector2d(-58, -11))
-//                                .lineToConstantHeading(new Vector2d(10, -10))
-//                                .lineToConstantHeading(new Vector2d(12, -65))
-//                                .lineToConstantHeading(new Vector2d(58, -58))
-
+                        drive.trajectorySequenceBuilder(new Pose2d(-36, 62, Math.toRadians(90)))
+                                .lineToConstantHeading(new Vector2d(-36, 34))
+                                .lineToConstantHeading(new Vector2d(-36, 20))
+                                .lineToConstantHeading(new Vector2d(-36, 58))
+                                .turn(Math.toRadians(-90))
+                                .lineToConstantHeading(new Vector2d(40, 60))
+                                .lineToConstantHeading(new Vector2d(48, 35))
+                                .lineToConstantHeading(new Vector2d(24, 60))
+                                .lineToConstantHeading(new Vector2d(60, 61))
                                 .build()
                 );
 
