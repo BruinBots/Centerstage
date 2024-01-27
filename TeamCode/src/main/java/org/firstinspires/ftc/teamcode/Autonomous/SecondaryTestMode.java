@@ -5,6 +5,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.Utilities.Backdrop;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
@@ -16,8 +17,8 @@ public class SecondaryTestMode extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        Backdrop.hardwareMap = hardwareMap;
         Backdrop.telemetry = telemetry;
+        Backdrop.bot = new Karen(hardwareMap);
         Backdrop.initBot();
 
         Pose2d startPose = new Pose2d(0, 0, Math.toRadians(180));

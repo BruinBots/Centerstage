@@ -13,6 +13,6 @@ public class BlueFarFull extends LinearOpMode {
         BlueFarAuto auto = new BlueFarAuto(hardwareMap, telemetry);
         waitForStart();
         Backdrop.Side tfSpike = auto.tfSpike();
-        auto.placePixel(auto.spike(BlueFarAuto.startingPosition, tfSpike, false), tfSpike, true, true);
+        auto.placePixel(auto.spike(BlueFarAuto.startingPosition, tfSpike, true), tfSpike, true, true);
     }
 }

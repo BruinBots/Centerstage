@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.Arm;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoBases.BlueFarAuto;
 import org.firstinspires.ftc.teamcode.Autonomous.AutoBases.BlueNearAuto;
 import org.firstinspires.ftc.teamcode.Claw;
+import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.Utilities.Backdrop;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
@@ -28,8 +29,8 @@ public class AutoTest extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 //        BlueNearAuto auto = new BlueNearAuto(hardwareMap, telemetry);
 //        auto.spike(BlueNearAuto.startingPosition, side, finish);
-        Backdrop.hardwareMap = hardwareMap;
         Backdrop.telemetry = telemetry;
+        Backdrop.bot = new Karen(hardwareMap);
         initBot();
 
         Pose2d startPose = new Pose2d(0, 0, Math.toRadians(180));
