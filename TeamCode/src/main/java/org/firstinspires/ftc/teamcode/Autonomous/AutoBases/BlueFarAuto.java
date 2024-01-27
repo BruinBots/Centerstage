@@ -57,7 +57,7 @@ public class BlueFarAuto extends BaseAuto {
             BACKDROPSTART1_X = Integer.parseInt(prop.getProperty("blue.backdropstart1.x"));
             BACKDROPSTART1_Y = Integer.parseInt(prop.getProperty("blue.backdropstart1.y"));
             BACKDROPSTART2_X = Integer.parseInt(prop.getProperty("blue.backdropstart2.x"));
-            BACKDROPSTART2_Y = Integer.parseInt(prop.getProperty("blue.backdropstart2.y"));
+            BACKDROPSTART2_Y = Integer.parseInt(prop.getProperty("bluefar.backdropstart2.y"));
             BACKDROPALIGN_X = Integer.parseInt(prop.getProperty("blue.backdropalign.x"));
             BACKDROPALIGN_Y = Integer.parseInt(prop.getProperty("blue.backdropalign.y"));
             BACKDROPEND_X = Integer.parseInt(prop.getProperty("blue.backdropend.x"));
