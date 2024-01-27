@@ -89,17 +89,18 @@ public class BaseAuto {
     // Place the pixel on the backdrop
     public Pose2d placePixel(Pose2d startPose, Backdrop.Side side, boolean blue, boolean finishPixel) {
         // navigate to backdrop
-        Trajectory start1 = backdropStart1(startPose); //(,35)
+
+        drive.turn(Math.toRadians(blue ? -90 : 90));
+        Pose2d startEnd = startPose.plus(new Pose2d(0, 0, Math.toRadians(blue ? -90 : 90)));
+
+        Trajectory start1 = backdropStart1(startEnd); //(,35)
         drive.followTrajectory(start1);
 
         Trajectory start2 = backdropStart2(start1.end()); //BlueNear(40,35) RedNear(40,-35)
         drive.followTrajectory(start2);
 
-        drive.turn(Math.toRadians(blue ? -90 : 90));
-        Pose2d startEnd = start2.end().plus(new Pose2d(0, 0, Math.toRadians(blue ? -90 : 90)));
-
         // use distance sensor to navigate to backdrop
-        Pose2d endAlign = Backdrop.alignBackdrop(drive, startEnd, side);
+        Pose2d endAlign = Backdrop.alignBackdrop(drive, start2.end(), side);
 
         // place pixel
         Backdrop.placePixel();

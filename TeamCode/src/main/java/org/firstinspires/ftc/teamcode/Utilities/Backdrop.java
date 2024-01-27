@@ -20,7 +20,7 @@ public class Backdrop {
 
     public static Telemetry telemetry;
     public static Karen bot;
-    public static double BACKDROP_OFFSET = 6.15;
+    public static double BACKDROP_OFFSET = 5.5; // 6.15
 
     public static enum Side {
         LEFT,
@@ -56,6 +56,8 @@ public class Backdrop {
                 offset = -6;
                 break;
         }
+        telemetry.addData("x", startPose.getX() + distance - BACKDROP_OFFSET);
+        telemetry.update();
         Trajectory traj = drive.trajectoryBuilder(startPose)
                 .lineToConstantHeading(new Vector2d(startPose.getX() + distance - BACKDROP_OFFSET, startPose.getY() + offset))
                 .build();
@@ -64,7 +66,7 @@ public class Backdrop {
     }
 
     public static void placePixel() {
-        bot.inOutTake.scoopDown();
+        bot.inOutTake.scoopMiddle();
         sleep(1000);
         bot.arm.goMax();
         sleep(1000);

@@ -19,7 +19,7 @@ import java.util.Properties;
 @Config
 public class BlueFarAuto extends BaseAuto {
 
-    public static Pose2d startingPosition = new Pose2d(-36, 62, Math.toRadians(270));
+    public static Pose2d startingPosition = new Pose2d(-36, 61, Math.toRadians(270));
 
     public static int PARK_X;
     public static int PARK_Y;

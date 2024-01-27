@@ -19,7 +19,7 @@ import java.util.Properties;
 @Config
 public class BlueNearAuto extends BaseAuto {
 
-    public static Pose2d startingPosition = new Pose2d(12, 62, Math.toRadians(270));
+    public static Pose2d startingPosition = new Pose2d(12, 61, Math.toRadians(270));
 
     public static int PARK_X;
     public static int PARK_Y;
