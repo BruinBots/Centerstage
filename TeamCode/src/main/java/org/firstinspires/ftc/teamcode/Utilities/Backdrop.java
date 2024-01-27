@@ -1,8 +1,5 @@
 package org.firstinspires.ftc.teamcode.Utilities;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -40,11 +37,9 @@ public class Backdrop {
     }
 
     public static Pose2d alignBackdrop(SampleMecanumDrive drive, Pose2d startPose, Side side) {
-        sleep(100);
+//        sleep(100);
         double distance = bot.distance.getDistance();
         telemetry.addData("distance", distance);
-        telemetry.update();
-
         int offset = 0;
         switch (side) {
             case LEFT:
@@ -54,6 +49,9 @@ public class Backdrop {
                 offset = -6;
                 break;
         }
+        telemetry.addData("RedNearFull backdrop startpose.getx ", startPose.getX());
+        telemetry.addData("RedNearFull backdrop startpose.gety ", startPose.getY());
+        telemetry.update();
         Trajectory traj = drive.trajectoryBuilder(startPose)
                 .lineToConstantHeading(new Vector2d(startPose.getX() + distance - BACKDROP_OFFSET, startPose.getY() + offset))
                 .build();
@@ -73,11 +71,11 @@ public class Backdrop {
         bot.claw.openBothClaw();
         sleep(1500);
         bot.claw.closeBothClaw();
-        sleep(500);
+        //sleep(500);
         bot.arm.goDown();
-        sleep(500);
+        //sleep(500);
         Claw.setClawWrist(Claw.ZERO_ANGLE_POS);
-        sleep(2500);
+        sleep(2000); //2500
         bot.inOutTake.scoopMiddle();
         sleep(500);
     }

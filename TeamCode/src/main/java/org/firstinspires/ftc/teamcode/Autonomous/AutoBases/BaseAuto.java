@@ -67,7 +67,7 @@ public class BaseAuto {
         tf.initTfod();
         Backdrop.Side side = tf.compute(blue);
         bot.inOutTake.scoopMiddle(); // move the flipper back up to not hit it against the field
-        sleep(1000); // let the flipper move up
+        sleep(500); // let the flipper move up
         return side;
     }
 
@@ -95,7 +95,7 @@ public class BaseAuto {
         drive.turn(Math.toRadians(blue ? -90 : 90));
         Pose2d startEnd = startPose.plus(new Pose2d(0, 0, Math.toRadians(blue ? -90 : 90)));
 
-        Trajectory start2 = backdropStart2(startEnd);
+        Trajectory start2 = backdropStart2(startEnd); //BlueNear(40,35) RedNear(40,-35)
         drive.followTrajectory(start2);
 
         // use distance sensor to navigate to backdrop
