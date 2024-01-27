@@ -37,7 +37,11 @@ public class Backdrop {
     }
 
     public static Pose2d alignBackdrop(SampleMecanumDrive drive, Pose2d startPose, Side side) {
-        double distance = bot.distance.getDistance();
+        double distance = 0;
+        while (distance < 10) {
+            distance = bot.distance.getDistance();
+            sleep(50);
+        }
         telemetry.addData("distance", distance);
         int offset = 0;
         switch (side) {
