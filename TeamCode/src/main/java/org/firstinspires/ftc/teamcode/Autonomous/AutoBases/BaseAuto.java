@@ -38,7 +38,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Arm;
 import org.firstinspires.ftc.teamcode.Karen;
 
-@TeleOp(name="Basic: Mecanum TeleOp", group="Iterative Opmode")
 public class BaseAuto extends OpMode
 {
 

@@ -60,11 +60,12 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
 
     public String getSide(String color) {
         sleep(500);
-        if (color.toLowerCase().equals("red")) {
-            side = redTelemetryTfod();
-        } else {
-            side = blueTelemetryTfod();
-        }
+//        if (color.toLowerCase().equals("red")) {
+//            side = redTelemetryTfod();
+//        } else {
+//            side = blueTelemetryTfod();
+//        }
+        side = telemetryTfod();
         return side;
     }
 
