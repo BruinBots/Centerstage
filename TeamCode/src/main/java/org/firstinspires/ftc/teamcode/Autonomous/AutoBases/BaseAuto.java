@@ -7,6 +7,7 @@ import static org.firstinspires.ftc.teamcode.Utilities.Backdrop.bot;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -180,13 +181,13 @@ public class BaseAuto {
             endEnter = traj.end();
         }
         bot.inOutTake.scoopDown();
-        sleep(500);
+        safeSleep(500);
         bot.inOutTake.outtake();
-        sleep(500);
+        safeSleep(500);
         bot.inOutTake.stopTake();
-        sleep(250);
+        safeSleep(250);
         bot.inOutTake.scoopUp();
-        sleep(750);
+        safeSleep(750);
 
         drive.turn(Math.toRadians(-angle));
         endEnter = endEnter.plus(new Pose2d(0, 0, Math.toRadians(-angle)));
@@ -226,6 +227,14 @@ public class BaseAuto {
 
     public Trajectory spikeExit(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose).build();
+    }
+
+    public static void safeSleep(int ms) {
+        int c = 0;
+        while (c < ms) {
+            sleep(10);
+            c += 10;
+        }
     }
     //endregion
 }
