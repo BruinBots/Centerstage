@@ -37,7 +37,6 @@ public class Backdrop {
     }
 
     public static Pose2d alignBackdrop(SampleMecanumDrive drive, Pose2d startPose, Side side) {
-//        sleep(100);
         double distance = bot.distance.getDistance();
         telemetry.addData("distance", distance);
         int offset = 0;
@@ -49,9 +48,6 @@ public class Backdrop {
                 offset = -6;
                 break;
         }
-        telemetry.addData("RedNearFull backdrop startpose.getx ", startPose.getX());
-        telemetry.addData("RedNearFull backdrop startpose.gety ", startPose.getY());
-        telemetry.update();
         Trajectory traj = drive.trajectoryBuilder(startPose)
                 .lineToConstantHeading(new Vector2d(startPose.getX() + distance - BACKDROP_OFFSET, startPose.getY() + offset))
                 .build();
