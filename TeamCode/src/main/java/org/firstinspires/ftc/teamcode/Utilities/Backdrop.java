@@ -46,7 +46,7 @@ public class Backdrop {
         double distance = bot.distance.getDistance();
         safeSleep(100);
         distance = bot.distance.getDistance();
-        if (distance < 10) {
+        if (distance > 22) {
             distance = 10;
         }
         telemetry.addData("distance", distance);
