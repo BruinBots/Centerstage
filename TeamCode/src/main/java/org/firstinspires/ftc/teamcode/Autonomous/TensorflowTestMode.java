@@ -13,16 +13,17 @@ public class TensorflowTestMode extends OpMode {
     private TensorFlowForAutonomousBlueRed tf;
 
     public static boolean blue = true;
+    public static boolean red = false;
 
     @Override
     public void init() {
-        tf = new TensorFlowForAutonomousBlueRed(hardwareMap, telemetry, blue ? "blue" : "red");
+        tf = new TensorFlowForAutonomousBlueRed(hardwareMap, telemetry, red ? "blue" : "red");
         tf.initTfod();
     }
 
     @Override
     public void loop() {
-        telemetry.addData("side", tf.getSide(blue));
+        telemetry.addData("side", tf.compute(red));
         telemetry.update();
         if (tf.isStopRequested()) {
             stop();
