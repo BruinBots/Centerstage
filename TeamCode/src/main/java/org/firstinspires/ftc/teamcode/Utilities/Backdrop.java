@@ -36,11 +36,6 @@ public class Backdrop {
     }
 
     public static Pose2d alignBackdrop(SampleMecanumDrive drive, Pose2d startPose, Side side) {
-//        double distanceSum = 0;
-//        for (int i = 0; i < 5; i ++) {
-//            distanceSum += bot.distance.getDistance();
-//        }
-
         // The following is NEEDED to get accurate distance reading. Without it, the arm will crash into the backdrop. DO NOT REMOVE!!
         safeSleep(500);
         double distance = bot.distance.getDistance();

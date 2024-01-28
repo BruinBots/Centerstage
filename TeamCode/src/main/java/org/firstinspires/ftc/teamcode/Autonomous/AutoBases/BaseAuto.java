@@ -187,14 +187,14 @@ public class BaseAuto {
         drive.turn(Math.toRadians(-angle));
         endEnter = endEnter.plus(new Pose2d(0, 0, Math.toRadians(-angle)));
 
+        if (side != Backdrop.Side.CENTER) {
+            Trajectory finishEnter = spikeEnter(endEnter, side == Backdrop.Side.CENTER);
+            drive.followTrajectory(finishEnter);
+            endEnter = finishEnter.end();
+        }
+
         if (finishSpike) {
-            Pose2d finish = endEnter;
-            if (side != Backdrop.Side.CENTER) {
-                Trajectory finishEnter = spikeEnter(endEnter, side == Backdrop.Side.CENTER);
-                drive.followTrajectory(finishEnter);
-                finish = finishEnter.end();
-            }
-            Trajectory exit = spikeExit(finish);
+            Trajectory exit = spikeExit(endEnter);
             drive.followTrajectory(exit); // if finishing spike, return to spikeEnd position to prepare for parking/pixel placing
             return exit.end();
         }

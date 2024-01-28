@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import android.util.Size;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -27,6 +28,7 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
 
+@Config
 @Autonomous(name="Tensorflow")
 public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
     private static final boolean USE_WEBCAM = true;  // true for webc// m, false for phone camera
@@ -40,6 +42,9 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
      * The variable to store our instance of the vision portal.
      */
     public VisionPortal visionPortal;
+
+    public static boolean doCompute = true;
+    public static Backdrop.Side defaultSide = Backdrop.Side.CENTER;
 
     public static String TFOD_MODEL_ASSET = "orb1-14-24.tflite"; //default to blue
     public static String RED_TFOD_MODEL_ASSET = "RedSphere1.tflite"; //for red
@@ -65,21 +70,26 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
     }
 
     public Backdrop.Side compute(boolean blue) {
-        visionPortal.resumeStreaming(); // start the camera
-        //1. Need to adjust time
-        sleep(1000); // give tensorflow time to think
-        int i = 0;
-        Backdrop.Side side = null;
-        ArrayList<Backdrop.Side> sideList = new ArrayList<>();
-        // First sanitize of TensorFlow by using mode
-        while (side == null && i < 10) {
-            sideList.add(getPropLocation(blue));
-            i++;
-            sleep(100); // 2. Review number
+        if (doCompute) {
+            visionPortal.resumeStreaming(); // start the camera
+            //1. Need to adjust time
+            sleep(1000); // give tensorflow time to think
+            int i = 0;
+            Backdrop.Side side = null;
+            ArrayList<Backdrop.Side> sideList = new ArrayList<>();
+            // First sanitize of TensorFlow by using mode
+            while (side == null && i < 10) {
+                sideList.add(getPropLocation(blue));
+                i++;
+                sleep(100); // 2. Review number
+            }
+            side = mode(sideList);
+            telemetry.addData("A-side", side);
+            telemetry.update();
         }
-        side = mode(sideList);
-        telemetry.addData("A-side", side);
-        telemetry.update();
+        else {
+            side = defaultSide;
+        }
         return side;
     }
 
