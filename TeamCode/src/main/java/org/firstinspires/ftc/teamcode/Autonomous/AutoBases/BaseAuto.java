@@ -2,22 +2,16 @@ package org.firstinspires.ftc.teamcode.Autonomous.AutoBases;
 
 import static android.os.SystemClock.sleep;
 
-import static org.firstinspires.ftc.teamcode.Utilities.Backdrop.bot;
-
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Arm;
 import org.firstinspires.ftc.teamcode.Autonomous.TensorFlowForAutonomousBlueRed;
-import org.firstinspires.ftc.teamcode.Claw;
 import org.firstinspires.ftc.teamcode.Karen;
 import org.firstinspires.ftc.teamcode.Utilities.Backdrop;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.tensorflow.lite.Tensor;
 
 public class BaseAuto {
     public static final double BACKDROP_DISTANCE_FROM_WALL = 13;
@@ -74,12 +68,13 @@ public class BaseAuto {
 
     // park the bot in the corner by the backdrop
     public Trajectory park(Pose2d startPose) {
-        Trajectory traj = parkTraj(startPose);
+        drive.turn(Math.toRadians(blue ? -90 : 90));
+        Trajectory traj = parkTraj(startPose.plus(new Pose2d(0, 0, Math.toRadians(blue ? -90 : 90))));
         drive.followTrajectory(traj);
         return traj;
     }
 
-    public Trajectory park(Trajectory startTraj) {
+    public Trajectory parkTraj(Trajectory startTraj) {
         return park(startTraj.end());
     }
 

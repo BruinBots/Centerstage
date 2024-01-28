@@ -11,6 +11,6 @@ public class BlueFarParkOnly extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         BlueFarAuto auto = new BlueFarAuto(hardwareMap, telemetry);
         waitForStart();
-        auto.park(auto.startPark(BlueFarAuto.startingPosition));
+        auto.parkTraj(auto.startPark(BlueFarAuto.startingPosition));
     }
 }
