@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Autonomous.AutoBases;
 
+import android.content.res.AssetManager;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -7,6 +9,7 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -16,52 +19,53 @@ import java.util.Properties;
 @Config
 public class BlueFarAuto extends BaseAuto {
 
-    public static Pose2d startingPosition = new Pose2d(-36, 62, Math.toRadians(270));
+    public static Pose2d startingPosition = new Pose2d(-36, 61, Math.toRadians(270));
 
-    public static int PARK_X=60;
-    public static int PARK_Y=61;
-    public static int SPIKEENTER_X=-36;
-    public static int SPIKEENTER_Y=28;
-    public static int SPIKEEXIT_X=60;
-    public static int SPIKEEXIT_Y=59;
-    public static int RELATIVESPIKECENTER_Y=13;
-    public static int RELATIVESPIKELEFT_X=-3;
-    public static int RELATIVESPIKERIGHT_X=3;
-    public static int BACKDROPSTART1_X=15;
-    public static int BACKDROPSTART1_Y=60;
-    public static int BACKDROPSTART2_X=40;
-    public static int BACKDROPSTART2_Y=60;
-    public static int BACKDROPALIGN_X=60;
-    public static int BACKDROPALIGN_Y=35;
-    public static int BACKDROPEND_X=45;
-    public static int BACKDROPEND_Y=60;
+    public static int PARK_X;
+    public static int PARK_Y;
+    public static int SPIKEENTER_X;
+    public static int SPIKEENTER_Y;
+    public static int SPIKEEXIT_X;
+    public static int SPIKEEXIT_Y;
+    public static int RELATIVESPIKECENTER_Y;
+    public static int RELATIVESPIKELEFT_X;
+    public static int RELATIVESPIKERIGHT_X;
+    public static int BACKDROPSTART1_X;
+    public static int BACKDROPSTART1_Y;
+    public static int BACKDROPSTART2_X;
+    public static int BACKDROPSTART2_Y;
+    public static int BACKDROPALIGN_X;
+    public static int BACKDROPALIGN_Y;
+    public static int BACKDROPEND_X;
+    public static int BACKDROPEND_Y;
 
     public BlueFarAuto(HardwareMap hardwareMap, Telemetry telemetry) {
-        super(hardwareMap, telemetry, startingPosition);
-//        try (InputStream input = new FileInputStream("org/firstinspires/ftc/teamcode/coordinates.properties")) {
-//            Properties prop = new Properties();
-//            prop.load(input);
-//            PARK_X = Integer.parseInt(prop.getProperty("blue.park.x"));
-//            PARK_Y = Integer.parseInt(prop.getProperty("blue.park.y"));
-//            SPIKEENTER_X = Integer.parseInt(prop.getProperty("bluefar.spikeenter.x"));
-//            SPIKEENTER_Y = Integer.parseInt(prop.getProperty("bluefar.spikeenter.y"));
-//            SPIKEEXIT_X = Integer.parseInt(prop.getProperty("bluefar.spikeexit.x"));
-//            SPIKEEXIT_Y = Integer.parseInt(prop.getProperty("blue.spikeexit.y"));
-//            RELATIVESPIKECENTER_Y = Integer.parseInt(prop.getProperty("blue.relativespikecenter.y"));
-//            RELATIVESPIKELEFT_X = Integer.parseInt(prop.getProperty("blue.relativespikeleft.x"));
-//            RELATIVESPIKERIGHT_X = Integer.parseInt(prop.getProperty("blue.relativespikeright.x"));
-//            BACKDROPSTART1_X = Integer.parseInt(prop.getProperty("blue.backdropstart1.x"));
-//            BACKDROPSTART1_Y = Integer.parseInt(prop.getProperty("blue.backdropstart1.y"));
-//            BACKDROPSTART2_X = Integer.parseInt(prop.getProperty("blue.backdropstart2.x"));
-//            BACKDROPSTART2_Y = Integer.parseInt(prop.getProperty("blue.backdropstart2.y"));
-//            BACKDROPALIGN_X = Integer.parseInt(prop.getProperty("blue.backdropalign.x"));
-//            BACKDROPALIGN_Y = Integer.parseInt(prop.getProperty("blue.backdropalign.y"));
-//            BACKDROPEND_X = Integer.parseInt(prop.getProperty("blue.backdropend.x"));
-//            BACKDROPEND_Y = Integer.parseInt(prop.getProperty("blue.backdropend.y"));
-//        }
-//        catch (IOException ex) {
-//            ex.printStackTrace();
-//        }
+        super(hardwareMap, telemetry, startingPosition, true);
+        AssetManager assetManager = AppUtil.getDefContext().getAssets();
+        try (InputStream input = assetManager.open("coordinates.properties")) {
+            Properties prop = new Properties();
+            prop.load(input);
+            PARK_X = Integer.parseInt(prop.getProperty("blue.park.x"));
+            PARK_Y = Integer.parseInt(prop.getProperty("blue.park.y"));
+            SPIKEENTER_X = Integer.parseInt(prop.getProperty("bluefar.spikeenter.x"));
+            SPIKEENTER_Y = Integer.parseInt(prop.getProperty("bluefar.spikeenter.y"));
+            SPIKEEXIT_X = Integer.parseInt(prop.getProperty("bluefar.spikeexit.x"));
+            SPIKEEXIT_Y = Integer.parseInt(prop.getProperty("blue.spikeexit.y"));
+            RELATIVESPIKECENTER_Y = Integer.parseInt(prop.getProperty("blue.relativespikecenter.y"));
+            RELATIVESPIKELEFT_X = Integer.parseInt(prop.getProperty("blue.relativespikeleft.x"));
+            RELATIVESPIKERIGHT_X = Integer.parseInt(prop.getProperty("blue.relativespikeright.x"));
+            BACKDROPSTART1_X = Integer.parseInt(prop.getProperty("blue.backdropstart1.x"));
+            BACKDROPSTART1_Y = Integer.parseInt(prop.getProperty("blue.backdropstart1.y"));
+            BACKDROPSTART2_X = Integer.parseInt(prop.getProperty("blue.backdropstart2.x"));
+            BACKDROPSTART2_Y = Integer.parseInt(prop.getProperty("blue.backdropstart2.y"));
+            BACKDROPALIGN_X = Integer.parseInt(prop.getProperty("blue.backdropalign.x"));
+            BACKDROPALIGN_Y = Integer.parseInt(prop.getProperty("blue.backdropalign.y"));
+            BACKDROPEND_X = Integer.parseInt(prop.getProperty("blue.backdropend.x"));
+            BACKDROPEND_Y = Integer.parseInt(prop.getProperty("blue.backdropend.y"));
+        }
+        catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -72,31 +76,31 @@ public class BlueFarAuto extends BaseAuto {
     }
 
     @Override
-    public Trajectory spikeEnter2(Pose2d startPose, boolean isCenter) {
+    public Trajectory spikeEnter(Pose2d startPose, boolean isCenter) {
         return drive.trajectoryBuilder(startPose)
                 .lineToConstantHeading(new Vector2d(SPIKEENTER_X, isCenter ? SPIKEENTER_Y + RELATIVESPIKECENTER_Y : SPIKEENTER_Y))
                 .build();
     }
 
     @Override
-    public Trajectory spikeExit2(Pose2d startPose) {
+    public Trajectory spikeExit(Pose2d startPose) {
         return drive.trajectoryBuilder(startPose)
                 .lineToConstantHeading(new Vector2d(SPIKEEXIT_X, SPIKEEXIT_Y))
                 .build();
     }
 
     @Override
-    public Vector2d relativeSpikeCenter2() {
+    public Vector2d relativeSpikeCenter() {
         return new Vector2d(0, RELATIVESPIKECENTER_Y);
     }
 
     @Override
-    public Vector2d relativeSpikeLeft2() {
+    public Vector2d relativeSpikeLeft() {
         return new Vector2d(RELATIVESPIKELEFT_X, 0);
     }
 
     @Override
-    public Vector2d relativeSpikeRight2() {
+    public Vector2d relativeSpikeRight() {
         return new Vector2d(RELATIVESPIKERIGHT_X, 0);
     }
 

@@ -68,12 +68,8 @@ public class MecanumOpMode extends OpMode
     public void init() {
         bot = new Karen(hardwareMap);
         telemetry.addData("Status", "Initialized");
-        bot.claw.setClawWrist(0.1);
-        bot.claw.closeBothClaw();
-        bot.drone.resetPoses();
-        bot.hanger.hangServo.setPosition(bot.hanger.PRIMED_POS);
-        bot.dropper.closed();
-        bot.inOutTake.scoopMiddle();
+        bot.init();
+        telemetry.update();
     }
 
     //

@@ -204,6 +204,16 @@ public class Karen  {
         }
     }
 
+    public void init() {
+        claw.setClawWrist(0.1);
+        claw.closeBothClaw();
+        drone.resetPoses();
+        hanger.hangServo.setPosition(hanger.PRIMED_POS);
+        dropper.closed();
+        inOutTake.scoopMiddle();
+    }
+
+
     public void stop() {
         // stop drivetrain motors
         leftFrontMotor.setPower(0);

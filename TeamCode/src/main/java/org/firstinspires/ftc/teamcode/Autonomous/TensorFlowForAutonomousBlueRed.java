@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import android.util.Size;
 
+import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -9,9 +11,11 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.teamcode.Utilities.Backdrop;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -24,6 +28,8 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
 
+@Config
+@Autonomous(name="Tensorflow")
 public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
     private static final boolean USE_WEBCAM = true;  // true for webc// m, false for phone camera
     //1 is blue 2 is red
@@ -37,6 +43,9 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
      */
     public VisionPortal visionPortal;
 
+    public static boolean doCompute = true;
+    public static Backdrop.Side defaultSide = Backdrop.Side.CENTER;
+
     public static String TFOD_MODEL_ASSET = "orb1-14-24.tflite"; //default to blue
     public static String RED_TFOD_MODEL_ASSET = "RedSphere1.tflite"; //for red
     public static String[] LABELS = {
@@ -46,9 +55,11 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
             "redsphere"
     };
 
-    String side = "";
-    int xMax = 0;
-
+    // 6. Need to adjust camera offset
+    private static final double CAMERA_OFFSET = 512.00; // TODO 5. assuming divided by 5 segments
+    private Backdrop.Side side = null;
+    private Backdrop.Side direction = Backdrop.Side.CENTER.CENTER;
+    private double CAMERA_SCREEN_WIDTH = 1920; //A Logi Webcam 1080p resolution means the image has 1920 pixels horizontally by 1080 vertically (1920x1080)
     public TensorFlowForAutonomousBlueRed(HardwareMap hardwareMap, Telemetry telemetry, String color) {
         if (color.toLowerCase().equals("red")) {
             TFOD_MODEL_ASSET = RED_TFOD_MODEL_ASSET;
@@ -58,15 +69,45 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
         this.telemetry = telemetry;
     }
 
-    public String getSide(boolean blue) {
-        sleep(500);
-        if (blue) {
-            side = blueTelemetryTfod();
+    public Backdrop.Side compute(boolean blue) {
+        if (doCompute) {
+            visionPortal.resumeStreaming(); // start the camera
+            //1. Need to adjust time
+            sleep(1000); // give tensorflow time to think
+            int i = 0;
+            Backdrop.Side side = null;
+            ArrayList<Backdrop.Side> sideList = new ArrayList<>();
+            // First sanitize of TensorFlow by using mode
+            while (side == null && i < 10) {
+                sideList.add(getPropLocation(blue));
+                i++;
+                sleep(100); // 2. Review number
+            }
+            side = mode(sideList);
+            telemetry.addData("A-side", side);
+            telemetry.update();
         }
         else {
-            side = redTelemetryTfod();
+            side = defaultSide;
         }
         return side;
+    }
+
+    private static Backdrop.Side mode(ArrayList<Backdrop.Side> array) {
+        Backdrop.Side mode = array.get(0);
+        int maxCount = 0;
+        for (int i = 0; i < array.size(); i++) {
+            Backdrop.Side value = array.get(i);
+            int count = 0;
+            for (int j = 0; j < array.size(); j++) {
+                if (array.get(j) == value) count++;
+                if (count > maxCount) {
+                    mode = value;
+                    maxCount = count;
+                }
+            }
+        }
+        return mode;
     }
 
     @Override
@@ -83,20 +124,21 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
 
         if (opModeIsActive()) {
             while (opModeIsActive()) {
-
-                telemetryTfod();
                 // Save CPU resources; can resume streaming when needed.
                 if (gamepad1.dpad_down) {
                     visionPortal.stopStreaming();
                 } else if (gamepad1.dpad_up) {
                     visionPortal.resumeStreaming();
                 }
-
                 // Share the CPU.
                 sleep(20);
             }
         }
 
+        telemetry.addData("Blue Prop Side: ", getPropLocation(true));
+        telemetry.update();
+        telemetry.addData("Red Prop Side: ", getPropLocation(false));
+        telemetry.update();
         // Save more CPU resources when camera is no longer o.
         visionPortal.close();
 
@@ -108,18 +150,15 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
     public void initTfod() {
         // Create the TensorFlow processor by using a builder.
         tfodProcessor = new TfodProcessor.Builder()
-
                 // Use setModelAssetName() if the TF Model is built in as an asset.
                 // Use setModelFileName() if you have downloaded a custom team model to the Robot Controller.
                 .setModelAssetName(TFOD_MODEL_ASSET)
                 //          .setModelFileName(TFOD_MODEL_FILE)
-
                 .setModelLabels(LABELS)
                 .setIsModelTensorFlow2(true)
                 .setIsModelQuantized(true)
-                .setModelInputSize(300)
+                .setModelInputSize(300) //input size typically refers to the dimensions of the images that the model expects as input.
                 .setModelAspectRatio(16.0 / 9.0)
-
                 .build();
 
         // Create the vision portal by using a builder.
@@ -163,8 +202,11 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
         List<Recognition> updatedRecognitions = tfodProcessor.getRecognitions();
         telemetry.addData("updated recognitions: ", updatedRecognitions);
         telemetry.addData("number of recognitions: ", updatedRecognitions.size());
+        telemetry.update();
         if (updatedRecognitions != null && updatedRecognitions.size()>0) {
             // Sort the confidence from highest to lowest
+            // Tensor Flow Sanitizer
+            // TODO 6. Need to test
             Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
                 public int compare(Recognition r1, Recognition r2) {
                     return (int)((r1.getConfidence()-r2.getConfidence())*100);
@@ -172,6 +214,8 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
             });
 
             // Get the one with the larger area.
+            // Tensor Flow Sanitizer
+            // TODO 7. Need to test
             Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
                 public int compare(Recognition r1, Recognition r2) {
                     return (int)(((r1.getHeight() * r1.getWidth()) - (r2.getHeight() * r2.getWidth())));
@@ -186,14 +230,19 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
         List<Recognition> updatedRecognitions = tfodProcessor.getRecognitions();
         telemetry.addData("updated recognitions: ", updatedRecognitions);
         telemetry.addData("number of recognitions: ", updatedRecognitions.size());
+        telemetry.update();
         if (updatedRecognitions != null && updatedRecognitions.size()>0) {
             // Sort the confidence from highest to lowest
+            // Tensor Flow Sanitizer
+            // TODO 4. Need to test
             Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
                 public int compare(Recognition r1, Recognition r2) {
                     return (int)((r1.getConfidence()-r2.getConfidence())*100);
                 }
             });
 
+            // Tensor Flow Sanitizer
+            // TODO 5. Need to test
             // Get the one with the most square shape
             Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
                 public int compare(Recognition r1, Recognition r2) {
@@ -208,10 +257,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
     /**
      * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.
      */
-    private String telemetryTfod() {
-        String direction = "center";
-        double screenWidth = 2200;//tfodProcessor..getCameraView().getWidth();
-
+    private Backdrop.Side telemetryTfod() {
         if (tfodProcessor != null) {
             // Get updated recognition list.
             List<Recognition> updatedRecognitions = tfodProcessor.getRecognitions();
@@ -219,6 +265,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
             // Sort recognitions
             telemetry.addData("updated recognitions: ", updatedRecognitions);
             telemetry.addData("number of recognitions: ", updatedRecognitions.size());
+            telemetry.update();
             if (updatedRecognitions != null && updatedRecognitions.size()>0) {
                 // Sort the confidence from highest to lowest
                 Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
@@ -244,46 +291,48 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
 
             if (updatedRecognitions != null) {
                 telemetry.addData("# Objects Detected", updatedRecognitions.size());
-
-                telemetry.addData("LABELS 0: ", LABELS[0]);
-                telemetry.addData("LABELS 1: ", LABELS[1]);
-                for (int i=0; i<=4; i++) {
+                telemetry.update();
+                for (Recognition recognition:updatedRecognitions) {
                     // Verify area of team prop.
                     double orb_min_area=150;
                     // this is the min or max possable area for the bounding box of the tfod orb
                     double orb_max_area=200;
-                    double area = updatedRecognitions.get(i).getWidth() * updatedRecognitions.get(i).getHeight();
+                    double area = recognition.getWidth() * recognition.getHeight();
                     if (area <= orb_max_area) {// Check if the recognized object is the one you are looking for.
-                        telemetry.addData("getLabel(): ", updatedRecognitions.get(i).getLabel());
+                        telemetry.addData("getLabel(): ", recognition.getLabel());
                     }if (area > orb_min_area) {
-                        telemetry.addData("getLabel(): ", updatedRecognitions.get(i).getLabel());
+                        telemetry.addData("getLabel(): ", recognition.getLabel());
                     }
+                    telemetry.update();
 
-                    if (updatedRecognitions.get(i).getLabel().equals(LABELS[0])) {
-                        double x = (updatedRecognitions.get(i).getLeft() + updatedRecognitions.get(i).getRight()) / 2;
-                        double y = (updatedRecognitions.get(i).getTop() + updatedRecognitions.get(i).getBottom()) / 2;
+                    if (recognition.getLabel().equals(LABELS[0])) {
+                        double x = (recognition.getLeft() + recognition.getRight()) / 2;
+                        double y = (recognition.getTop() + recognition.getBottom()) / 2;
 
                         telemetry.addData(""," ");
-                        telemetry.addData("Image", "%s (%.0f %% Conf.)", updatedRecognitions.get(i).getLabel(), updatedRecognitions.get(i).getConfidence() * 100);
+                        telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
                         telemetry.addData("- Position", "%.0f / %.0f", x, y);
-                        telemetry.addData("- Size", "%.0f x %.0f", updatedRecognitions.get(i).getWidth(), updatedRecognitions.get(i).getHeight());
-
+                        telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
+                        telemetry.update();
                         // Implement logic to determine object position (left, center, right).
-                        double objectX = updatedRecognitions.get(i).getLeft();
-                        double objectWidth = updatedRecognitions.get(i).getWidth();
+                        double objectX = recognition.getLeft();
+                        double objectWidth = recognition.getWidth();
                         double objectCenterX = objectX + objectWidth / 2.0;
 
-                        if (objectCenterX < screenWidth / 3.0) {
+                        if (objectCenterX < (CAMERA_SCREEN_WIDTH / 3.0)+CAMERA_OFFSET) { //640+512 = 1152
                             telemetry.addData("Position", "Left");
-                            direction = "Left";
-                        } else if (objectCenterX < 2 * screenWidth / 3.0) {
+                            telemetry.update();
+                            direction = Backdrop.Side.LEFT;
+                        } else if (objectCenterX < (2 * CAMERA_SCREEN_WIDTH / 3.0)+CAMERA_OFFSET) { //1280+512=1792
                             telemetry.addData("Position", "Center");
-                            direction = "Center";
+                            telemetry.update();
+                            direction = Backdrop.Side.CENTER;
                         } else {
                             telemetry.addData("Position", "Right");
-                            direction = "Right";
+                            direction = Backdrop.Side.RIGHT;
                         }
                         telemetry.addData("Object Center X", objectCenterX);
+                        telemetry.update();
                     }
                 }
             }
@@ -292,13 +341,14 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
         return direction;
     }
 
-    public String redTelemetryTfod() {
-        Recognition recognition = redTfod();
-        String direction = "center";
-        double screenWidth = 2200;//tfodProcessor.getCameraView().getWidth();
+    private Backdrop.Side getPropLocation(boolean blue) {
+        Recognition recognition;
+        Backdrop.Side direction = Backdrop.Side.CENTER;
+        recognition = blue?blueTfod():redTfod();
 
         if(recognition==null) {
             telemetry.addData("recognition is null", "default center");
+            telemetry.update();
             return direction;
         }
         double x = (recognition.getLeft() + recognition.getRight()) / 2;
@@ -308,59 +358,23 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
         telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
         telemetry.addData("- Position", "%.0f / %.0f", x, y);
         telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
-
-        // Implement logic to determine object position (left, center, right).
-        double objectX = recognition.getLeft();
-        double objectWidth = recognition.getWidth();
-        double objectCenterX = objectX + objectWidth / 2.0;
-
-        if (objectCenterX < screenWidth / 3.0) {
-            telemetry.addData("Position", "Left");
-            direction = "left";
-        } else if (objectCenterX < 2 * screenWidth / 3.0) {
-            telemetry.addData("Position", "Center");
-            direction = "center";
-        } else {
-            telemetry.addData("Position", "Right");
-            direction = "right";
-        }
-        telemetry.addData("Object Center X", objectCenterX);
         telemetry.update();
-        return direction;
-    }
-
-
-    private String blueTelemetryTfod() {
-        Recognition recognition = blueTfod();
-        String direction = "center";
-        double screenWidth = 2200;//tfodProcessor.getCameraView().getWidth();
-
-        if(recognition==null) {
-            telemetry.addData("recognition is null", "default center");
-            return direction;
-        }
-        double x = (recognition.getLeft() + recognition.getRight()) / 2;
-        double y = (recognition.getTop() + recognition.getBottom()) / 2;
-
-        telemetry.addData(""," ");
-        telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
-        telemetry.addData("- Position", "%.0f / %.0f", x, y);
-        telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
-
         // Implement logic to determine object position (left, center, right).
         double objectX = recognition.getLeft();
         double objectWidth = recognition.getWidth();
         double objectCenterX = objectX + objectWidth / 2.0;
 
-        if (objectCenterX < screenWidth / 3.0) {
+        if (objectCenterX < (CAMERA_SCREEN_WIDTH / 3.0)+CAMERA_OFFSET) { //640+512 = 1152
             telemetry.addData("Position", "Left");
-            direction = "left";
-        } else if (objectCenterX < 2 * screenWidth / 3.0) {
+            telemetry.update();
+            direction = Backdrop.Side.LEFT;
+        } else if (objectCenterX < (2 * CAMERA_SCREEN_WIDTH / 3.0)+CAMERA_OFFSET) { //1280+512=1792
             telemetry.addData("Position", "Center");
-            direction = "center";
+            telemetry.update();
+            direction = Backdrop.Side.CENTER;
         } else {
             telemetry.addData("Position", "Right");
-            direction = "right";
+            direction = Backdrop.Side.RIGHT;
         }
         telemetry.addData("Object Center X", objectCenterX);
         telemetry.update();
