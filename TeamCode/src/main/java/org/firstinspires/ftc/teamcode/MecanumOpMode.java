@@ -110,9 +110,9 @@ public class MecanumOpMode extends OpMode
         } else if (gamepad1.right_bumper) {
             bot.inOutTake.outtake();
         }
-//        else {
-//            bot.inOutTake.stopTake();
-//        }
+        else {
+            bot.inOutTake.stopTake();
+        }
 
         // dropper
         if (gamepad1.a && !gp1a) {
