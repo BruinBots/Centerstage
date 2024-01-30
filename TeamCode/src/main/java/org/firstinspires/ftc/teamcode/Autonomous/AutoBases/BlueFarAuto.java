@@ -96,12 +96,12 @@ public class BlueFarAuto extends BaseAuto {
 
     @Override
     public Vector2d relativeSpikeLeft() {
-        return new Vector2d(RELATIVESPIKELEFT_X, 0);
+        return new Vector2d(RELATIVESPIKELEFT_X, -6);
     }
 
     @Override
     public Vector2d relativeSpikeRight() {
-        return new Vector2d(RELATIVESPIKERIGHT_X, 0);
+        return new Vector2d(RELATIVESPIKERIGHT_X, -6);
     }
 
     @Override
