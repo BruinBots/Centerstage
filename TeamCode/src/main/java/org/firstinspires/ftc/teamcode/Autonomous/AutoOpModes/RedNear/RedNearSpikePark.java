@@ -11,8 +11,8 @@ public class RedNearSpikePark extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         RedNearAuto auto = new RedNearAuto(hardwareMap, telemetry);
-        Backdrop.Side tfSpike = auto.tfSpike();
         waitForStart();
+        Backdrop.Side tfSpike = auto.tfSpike();
         auto.park(auto.spike(RedNearAuto.startingPosition, tfSpike, true));
     }
 }

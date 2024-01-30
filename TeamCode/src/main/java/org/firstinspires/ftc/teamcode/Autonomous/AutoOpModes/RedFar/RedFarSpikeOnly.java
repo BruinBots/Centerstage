@@ -11,8 +11,8 @@ public class RedFarSpikeOnly extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         RedFarAuto auto = new RedFarAuto(hardwareMap, telemetry);
-        Backdrop.Side tfSpike = auto.tfSpike();
         waitForStart();
+        Backdrop.Side tfSpike = auto.tfSpike();
         auto.spike(RedFarAuto.startingPosition, tfSpike, false);
     }
 }
