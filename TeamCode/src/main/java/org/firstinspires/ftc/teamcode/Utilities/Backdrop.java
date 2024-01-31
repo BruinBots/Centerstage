@@ -38,9 +38,13 @@ public class Backdrop {
     public static Pose2d alignBackdrop(SampleMecanumDrive drive, Pose2d startPose, Side side) {
         // The following is NEEDED to get accurate distance reading. Without it, the arm will crash into the backdrop. DO NOT REMOVE!!
         safeSleep(500);
-        double distance = bot.distance.getDistance();
-        safeSleep(100);
-        distance = bot.distance.getDistance();
+        double distance = 0;
+        int i = 0;
+        while (distance < 10 && i < 10) {
+            distance = bot.distance.getDistance();
+            safeSleep(50);
+            i ++;
+        }
         if (distance > 22) {
             distance = 10;
         }
@@ -77,9 +81,7 @@ public class Backdrop {
         bot.claw.openBothClaw();
         safeSleep(1500);
         bot.claw.closeBothClaw();
-        //sleep(500);
         bot.arm.goDown();
-        //sleep(500);
         Claw.setClawWrist(Claw.ZERO_ANGLE_POS);
         safeSleep(2000);
         bot.inOutTake.scoopMiddle();

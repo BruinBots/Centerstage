@@ -43,7 +43,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
      */
     public VisionPortal visionPortal;
 
-    public static boolean doCompute = true;
+    public static boolean doCompute = false;
     public static Backdrop.Side defaultSide = Backdrop.Side.CENTER;
 
     public static String TFOD_MODEL_ASSET = "orb1-14-24.tflite"; //default to blue

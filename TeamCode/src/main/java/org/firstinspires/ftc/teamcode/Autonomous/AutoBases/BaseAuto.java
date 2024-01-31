@@ -227,8 +227,8 @@ public class BaseAuto {
     public static void safeSleep(int ms) {
         int c = 0;
         while (c < ms) {
-            sleep(10);
-            c += 10;
+            sleep(5);
+            c += 5;
         }
     }
     //endregion
