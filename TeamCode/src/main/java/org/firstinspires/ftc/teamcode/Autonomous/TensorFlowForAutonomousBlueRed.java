@@ -57,7 +57,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
 
     // 6. Need to adjust camera offset
     private static final double CAMERA_OFFSET = 512.00; // TODO 5. assuming divided by 5 segments
-    private Backdrop.Side side = null;
+    private Backdrop.Side side = Backdrop.Side.CENTER.CENTER;
     private Backdrop.Side direction = Backdrop.Side.CENTER.CENTER;
     private double CAMERA_SCREEN_WIDTH = 1920; //A Logi Webcam 1080p resolution means the image has 1920 pixels horizontally by 1080 vertically (1920x1080)
     public TensorFlowForAutonomousBlueRed(HardwareMap hardwareMap, Telemetry telemetry, String color) {
@@ -75,11 +75,13 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
             //1. Need to adjust time
             sleep(1000); // give tensorflow time to think
             int i = 0;
-            Backdrop.Side side = null;
             ArrayList<Backdrop.Side> sideList = new ArrayList<>();
             // First sanitize of TensorFlow by using mode
-            while (side == null && i < 10) {
+            while (i < 10) {
+                //Tensorflow method 1
                 sideList.add(getPropLocation(blue));
+                //Tensorflow method 2
+                sideList.add(telemetryTfod());
                 i++;
                 sleep(100); // 2. Review number
             }
@@ -89,6 +91,8 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
         }
         else {
             side = defaultSide;
+            telemetry.addData("Default-side", side);
+            telemetry.update();
         }
         return side;
     }
@@ -194,7 +198,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
         // Set confidence threshold for TFOD recognitions, at any time.
         tfodProcessor.setMinResultConfidence(0f);
         // Disable or re-enable the TFOD processor at any time.
-        visionPortal.setProcessorEnabled(tfodProcessor, true);
+        // visionPortal.setProcessorEnabled(tfodProcessor, true);
 
     }   // end method initTfod()
 
@@ -266,44 +270,44 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
             telemetry.addData("updated recognitions: ", updatedRecognitions);
             telemetry.addData("number of recognitions: ", updatedRecognitions.size());
             telemetry.update();
-            if (updatedRecognitions != null && updatedRecognitions.size()>0) {
-                // Sort the confidence from highest to lowest
-                Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
-                    public int compare(Recognition r1, Recognition r2) {
-                        return (int)((r1.getConfidence()-r2.getConfidence())*100);
-                    }
-                });
-
-                // Get the one with the most square shape
-                Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
-                    public int compare(Recognition r1, Recognition r2) {
-                        return (int)((Math.abs((r2.getHeight() / r2.getWidth()) - (r2.getWidth() / r2.getHeight())) - Math.abs((r1.getHeight() / r1.getWidth()) - (r1.getWidth() / r1.getHeight())) * 100));
-                    }
-                });
-
-                // Get the one with the larger area
-                Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
-                    public int compare(Recognition r1, Recognition r2) {
-                        return (int)(((r1.getHeight() * r1.getWidth()) - (r2.getHeight() * r2.getWidth())));
-                    }
-                });
-            }
+//            if (updatedRecognitions != null && updatedRecognitions.size()>0) {
+//                // Sort the confidence from highest to lowest
+//                Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
+//                    public int compare(Recognition r1, Recognition r2) {
+//                        return (int)((r1.getConfidence()-r2.getConfidence())*100);
+//                    }
+//                });
+//
+//                // Get the one with the most square shape
+//                Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
+//                    public int compare(Recognition r1, Recognition r2) {
+//                        return (int)((Math.abs((r2.getHeight() / r2.getWidth()) - (r2.getWidth() / r2.getHeight())) - Math.abs((r1.getHeight() / r1.getWidth()) - (r1.getWidth() / r1.getHeight())) * 100));
+//                    }
+//                });
+//
+//                // Get the one with the larger area
+//                Collections.sort(updatedRecognitions, new Comparator<Recognition>() {
+//                    public int compare(Recognition r1, Recognition r2) {
+//                        return (int)(((r1.getHeight() * r1.getWidth()) - (r2.getHeight() * r2.getWidth())));
+//                    }
+//                });
+//            }
 
             if (updatedRecognitions != null) {
                 telemetry.addData("# Objects Detected", updatedRecognitions.size());
                 telemetry.update();
                 for (Recognition recognition:updatedRecognitions) {
-                    // Verify area of team prop.
-                    double orb_min_area=150;
-                    // this is the min or max possable area for the bounding box of the tfod orb
-                    double orb_max_area=200;
-                    double area = recognition.getWidth() * recognition.getHeight();
-                    if (area <= orb_max_area) {// Check if the recognized object is the one you are looking for.
-                        telemetry.addData("getLabel(): ", recognition.getLabel());
-                    }if (area > orb_min_area) {
-                        telemetry.addData("getLabel(): ", recognition.getLabel());
-                    }
-                    telemetry.update();
+//                    // Verify area of team prop.
+//                    double orb_min_area=150;
+//                    // this is the min or max possable area for the bounding box of the tfod orb
+//                    double orb_max_area=200;
+//                    double area = recognition.getWidth() * recognition.getHeight();
+//                    if (area <= orb_max_area) {// Check if the recognized object is the one you are looking for.
+//                        telemetry.addData("getLabel(): ", recognition.getLabel());
+//                    }if (area > orb_min_area) {
+//                        telemetry.addData("getLabel(): ", recognition.getLabel());
+//                    }
+//                    telemetry.update();
 
                     if (recognition.getLabel().equals(LABELS[0])) {
                         double x = (recognition.getLeft() + recognition.getRight()) / 2;

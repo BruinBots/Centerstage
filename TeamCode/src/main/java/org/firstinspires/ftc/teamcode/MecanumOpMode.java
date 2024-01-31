@@ -61,6 +61,7 @@ public class MecanumOpMode extends OpMode
     boolean gp2b;
     boolean gp2y;
     boolean gp2a;
+    double scaleFactor=0.65;
 
 
     @Override
@@ -99,16 +100,17 @@ public class MecanumOpMode extends OpMode
         drive = Math.copySign(Math.pow(drive, 3), drive);
         turn = Math.copySign(Math.pow(turn, 3), turn);
 
-        bot.moveBotMecanum(drive, turn, strafe,  0.65); // actually move the robot
+        bot.moveBotMecanum(drive, turn, strafe,  scaleFactor); // actually move the robot
 
         // GAMEPAD 1 (ANNA)
 
         // intake
-        if (gamepad1.left_trigger > 0.2) {
+        if (gamepad1.left_bumper) {
             bot.inOutTake.intake();
-        } else if (gamepad1.right_trigger > 0.2) {
+        } else if (gamepad1.right_bumper) {
             bot.inOutTake.outtake();
-        } else {
+        }
+        else {
             bot.inOutTake.stopTake();
         }
 
@@ -137,10 +139,21 @@ public class MecanumOpMode extends OpMode
 
         // EMERGENCY Arm Lowering - Used if Autonomous leaves the arm in a raised position
         // Lowers arm and rewrites zero
-        if (gamepad1.left_bumper && gamepad1.right_bumper) {
+        if (gamepad1.left_stick_button && gamepad1.right_stick_button && !hanging) {
             bot.arm.emergencyLower();
         }
+        // speed control for both
 
+
+        if(gamepad2.left_trigger>0.2||gamepad1.left_trigger>0.2){
+            scaleFactor=0.65;
+        }
+        else if (gamepad2.right_trigger>0.2||gamepad1.right_trigger>0.2){
+            scaleFactor=0.8;
+        }
+        else{
+            scaleFactor=0.4;
+        }
         // GAMEPAD 2 (ENRIQUE)
 
         // arm
