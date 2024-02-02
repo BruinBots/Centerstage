@@ -115,6 +115,9 @@ public class BaseAuto {
             return end.end();
         }
 
+        bot.inOutTake.scoopUp();
+        safeSleep(500);
+
         return endAlign;
     }
 
