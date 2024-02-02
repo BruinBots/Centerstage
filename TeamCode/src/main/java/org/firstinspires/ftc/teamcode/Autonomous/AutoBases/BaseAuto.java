@@ -148,6 +148,11 @@ public class BaseAuto {
      places the pixel by the spike mark on given side
      */
     public Pose2d spike(Pose2d startPose, Backdrop.Side side, boolean finishSpike) {
+        if (side == Backdrop.Side.CENTER) {
+            bot.inOutTake.scoopDown();
+            safeSleep(500);
+        }
+
         Trajectory enter = spikeEnter(startPose, side == Backdrop.Side.CENTER); //(15,35) blue near Center spike
         drive.followTrajectory(enter);
 
