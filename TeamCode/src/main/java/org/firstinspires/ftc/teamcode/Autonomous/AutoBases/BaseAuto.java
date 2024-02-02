@@ -53,16 +53,19 @@ public class BaseAuto {
      */
     public Backdrop.Side tfSpike() {
         // move the flipper down to let the camera see the orbs
-        bot.scoopServo.setPosition(0);
-        bot.inOutTake.scoopDown();
-        sleep(500); // let the flipper move down
-
+        if (TensorFlowForAutonomousBlueRed.doCompute) {
+            bot.scoopServo.setPosition(0);
+            bot.inOutTake.scoopDown();
+            sleep(500); // let the flipper move down
+        }
         // instantiate tensorflow
         TensorFlowForAutonomousBlueRed tf = new TensorFlowForAutonomousBlueRed(hardwareMap, telemetry, blue ? "blue" : "red");
         tf.initTfod();
         Backdrop.Side side = tf.compute(blue);
-        bot.inOutTake.scoopMiddle(); // move the flipper back up to not hit it against the field
-        sleep(500); // let the flipper move up
+        if (TensorFlowForAutonomousBlueRed.doCompute) {
+            bot.inOutTake.scoopMiddle(); // move the flipper back up to not hit it against the field
+            sleep(500); // let the flipper move up
+        }
         return side;
     }
 
