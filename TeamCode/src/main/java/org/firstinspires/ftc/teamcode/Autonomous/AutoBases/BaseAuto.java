@@ -27,6 +27,8 @@ public class BaseAuto {
         this.hardwareMap = hardwareMap;
         this.telemetry = telemetry;
 
+        this.blue = blue;
+
         // create bot from hardwareMap
         bot = new Karen(hardwareMap);
         Backdrop.telemetry = telemetry;
