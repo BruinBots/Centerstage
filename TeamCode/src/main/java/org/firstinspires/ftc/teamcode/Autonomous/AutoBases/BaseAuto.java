@@ -68,6 +68,7 @@ public class BaseAuto {
 
     // park the bot in the corner by the backdrop
     public Trajectory park(Pose2d startPose) {
+        bot.inOutTake.scoopUp();
         drive.turn(Math.toRadians(blue ? -90 : 90));
         Trajectory traj = parkTraj(startPose.plus(new Pose2d(0, 0, Math.toRadians(blue ? -90 : 90))));
         drive.followTrajectory(traj);
