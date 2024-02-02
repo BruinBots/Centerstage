@@ -110,6 +110,8 @@ public class BaseAuto {
         if (finishPixel) {
             Trajectory end = backdropEnd(endAlign);
             drive.followTrajectory(end);
+            bot.inOutTake.scoopUp();
+            safeSleep(500);
             return end.end();
         }
 
