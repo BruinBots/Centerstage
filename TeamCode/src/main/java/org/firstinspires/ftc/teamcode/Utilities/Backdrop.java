@@ -40,7 +40,7 @@ public class Backdrop {
         safeSleep(500);
         double distance = 0;
         int i = 0;
-        while (distance < 10 && i < 10) {
+        while (distance < 10 && i < 20) {
             distance = bot.distance.getDistance();
             safeSleep(50);
             i ++;
