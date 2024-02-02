@@ -79,7 +79,7 @@ public class TensorFlowForAutonomousBlueRed extends LinearOpMode {
             // First sanitize of TensorFlow by using mode
             while (i < 10) {
                 //Tensorflow method 1
-                sideList.add(getPropLocation(blue));
+                //sideList.add(getPropLocation(blue));
                 //Tensorflow method 2
                 sideList.add(telemetryTfod());
                 i++;
