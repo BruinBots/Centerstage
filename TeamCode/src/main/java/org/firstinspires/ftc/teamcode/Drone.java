@@ -42,7 +42,7 @@ public class Drone {
     public void launchWithRotation() {
         timeWhenLaunched = getCurrentTime();
         launched = true;
-        setRotateServo(0.4); // 0.5
+        setRotateServo(0.3); // 0.5, 0.4
     }
 
     public void resetPoses() {

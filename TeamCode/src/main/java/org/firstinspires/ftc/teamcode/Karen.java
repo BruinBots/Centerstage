@@ -210,7 +210,7 @@ public class Karen  {
         drone.resetPoses();
         hanger.hangServo.setPosition(hanger.PRIMED_POS);
         dropper.closed();
-        inOutTake.scoopMiddle();
+        inOutTake.scoopUp();
     }
 
 
