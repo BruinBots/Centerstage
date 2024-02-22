@@ -78,6 +78,6 @@ public class InOutTake {
     public void scoopHalfDown() { scoopServo.setPosition(SCOOP_HALF_DOWN_POS); }
 
     public static boolean isSafeForArm() {
-        return (scoopServo.getPosition() <= SCOOP_MIDDLE_POS + 0.05);
+        return true;
     }
 }

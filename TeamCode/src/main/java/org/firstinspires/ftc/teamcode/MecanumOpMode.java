@@ -61,7 +61,7 @@ public class MecanumOpMode extends OpMode
     boolean gp2b;
     boolean gp2y;
     boolean gp2a;
-    double scaleFactor=0.65;
+    double scaleFactor=0.4;
 
 
     @Override
@@ -104,33 +104,6 @@ public class MecanumOpMode extends OpMode
 
         // GAMEPAD 1 (ANNA)
 
-        // intake
-        if (gamepad1.left_bumper) {
-            bot.inOutTake.intake();
-        } else if (gamepad1.right_bumper) {
-            bot.inOutTake.outtake();
-        }
-        else {
-            bot.inOutTake.stopTake();
-        }
-
-        // dropper
-        if (gamepad1.a && !gp1a) {
-            bot.dropper.toggle();
-        }
-
-        // flipper
-        if (gamepad1.dpad_up && !gp1dpadup) {
-            if (Arm.armAngle() < 0) {
-                bot.claw.openBothClaw();
-            }
-            bot.inOutTake.scoopUp();
-        } else if (gamepad1.dpad_left && !gp1dpadleft) {
-            bot.inOutTake.scoopMiddle();
-        } else if (gamepad1.dpad_down && !gp1dpaddown) {
-            bot.inOutTake.scoopDown();
-        }
-
         // drone launcher
         if (gamepad1.y && !gp1y) {
             bot.drone.launchWithRotation();
@@ -143,17 +116,6 @@ public class MecanumOpMode extends OpMode
             bot.arm.emergencyLower();
         }
         // speed control for both
-
-
-        if(gamepad2.left_trigger>0.2||gamepad1.left_trigger>0.2){
-            scaleFactor=0.65;
-        }
-        else if (gamepad2.right_trigger>0.2||gamepad1.right_trigger>0.2){
-            scaleFactor=0.8;
-        }
-        else{
-            scaleFactor=0.4;
-        }
         // GAMEPAD 2 (ENRIQUE)
 
         // arm
@@ -181,16 +143,6 @@ public class MecanumOpMode extends OpMode
             bot.arm.holdArmPos();
         }
 
-        // claw
-        if (gamepad2.b && !gp2b) {
-            bot.claw.closeBothClaw();
-        } else if (gamepad2.y && !gp2y) {
-            bot.claw.closeLowerClaw();
-            bot.claw.openUpperClaw();
-        } else if (gamepad2.a && !gp2a) {
-            bot.claw.openBothClaw();
-        }
-
         // hang
         if (gamepad2.left_stick_button && gamepad2.right_stick_button && !hanging) {
             hanging = true;
@@ -201,15 +153,10 @@ public class MecanumOpMode extends OpMode
             hanging = false;
         }
 
-        telemetry.addData("distance", bot.distance.getDistance());
         telemetry.addData("arm", bot.arm.getCurrentArmPos());
         telemetry.addData("armAngle", bot.arm.armAngle());
         telemetry.addData("clawAngle", bot.arm.clawAngle());
-        telemetry.addData("clawPos", bot.claw.getCurrentWristPosition());
-        telemetry.addData("one claw finger", bot.clawLowerFinger.getPosition());
-        telemetry.addData("two claw finger", bot.clawUpperFinger.getPosition());
         telemetry.addData("hang servo", bot.hanger.hangServo.getPosition());
-        telemetry.addData("dropper servo", bot.dropper.dropperServo.getPosition());
 
         gp1dpadup = gamepad1.dpad_up;
         gp1dpadleft = gamepad1.dpad_left;

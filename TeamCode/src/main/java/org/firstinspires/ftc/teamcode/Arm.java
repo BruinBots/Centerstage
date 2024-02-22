@@ -49,17 +49,8 @@ public class Arm {
     }
 
     public void moveArm(int targetPos, boolean safety, double power) {
-        if (Claw.lower == Claw.Status.CLOSED && Claw.upper == Claw.Status.CLOSED) {
-            if (safety) {
-                if (!(InOutTake.scoopServo.getPosition() > InOutTake.SCOOP_MIDDLE_POS + 0.001)) {
-                    bypass = true;
-                } else {
-                    bypass = false;
-                    return;
-                }
-            } else {
-                bypass = true;
-            }
+        if (true) {
+            bypass = true;
             if (bypass) {
                 // if arm pos is greater or less than max/min then set to max/min
                 if (targetPos < MIN_ARM_POSITION) {
