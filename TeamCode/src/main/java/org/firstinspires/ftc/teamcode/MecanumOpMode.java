@@ -36,7 +36,7 @@ import static java.lang.Thread.sleep;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name="Basic: Mecanum TeleOp", group="Iterative Opmode")
+@TeleOp(name="DroneMode", group="Kings Glen")
 public class MecanumOpMode extends OpMode
 {
 
@@ -47,6 +47,7 @@ public class MecanumOpMode extends OpMode
 
     // robot
     Karen bot;
+    double pos = 0.4;
 
     boolean hanging;
     boolean gp1dpadup;
@@ -103,10 +104,19 @@ public class MecanumOpMode extends OpMode
 //        bot.moveBotMecanum(drive, turn, strafe,  scaleFactor); // actually move the robot
 //
 //        // GAMEPAD 1 (ANNA)
+
+        if (gamepad1.dpad_up && bot.droneRotateServo.getPosition() < Drone.MIN_ROTATE_POS) {
+            pos += 0.005;
+        }
+        else if (gamepad1.dpad_down && bot.droneRotateServo.getPosition() > Drone.MAX_ROTATE_POS)
+        {
+            pos -= 0.005;
+        }
+        bot.droneRotateServo.setPosition(pos);
 //
 //        // drone launcher
         if (gamepad1.y && !gp1y) {
-            bot.drone.launchWithRotation();
+            bot.drone.launchWithRotation(pos); // 0.4
         }
         bot.drone.loop();
 //
