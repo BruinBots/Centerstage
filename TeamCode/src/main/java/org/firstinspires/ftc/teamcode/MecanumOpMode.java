@@ -104,12 +104,6 @@ public class MecanumOpMode extends OpMode
 
         // GAMEPAD 1 (ANNA)
 
-        // drone launcher
-        if (gamepad1.y && !gp1y) {
-            bot.drone.launchWithRotation();
-        }
-        bot.drone.loop();
-
         // EMERGENCY Arm Lowering - Used if Autonomous leaves the arm in a raised position
         // Lowers arm and rewrites zero
         if (gamepad1.left_stick_button && gamepad1.right_stick_button && !hanging) {

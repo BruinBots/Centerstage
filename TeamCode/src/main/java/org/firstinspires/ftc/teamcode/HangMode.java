@@ -21,7 +21,7 @@ public class HangMode extends OpMode {
 
     @Override
     public void loop() {
-        drive = gamepad1.left_stick_y;
+        drive = -gamepad1.left_stick_y;
         strafe = gamepad1.left_stick_x;
         turn = gamepad1.right_stick_x;
 
@@ -47,9 +47,10 @@ public class HangMode extends OpMode {
         // basic arm controls
         if (gamepad1.dpad_up) {
             bot.arm.goStraight();
+            hanging = true;
         }
         else if (gamepad1.dpad_down) {
-            bot.arm.goDown();
+//            bot.arm.moveArm(hanging ? 300 : Arm.MIN_ARM_POSITION, true);
         }
 
         // hang
@@ -62,6 +63,11 @@ public class HangMode extends OpMode {
             hanging = false;
         }
 
-        bot.moveBotMecanum(drive, turn, strafe, 0.25); // actually move the robot
+        telemetry.addData("hanging", hanging);
+        telemetry.addData("arm", bot.arm.getCurrentArmPos());
+        telemetry.addData("armMotor", bot.armMotor.getCurrentPosition());
+        telemetry.update();
+
+        bot.moveBotMecanum(drive, turn, strafe, 0.35); // actually move the robot
     }
 }

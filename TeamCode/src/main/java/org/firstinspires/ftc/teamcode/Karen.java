@@ -27,22 +27,19 @@ public class Karen  {
     public DcMotorEx rightOdo;
     public DcMotorEx backOdo;
 
-    Servo droneReleaseServo;
-    Servo droneRotateServo;
-
     Servo hangerServo;
 
-    ModernRoboticsI2cRangeSensor distanceSensor;
-
-
     public double lastwheelSpeeds[] = new double[4];     // Tracks the last power sent to the wheels to assist in ramping power
+
+
+
+
     public static double        SPEED_INCREMENT = 0.09;  // Increment that wheel speed will be increased/decreased
     public final int TICKS_PER_REVOLUTION = 200;
     public final int DEADWHEEL_RADIUS = 2; // cm ??
 
     // subclasses
     public Arm arm;
-    public Drone drone;
     public Hanger hanger;
 
     // constructor with map
@@ -68,11 +65,6 @@ public class Karen  {
         leftOdo = map.get(DcMotorEx.class, "left_front");
         rightOdo = map.get(DcMotorEx.class, "right_odo");
         backOdo = map.get(DcMotorEx.class, "left_back");
-
-        // drone
-        droneReleaseServo = map.get(Servo.class, "drone_release_servo");
-        droneRotateServo = map.get(Servo.class, "drone_rotate_servo");
-        drone = new Drone(droneReleaseServo, droneRotateServo);
 
         hangerServo = map.get(Servo.class, "hanger_servo");
         hanger = new Hanger(hangerServo);
@@ -164,7 +156,6 @@ public class Karen  {
     }
 
     public void init() {
-        drone.resetPoses();
         hanger.hangServo.setPosition(hanger.PRIMED_POS);
 
     }

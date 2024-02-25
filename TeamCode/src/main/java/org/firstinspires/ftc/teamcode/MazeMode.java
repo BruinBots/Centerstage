@@ -19,9 +19,9 @@ public class MazeMode extends OpMode {
 
     @Override
     public void loop() {
-        drive = gamepad1.left_stick_y;
-        strafe = gamepad2.left_stick_x;
-        turn= gamepad1.right_stick_x;
+        drive = -gamepad1.left_stick_y;
+        strafe = gamepad1.left_stick_x;
+        turn = gamepad1.right_stick_x;
 
         if (drive > 1) { drive = 1; }
         if (strafe > 1) { strafe = 1; }
@@ -42,6 +42,6 @@ public class MazeMode extends OpMode {
             turn = 0;
         }
 
-        bot.moveBotMecanum(drive, turn, strafe, 0.25); // actually move the robot
+        bot.moveBotMecanum(drive, turn, strafe, 0.35); // actually move the robot
     }
 }

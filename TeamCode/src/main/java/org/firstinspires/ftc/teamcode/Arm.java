@@ -62,10 +62,10 @@ public class Arm {
                 armMotor.setPower(power);
                 armMotor.setTargetPosition(targetPos);
                 armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                Claw.setClawWristFromAngle(Arm.clawAngle()); // inverse kinematics
+//                Claw.setClawWristFromAngle(Arm.clawAngle()); // inverse kinematics
             }
         } else {
-            Claw.closeBothClaw();
+//            Claw.closeBothClaw();
         }
     }
 
@@ -81,9 +81,11 @@ public class Arm {
         moveArm(STRAIGHT_ARM_POSITION, true);
     }
 
-    public void goDown() {
-        moveArm(MIN_ARM_POSITION, true);
+    public void goDown(boolean hanging) {
+        moveArm(hanging ? 300 : MIN_ARM_POSITION, true);
     }
+
+    public void goDown() { goDown(false); }
 
     public int getCurrentArmPos() { return armMotor.getCurrentPosition(); }
 
