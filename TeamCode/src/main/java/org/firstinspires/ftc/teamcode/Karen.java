@@ -29,6 +29,7 @@ public class Karen  {
 
     Servo droneReleaseServo;
     Servo droneRotateServo;
+    Servo turretServo;
 
 //    Servo hangerServo;
 
@@ -72,7 +73,8 @@ public class Karen  {
         // drone
         droneReleaseServo = map.get(Servo.class, "drone_release_servo");
         droneRotateServo = map.get(Servo.class, "drone_rotate_servo");
-        drone = new Drone(droneReleaseServo, droneRotateServo);
+        turretServo  =map.get(Servo.class, "turret_servo");
+        drone = new Drone(droneReleaseServo, droneRotateServo, turretServo);
 //
 //        hangerServo = map.get(Servo.class, "hanger_servo");
 //        hanger = new Hanger(hangerServo);

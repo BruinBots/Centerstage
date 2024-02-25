@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class Drone {
     public Servo droneReleaseServo;
     public Servo droneRotateServo;
+    public Servo turretServo;
     public boolean launched = false;
     public static double OPEN_POS = 1;
     public static double CLOSED_POS = 0;
@@ -14,10 +15,25 @@ public class Drone {
     public enum launchPoses {open, closed}
     public static double MAX_ROTATE_POS = 0.4;
     public static double MIN_ROTATE_POS = 0.75;
+    public static double MIN_TURRET_POS = 0;
+    public static double MAX_TURRET_POS = 0.5;
 
-    Drone(Servo droneReleaseServo, Servo droneRotateServo) {
+    Drone(Servo droneReleaseServo, Servo droneRotateServo, Servo turretServo) {
         this.droneReleaseServo = droneReleaseServo;
         this.droneRotateServo = droneRotateServo;
+        this.turretServo = turretServo;
+    }
+
+    public void setTurret(double targetPos) {
+        double pos = targetPos;
+        if (pos < MIN_TURRET_POS) {
+            pos = MIN_TURRET_POS;
+        }
+        else if (pos > MAX_TURRET_POS) {
+            pos = MAX_TURRET_POS;
+        }
+        turretServo.setPosition(pos);
+
     }
 
     public void setServoPos(Servo servo, double pos) {

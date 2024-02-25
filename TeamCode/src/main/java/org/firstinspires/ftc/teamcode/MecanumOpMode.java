@@ -113,6 +113,13 @@ public class MecanumOpMode extends OpMode
             pos -= 0.005;
         }
         bot.droneRotateServo.setPosition(pos);
+
+        if (gamepad1.dpad_left) {
+            bot.drone.setTurret(bot.turretServo.getPosition() - 0.01);
+        }
+        else if (gamepad1.dpad_right) {
+            bot.drone.setTurret(bot.turretServo.getPosition() + 0.01);
+        }
 //
 //        // drone launcher
         if (gamepad1.y && !gp1y) {
