@@ -10,10 +10,10 @@ public class Arm {
 
     // declare constants
     public static int MAX_ARM_POSITION = 3000;
-    public static int PLACING_ARM_POSITION = 2700;
+    public static int PLACING_ARM_POSITION = 2300;
     public static int STRAIGHT_ARM_POSITION = 1720;
     public static int MIN_ARM_POSITION = 0;
-    public static int ARM_SPEED = 50;
+    public static int ARM_SPEED = 30;
     public static double ARM_POWER = 0.5; // the default power supplied to the arm when being used
     public static double OFFSET_ANGLE = 38.4;
     public static double GEAR_RATIO = 9.1;
@@ -43,34 +43,35 @@ public class Arm {
         double armAngle = armAngle();
         double clawAngle = 0;
         if (armAngle > 120) {
-            clawAngle = armAngle - 120 + 10; // + 3 to make it offset a little bit
+            clawAngle = armAngle - 120;
         }
         return clawAngle;
     }
 
-    public void moveArm(int targetPos, boolean safety, double power) {
-        if (true) {
-            bypass = true;
-            if (bypass) {
-                // if arm pos is greater or less than max/min then set to max/min
-                if (targetPos < MIN_ARM_POSITION) {
-                    targetPos = MIN_ARM_POSITION;
-                } else if (targetPos > MAX_ARM_POSITION) {
-                    targetPos = MAX_ARM_POSITION;
-                }
-
-                armMotor.setPower(power);
-                armMotor.setTargetPosition(targetPos);
-                armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                Claw.setClawWristFromAngle(Arm.clawAngle()); // inverse kinematics
+    public void moveArm(int targetPos, boolean safety) {
+        if (safety) {
+            if (!(InOutTake.scoopServo.getPosition() > InOutTake.SCOOP_MIDDLE_POS + 0.001)) {
+                bypass = true;
+            } else {
+                bypass = false;
+                return;
             }
         } else {
-            Claw.closeBothClaw();
+            bypass = true;
         }
-    }
+        if (bypass) {
+            // if arm pos is greater or less than max/min then set to max/min
+            if (targetPos < MIN_ARM_POSITION) {
+                targetPos = MIN_ARM_POSITION;
+            } else if (targetPos > MAX_ARM_POSITION) {
+                targetPos = MAX_ARM_POSITION;
+            }
 
-    public void moveArm(int targetPos, boolean safety) {
-        moveArm(targetPos, safety, ARM_POWER);
+            armMotor.setPower(ARM_POWER);
+            armMotor.setTargetPosition(targetPos);
+            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Claw.setClawWristFromAngle(Arm.clawAngle());
+        }
     }
 
     public void goMax() {
@@ -86,20 +87,4 @@ public class Arm {
     }
 
     public int getCurrentArmPos() { return armMotor.getCurrentPosition(); }
-
-    public void emergencyLower() {
-        // This is a Dangerous function!
-        // In the case that autonomous leaves the arm in a raised position, the arm zero position will be reset when Teleop is initialized
-        // This function allows a means to manually lower the arm back down to close to it's normal zero position
-
-        // Use a low power - we don't want this to be fast, and gravity will be pulling on the arm
-        armMotor.setPower(0.35);
-        // We stop and reset the encoder.  This will likely result in a very jerky downward movement
-        armMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        // Set the target position to 10 ticks below where the arm is
-        armMotor.setTargetPosition(armMotor.getCurrentPosition() - 150);
-        // There is a deprecated RESET_ENCODERS mode that we could try if this proves problematic
-        // Call RunToPosition - The arm will start to move, then...
-        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    }
 }

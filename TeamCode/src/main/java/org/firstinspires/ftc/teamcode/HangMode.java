@@ -16,7 +16,7 @@ public class HangMode extends OpMode {
     @Override
     public void init() {
         bot = new Karen(hardwareMap);
-        bot.init();
+//        bot.init();
     }
 
     @Override
@@ -34,34 +34,34 @@ public class HangMode extends OpMode {
         turn = Math.copySign(Math.pow(turn, 3), turn);
 
         // emergency brake if we need it (on controller 2)
-        if (gamepad2.b) {
-            bot.leftBackMotor.setPower(0);
-            bot.leftFrontMotor.setPower(0);
-            bot.rightBackMotor.setPower(0);
-            bot.rightFrontMotor.setPower(0);
-            drive = 0;
-            strafe = 0;
-            turn = 0;
-        }
+//        if (gamepad2.b) {
+//            bot.leftBackMotor.setPower(0);
+//            bot.leftFrontMotor.setPower(0);
+//            bot.rightBackMotor.setPower(0);
+//            bot.rightFrontMotor.setPower(0);
+//            drive = 0;
+//            strafe = 0;
+//            turn = 0;
+//        }
 
         // basic arm controls
-        if (gamepad1.dpad_up) {
-            bot.arm.goStraight();
-        }
-        else if (gamepad1.dpad_down) {
-            bot.arm.goDown();
-        }
-
-        // hang
-        if (gamepad1.left_stick_button && gamepad1.right_stick_button && !hanging) {
-            hanging = true;
-            bot.hanger.hang();
-        }
-
-        if (!gamepad1.left_stick_button && !gamepad1.right_stick_button) {
-            hanging = false;
-        }
-
-        bot.moveBotMecanum(drive, turn, strafe, 0.25); // actually move the robot
+//        if (gamepad1.dpad_up) {
+//            bot.arm.goStraight();
+//        }
+//        else if (gamepad1.dpad_down) {
+//            bot.arm.goDown();
+//        }
+//
+//        // hang
+//        if (gamepad1.left_stick_button && gamepad1.right_stick_button && !hanging) {
+//            hanging = true;
+//            bot.hanger.hang();
+//        }
+//
+//        if (!gamepad1.left_stick_button && !gamepad1.right_stick_button) {
+//            hanging = false;
+//        }
+//
+//        bot.moveBotMecanum(drive, turn, strafe, 0.25); // actually move the robot
     }
 }
