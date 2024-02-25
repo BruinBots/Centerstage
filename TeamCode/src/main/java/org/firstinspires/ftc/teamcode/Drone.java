@@ -15,8 +15,6 @@ public class Drone {
     public enum launchPoses {open, closed}
     public static double MAX_ROTATE_POS = 0.4;
     public static double MIN_ROTATE_POS = 0.75;
-    public static double MIN_TURRET_POS = 0;
-    public static double MAX_TURRET_POS = 0.5;
 
     Drone(Servo droneReleaseServo, Servo droneRotateServo, Servo turretServo) {
         this.droneReleaseServo = droneReleaseServo;
@@ -25,14 +23,7 @@ public class Drone {
     }
 
     public void setTurret(double targetPos) {
-        double pos = targetPos;
-        if (pos < MIN_TURRET_POS) {
-            pos = MIN_TURRET_POS;
-        }
-        else if (pos > MAX_TURRET_POS) {
-            pos = MAX_TURRET_POS;
-        }
-        turretServo.setPosition(pos);
+        turretServo.setPosition(targetPos);
 
     }
 

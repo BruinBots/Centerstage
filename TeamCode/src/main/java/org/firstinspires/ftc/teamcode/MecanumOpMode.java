@@ -64,6 +64,8 @@ public class MecanumOpMode extends OpMode
     boolean gp2a;
     double scaleFactor=0.4;
 
+    double TURRET_SPEED = 0.05;
+
 
     @Override
     public void init() {
@@ -115,10 +117,13 @@ public class MecanumOpMode extends OpMode
         bot.droneRotateServo.setPosition(pos);
 
         if (gamepad1.dpad_left) {
-            bot.drone.setTurret(bot.turretServo.getPosition() - 0.01);
+            bot.drone.setTurret(0.5 - TURRET_SPEED);
         }
         else if (gamepad1.dpad_right) {
-            bot.drone.setTurret(bot.turretServo.getPosition() + 0.01);
+            bot.drone.setTurret(0.5 - TURRET_SPEED);
+        }
+        else {
+            bot.drone.setTurret(0.5);
         }
 //
 //        // drone launcher
