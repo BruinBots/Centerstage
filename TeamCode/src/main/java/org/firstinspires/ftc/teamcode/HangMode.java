@@ -9,7 +9,7 @@ public class HangMode extends OpMode {
     double turn = 0.0;
     double strafe = 0.0;
 
-    boolean hanging;
+    boolean hanging = false;
 
     Karen bot;
 
@@ -47,20 +47,18 @@ public class HangMode extends OpMode {
         // basic arm controls
         if (gamepad1.dpad_up) {
             bot.arm.goStraight();
-            hanging = true;
         }
         else if (gamepad1.dpad_down) {
-//            bot.arm.moveArm(hanging ? 300 : Arm.MIN_ARM_POSITION, true);
+            int targetPos = hanging ? 300 : Arm.MIN_ARM_POSITION;
+            telemetry.addData("targetPos", targetPos);
+            telemetry.update();
+            bot.arm.moveArm(targetPos, true);
         }
 
         // hang
         if (gamepad1.left_stick_button && gamepad1.right_stick_button && !hanging) {
             hanging = true;
             bot.hanger.hang();
-        }
-
-        if (!gamepad1.left_stick_button && !gamepad1.right_stick_button) {
-            hanging = false;
         }
 
         telemetry.addData("hanging", hanging);
