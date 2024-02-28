@@ -24,7 +24,6 @@ public class Drone {
 
     public void setTurret(double targetPos) {
         turretServo.setPosition(targetPos);
-
     }
 
     public void setServoPos(Servo servo, double pos) {

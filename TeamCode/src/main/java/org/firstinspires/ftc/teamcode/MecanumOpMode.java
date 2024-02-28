@@ -89,24 +89,6 @@ public class MecanumOpMode extends OpMode
     //
     @Override
     public void loop() {
-        // get drive, strafe, and turn values
-//
-//        drive = gamepad1.left_stick_y - gamepad2.left_stick_y;
-//        strafe = gamepad2.left_stick_x - gamepad1.left_stick_x;
-//        turn= gamepad1.right_stick_x + gamepad2.right_stick_x;
-//
-//        if (drive > 1) { drive = 1; }
-//        if (strafe > 1) { strafe = 1; }
-//        if (turn > 1) { turn = 1; }
-//
-//        strafe = Math.copySign(Math.pow(strafe, 3), strafe);
-//        drive = Math.copySign(Math.pow(drive, 3), drive);
-//        turn = Math.copySign(Math.pow(turn, 3), turn);
-//
-//        bot.moveBotMecanum(drive, turn, strafe,  scaleFactor); // actually move the robot
-//
-//        // GAMEPAD 1 (ANNA)
-
         if (gamepad1.dpad_up && bot.droneRotateServo.getPosition() < Drone.MIN_ROTATE_POS) {
             pos += 0.005;
         }
@@ -120,65 +102,17 @@ public class MecanumOpMode extends OpMode
             bot.drone.setTurret(0.5 - TURRET_SPEED);
         }
         else if (gamepad1.dpad_right) {
-            bot.drone.setTurret(0.5 - TURRET_SPEED);
+            bot.drone.setTurret(0.5 + TURRET_SPEED);
         }
         else {
             bot.drone.setTurret(0.5);
         }
-//
-//        // drone launcher
+
+        // drone launcher
         if (gamepad1.y && !gp1y) {
             bot.drone.launchWithRotation(pos); // 0.4
         }
         bot.drone.loop();
-//
-//        // EMERGENCY Arm Lowering - Used if Autonomous leaves the arm in a raised position
-//        // Lowers arm and rewrites zero
-//        if (gamepad1.left_stick_button && gamepad1.right_stick_button && !hanging) {
-//            bot.arm.emergencyLower();
-//        }
-//        // speed control for both
-//        // GAMEPAD 2 (ENRIQUE)
-//
-//        // arm
-//        if (gamepad2.right_bumper) {
-//            if (bot.hanger.launched) {
-//                bot.arm.moveArm(bot.arm.getCurrentArmPos() + Arm.ARM_SPEED, false);
-//            } else {
-//                bot.arm.moveArm(bot.arm.getCurrentArmPos() + Arm.ARM_SPEED, true);
-//            }
-//        }
-//        else if (gamepad2.left_bumper) {
-//            if (bot.hanger.launched) {
-//                bot.arm.moveArm(bot.arm.getCurrentArmPos() - Arm.ARM_SPEED, false);
-//            } else {
-//                bot.arm.moveArm(bot.arm.getCurrentArmPos() - Arm.ARM_SPEED, true);
-//            }
-//        } else if (gamepad2.dpad_left) {
-//            bot.arm.goMax();
-//        } else if (gamepad2.dpad_right) {
-//            bot.arm.goStraight();
-//        } else if (gamepad2.dpad_down) {
-//            bot.arm.goDown();
-//        }
-//        else {
-//            bot.arm.holdArmPos();
-//        }
-//
-//        // hang
-//        if (gamepad2.left_stick_button && gamepad2.right_stick_button && !hanging) {
-//            hanging = true;
-//            bot.hanger.hang();
-//        }
-//
-//        if (!gamepad2.left_stick_button && !gamepad2.right_stick_button) {
-//            hanging = false;
-//        }
-//
-//        telemetry.addData("arm", bot.arm.getCurrentArmPos());
-//        telemetry.addData("armAngle", bot.arm.armAngle());
-//        telemetry.addData("clawAngle", bot.arm.clawAngle());
-//        telemetry.addData("hang servo", bot.hanger.hangServo.getPosition());
 
         gp1dpadup = gamepad1.dpad_up;
         gp1dpadleft = gamepad1.dpad_left;
@@ -199,8 +133,4 @@ public class MecanumOpMode extends OpMode
             e.printStackTrace();
         }
     }
-
-//    @Override
-//    public void stop() {
-//        bot.stop(); // stop all motors
-    }
+}
