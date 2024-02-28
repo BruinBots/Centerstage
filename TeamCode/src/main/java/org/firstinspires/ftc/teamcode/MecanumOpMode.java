@@ -39,69 +39,35 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp(name="DroneMode", group="Kings Glen")
 public class MecanumOpMode extends OpMode
 {
-
-    // drive values
-    double drive = 0.0;
-    double turn = 0.0;
-    double strafe = 0.0;
-
     // robot
     Karen bot;
     double pos = 0.4;
 
-    boolean hanging;
-    boolean gp1dpadup;
-    boolean gp1dpadleft;
-    boolean gp1dpaddown;
-    boolean gp1y;
-    boolean gp1a;
-
-    boolean gp2dpadleft;
-    boolean gp2dpadright;
-    boolean gp2dpaddown;
-    boolean gp2b;
-    boolean gp2y;
-    boolean gp2a;
-    double scaleFactor=0.4;
-
-    double TURRET_SPEED = 0.05;
+    double TURRET_SPEED = 0.02;
 
 
     @Override
     public void init() {
         bot = new Karen(hardwareMap);
         telemetry.addData("Status", "Initialized");
-//        bot.init();
         telemetry.update();
     }
 
-    //
-    @Override
-    public void init_loop() {
-    }
-
-    //
-    @Override
-    public void start() {
-        //bot.arm.moveArm(Arm.MIN_ARM_POSITION);
-    }
-
-    //
     @Override
     public void loop() {
-        if (gamepad1.dpad_up && bot.droneRotateServo.getPosition() < Drone.MIN_ROTATE_POS) {
+        if ((gamepad1.dpad_up || gamepad1.left_stick_y > 0.1 || gamepad1.right_stick_y > 0.1) && bot.droneRotateServo.getPosition() < Drone.MIN_ROTATE_POS) {
             pos += 0.005;
         }
-        else if (gamepad1.dpad_down && bot.droneRotateServo.getPosition() > Drone.MAX_ROTATE_POS)
+        else if ((gamepad1.dpad_down || gamepad1.left_stick_y < -0.1 || gamepad1.right_stick_y < -0.1) && bot.droneRotateServo.getPosition() > Drone.MAX_ROTATE_POS)
         {
             pos -= 0.005;
         }
         bot.droneRotateServo.setPosition(pos);
 
-        if (gamepad1.dpad_left) {
+        if (gamepad1.dpad_left || gamepad1.left_stick_x < -0.1 || gamepad1.right_stick_x < -0.1) {
             bot.drone.setTurret(0.5 - TURRET_SPEED);
         }
-        else if (gamepad1.dpad_right) {
+        else if (gamepad1.dpad_right || gamepad1.left_stick_x > 0.1 || gamepad1.right_stick_x > 0.1) {
             bot.drone.setTurret(0.5 + TURRET_SPEED);
         }
         else {
@@ -109,23 +75,10 @@ public class MecanumOpMode extends OpMode
         }
 
         // drone launcher
-        if (gamepad1.y && !gp1y) {
+        if (gamepad1.y || (gamepad1.left_bumper && gamepad1.right_bumper)) {
             bot.drone.launchWithRotation(pos); // 0.4
         }
         bot.drone.loop();
-
-        gp1dpadup = gamepad1.dpad_up;
-        gp1dpadleft = gamepad1.dpad_left;
-        gp1dpaddown = gamepad1.dpad_down;
-        gp1y = gamepad1.y;
-        gp1a = gamepad1.a;
-
-        gp2dpadleft = gamepad2.dpad_left;
-        gp2dpadright = gamepad2.dpad_right;
-        gp2dpaddown = gamepad2.dpad_down;
-        gp2b = gamepad2.b;
-        gp2y = gamepad2.y;
-        gp2a = gamepad2.a;
 
         try {
             sleep(20);
